@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>我的影视源</title>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div style="text-align: center; padding: 50px;">
+        <h1>🎬 我的私人影视源</h1>
+        <p>欢迎使用本影视源，请复制下方网址到TVBOX中使用：</p>
+        
+        <div style="background: #f5f5f5; padding: 15px; margin: 20px; border-radius: 5px;">
+            <code id="apiUrl">https://ghfile.geekertao.top/https://raw.githubusercontent.com/xnm66/my-tvbox-source/main/xnm.json</code>
+            <button onclick="copyUrl()">复制</button>
+        </div>
+        
+        <p><small>复制上方网址到TVBOX的配置地址中即可使用</small></p>
+        
+    </div>
+
+    <script>
+        // 自动生成当前网址
+        document.getElementById('apiUrl').textContent = window.location.origin + '/xnm.json';
+        
+        function copyUrl() {
+            const url = document.getElementById('apiUrl').textContent;
+            navigator.clipboard.writeText(url).then(() => {
+                alert('复制成功！请到TVBOX中粘贴使用');
+            });
+        }
+    </script>
+</body>
+</html>
