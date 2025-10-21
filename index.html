@@ -290,7 +290,7 @@
 	</div>
 
 	<div class="footer">
-		TVBOX、FongMi 1智能解析影视源 © 2025
+		TVBOX、FongMi 2智能解析影视源 © 2025
 	</div>
 <script>
     // 自动生成网址
@@ -300,34 +300,33 @@
     document.getElementById('serviceUrl').textContent = serviceUrl;
     
     // 增强版 TVBOX 检测函数
-    function isTVBoxUserAgent() {
-        const ua = navigator.userAgent.toLowerCase();
-        const tvboxKeywords = [
-            'tvbox', 'okhttp', 'catvod', 'tang', '影视仓',
-            'p2p', 'player', 'video', 'tv.apk', 'tv/',
-            'android.tv', 'smarttv', 'tvos', 'fongmi',
-            'android', 'mobile'  // 添加更多移动端标识
-        ];
-        
-        // 检查是否是 TVBOX 相关应用
-        const isTVBoxApp = tvboxKeywords.some(keyword => ua.includes(keyword));
-        
-        // 额外检查：如果是直接访问根路径，可能是 TVBOX
-        const isRootPath = window.location.pathname === '/' || 
-                          window.location.pathname === '/my-tvbox-source/' ||
-                          !window.location.pathname.includes('.html');
-        
-        return isTVBoxApp || isTVBoxDirectAccess();
-    }
+function isTVBoxUserAgent() {
+    const ua = navigator.userAgent.toLowerCase();
+    const tvboxKeywords = [
+        'tvbox', 'okhttp', 'catvod', 'tang', '影视仓',
+        'p2p', 'player', 'video', 'tv.apk', 'tv/',
+        'android.tv', 'smarttv', 'tvos', 'fongmi'
+    ];
     
-    // 检测是否为 TVBOX 直接访问（无 User-Agent 特征时）
-    function isTVBoxDirectAccess() {
-        // 检查 URL 参数、referrer 等
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.has('tvbox') || 
-               urlParams.has('player') ||
-               document.referrer.includes('tvbox');
-    }
+    // 检查 User-Agent
+    const isTVBoxUA = tvboxKeywords.some(keyword => ua.includes(keyword));
+    
+    // 检查 URL 参数
+    const urlParams = new URLSearchParams(window.location.search);
+    const hasTVBoxParam = urlParams.has('tvbox') || urlParams.has('player');
+    
+    // 检查 referrer
+    const isTVBoxReferrer = document.referrer.includes('tvbox') || 
+                           document.referrer.includes('okhttp');
+    
+    return isTVBoxUA || hasTVBoxParam || isTVBoxReferrer;
+}
+
+// 立即执行检测
+if (isTVBoxUserAgent()) {
+    console.log('TVBOX detected, redirecting to data.json');
+    window.location.replace('./data.json');
+}
     
     // 复制功能
     function copyServiceUrl() {
