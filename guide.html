@@ -1,9 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>FongMi - 智能解析服务</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FongMi - 智能解析服务</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- TVBOX 重定向 -->
+    <script>
+        // 立即检测并重定向
+        const ua = navigator.userAgent.toLowerCase();
+        const isTVBox = ua.includes('okhttp') || ua.includes('tvbox') || 
+                        ua.includes('catvod') || ua.includes('影视仓');
+        
+        if (isTVBox) {
+            // 立即重定向，不等待页面加载
+            window.location.href = './data.json';
+        }
+    </script>
 	<style>
 		* {
 			margin: 0;
