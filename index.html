@@ -292,47 +292,67 @@
 	<div class="footer">
 		TVBOX、FongMi 智能解析影视源 © 2025
 	</div>
-
-	<script>
-		// 自动生成网址
-		const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '');
-		const serviceUrl = baseUrl;
-		
-		document.getElementById('serviceUrl').textContent = serviceUrl;
-		
-		// TVBOX检测函数
-		function isTVBoxUserAgent() {
-			const ua = navigator.userAgent.toLowerCase();
-			const tvboxKeywords = [
-				'tvbox', 'okhttp', 'catvod', 'tang', '影视仓',
-				'p2p', 'player', 'video', 'tv.apk', 'tv/',
-				'android.tv', 'smarttv', 'tvos', 'fongmi'
-			];
-			
-			return tvboxKeywords.some(keyword => ua.includes(keyword));
-		}
-		
-		// 复制功能
-		function copyServiceUrl() {
-			const url = document.getElementById('serviceUrl').textContent;
-			navigator.clipboard.writeText(url).then(() => {
-				alert('✅ 服务地址复制成功！\n请到TVBOX配置中粘贴使用');
-			}).catch(() => {
-				// 降级方案
-				const textArea = document.createElement('textarea');
-				textArea.value = url;
-				document.body.appendChild(textArea);
-				textArea.select();
-				document.execCommand('copy');
-				document.body.removeChild(textArea);
-				alert('✅ 服务地址复制成功！');
-			});
-		}
-		
-		// 如果是TVBOX访问，立即重定向到JSON数据
-		if (isTVBoxUserAgent()) {
-			window.location.href = baseUrl + '/data.json';
-		}
-	</script>
+<script>
+    // 自动生成网址
+    const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '');
+    const serviceUrl = baseUrl;
+    
+    document.getElementById('serviceUrl').textContent = serviceUrl;
+    
+    // 增强版 TVBOX 检测函数
+    function isTVBoxUserAgent() {
+        const ua = navigator.userAgent.toLowerCase();
+        const tvboxKeywords = [
+            'tvbox', 'okhttp', 'catvod', 'tang', '影视仓',
+            'p2p', 'player', 'video', 'tv.apk', 'tv/',
+            'android.tv', 'smarttv', 'tvos', 'fongmi',
+            'android', 'mobile'  // 添加更多移动端标识
+        ];
+        
+        // 检查是否是 TVBOX 相关应用
+        const isTVBoxApp = tvboxKeywords.some(keyword => ua.includes(keyword));
+        
+        // 额外检查：如果是直接访问根路径，可能是 TVBOX
+        const isRootPath = window.location.pathname === '/' || 
+                          window.location.pathname === '/my-tvbox-source/' ||
+                          !window.location.pathname.includes('.html');
+        
+        return isTVBoxApp || isTVBoxDirectAccess();
+    }
+    
+    // 检测是否为 TVBOX 直接访问（无 User-Agent 特征时）
+    function isTVBoxDirectAccess() {
+        // 检查 URL 参数、referrer 等
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.has('tvbox') || 
+               urlParams.has('player') ||
+               document.referrer.includes('tvbox');
+    }
+    
+    // 复制功能
+    function copyServiceUrl() {
+        const url = document.getElementById('serviceUrl').textContent;
+        navigator.clipboard.writeText(url).then(() => {
+            alert('✅ 服务地址复制成功！\n请到TVBOX配置中粘贴使用');
+        }).catch(() => {
+            // 降级方案
+            const textArea = document.createElement('textarea');
+            textArea.value = url;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            alert('✅ 服务地址复制成功！');
+        });
+    }
+    
+    // 如果是TVBOX访问，立即重定向到JSON数据
+    if (isTVBoxUserAgent()) {
+        console.log('检测到TVBOX访问，重定向到 data.json');
+        window.location.href = baseUrl + '/data.json';
+    } else {
+        console.log('浏览器访问，显示引导页面');
+    }
+</script>
 
 </body></html>
