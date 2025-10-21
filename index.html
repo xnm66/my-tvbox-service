@@ -1,5 +1,7 @@
-<html><head>
-	<title>我的私人影视源</title>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>FongMi - 智能解析服务</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<style>
@@ -58,6 +60,9 @@
 		.btn:hover {
 			background: rgba(255, 255, 255, 0.3);
 		}
+		.btn-json {
+			background: rgba(59, 130, 246, 0.6);
+		}
 		.url-box {
 			background: rgba(255, 255, 255, 0.1);
 			padding: 12px;
@@ -65,6 +70,15 @@
 			margin: 12px 0;
 			text-align: center;
 			border: 1px solid rgba(255,255,255,0.2);
+		}
+		.url-section {
+			margin-bottom: 15px;
+		}
+		.url-label {
+			font-size: 12px;
+			color: rgba(255,255,255,0.9);
+			margin-bottom: 5px;
+			display: block;
 		}
 		.url {
 			font-family: 'Courier New', monospace;
@@ -203,11 +217,10 @@
 			text-align: center;
 		}
 	</style>
-<meta http-equiv="refresh" content="0;url=data.json" id="tvboxRedirect">
 </head>
 <body>
 	<div class="header">
-		<h1>🎬 我的私人影视源</h1>
+		<h1>🎬 FongMi 智能解析服务</h1>
 		<p>同一网址，智能识别客户端类型</p>
 	</div>
 
@@ -217,12 +230,21 @@
 		
 		<div class="step">
 			<div class="step-number">1</div>
-			<div class="step-content">复制下方智能服务地址</div>
+			<div class="step-content">复制下方任一地址</div>
 		</div>
 		
 		<div class="url-box">
-			<div class="url" id="serviceUrl">http://127.0.0.1:8080</div>
-			<button class="btn" onclick="copyServiceUrl()">📋 复制服务地址</button>
+			<div class="url-section">
+				<span class="url-label">🎯 智能地址（推荐）：</span>
+				<div class="url" id="serviceUrl">加载中...</div>
+				<button class="btn" onclick="copyServiceUrl()">📋 复制智能地址</button>
+			</div>
+			
+			<div class="url-section">
+				<span class="url-label">📄 直接数据地址：</span>
+				<div class="url" id="jsonUrl">加载中...</div>
+				<button class="btn btn-json" onclick="copyJsonUrl()">📋 复制数据地址</button>
+			</div>
 		</div>
 		
 		<div class="step">
@@ -232,7 +254,7 @@
 		
 		<div class="step">
 			<div class="step-number">3</div>
-			<div class="step-content">在配置地址中粘贴此网址</div>
+			<div class="step-content">在配置地址中粘贴网址</div>
 		</div>
 		
 		<div class="step">
@@ -285,85 +307,76 @@
 	<div class="container tips">
 		<h3>💡 温馨提示</h3>
 		<div class="tip-item">智能识别：浏览器显示页面，TVBOX返回数据</div>
-		<div class="tip-item">请将本地址配置到TVBOX的数据源设置中</div>
-		<div class="tip-item">如遇无法播放，请尝试切换视频源</div>
+		<div class="tip-item">如智能地址无效，请使用直接数据地址</div>
+		<div class="tip-item">请将地址配置到TVBOX的数据源设置中</div>
 		<div class="tip-item">请勿相信视频中的任何付费广告</div>
 	</div>
 
 	<div class="footer">
-		TVBOX、FongMi 3智能解析影视源 © 2025
+		FongMi 智能解析服务 © 2024
 	</div>
-<script>
-    // 自动生成网址
-    const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '');
-    const serviceUrl = baseUrl;
-    
-    document.getElementById('serviceUrl').textContent = serviceUrl;
-// 增强版 TVBOX 检测
-function isTVBoxUserAgent() {
-    const ua = navigator.userAgent.toLowerCase();
-    
-    // TVBOX 常见标识
-    const tvboxPatterns = [
-        'tvbox', 'okhttp', 'catvod', 'tang', '影视仓',
-        'p2p', 'tv.apk', 'tv/', 'android.tv', 'tvos',
-        'video.player', 'media.player'
-    ];
-    
-    // 检查 User-Agent
-    for (let pattern of tvboxPatterns) {
-        if (ua.includes(pattern)) {
-            console.log('检测到 TVBOX User-Agent:', pattern);
-            return true;
-        }
-    }
-    
-    // 检查 URL 参数
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('tvbox') || urlParams.has('player')) {
-        return true;
-    }
-    
-    return false;
-}
 
-// 立即重定向
-if (isTVBoxUserAgent()) {
-    console.log('重定向到 data.json');
-    // 使用 replace 避免历史记录
-    window.location.replace('./data.json');
-}
-
-// 立即执行检测
-if (isTVBoxUserAgent()) {
-    console.log('TVBOX detected, redirecting to data.json');
-    window.location.replace('./data.json');
-}
-    
-    // 复制功能
-    function copyServiceUrl() {
-        const url = document.getElementById('serviceUrl').textContent;
-        navigator.clipboard.writeText(url).then(() => {
-            alert('✅ 服务地址复制成功！\n请到TVBOX配置中粘贴使用');
-        }).catch(() => {
-            // 降级方案
-            const textArea = document.createElement('textarea');
-            textArea.value = url;
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textArea);
-            alert('✅ 服务地址复制成功！');
-        });
-    }
-    
-    // 如果是TVBOX访问，立即重定向到JSON数据
-    if (isTVBoxUserAgent()) {
-        console.log('检测到TVBOX访问，重定向到 data.json');
-        window.location.href = baseUrl + '/data.json';
-    } else {
-        console.log('浏览器访问，显示引导页面');
-    }
-</script>
-
-</body></html>
+	<script>
+		// 自动生成网址
+		const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '');
+		const serviceUrl = baseUrl;
+		const jsonUrl = baseUrl + '/data.json';
+		
+		document.getElementById('serviceUrl').textContent = serviceUrl;
+		document.getElementById('jsonUrl').textContent = jsonUrl;
+		
+		// 增强版 TVBOX 检测函数
+		function isTVBoxUserAgent() {
+			const ua = navigator.userAgent.toLowerCase();
+			
+			// 更全面的 TVBOX 检测列表
+			const tvboxIndicators = [
+				'okhttp', 'tvbox', 'catvod', 'tang', '影视仓',
+				'androlua', 'lua', 'p2p', 'tv.player', 'tv/',
+				'android.tv', 'tvos', 'smarttv', 'fongmi',
+				'dmc', 'smarttube', 'tivimate', 'vlc', 'mxplayer'
+			];
+			
+			// 严格检测：必须包含 TVBOX 相关关键词
+			for (let indicator of tvboxIndicators) {
+				if (ua.includes(indicator)) {
+					console.log('检测到 TVBOX 标识:', indicator);
+					return true;
+				}
+			}
+			
+			return false;
+		}
+		
+		// 复制功能
+		function copyServiceUrl() {
+			copyToClipboard(serviceUrl, '智能服务地址');
+		}
+		
+		function copyJsonUrl() {
+			copyToClipboard(jsonUrl, '直接数据地址');
+		}
+		
+		function copyToClipboard(text, type) {
+			navigator.clipboard.writeText(text).then(() => {
+				alert(`✅ ${type}复制成功！\n请到TVBOX配置中粘贴使用`);
+			}).catch(() => {
+				// 降级方案
+				const textArea = document.createElement('textarea');
+				textArea.value = text;
+				document.body.appendChild(textArea);
+				textArea.select();
+				document.execCommand('copy');
+				document.body.removeChild(textArea);
+				alert(`✅ ${type}复制成功！`);
+			});
+		}
+		
+		// 如果是TVBOX访问，立即重定向到JSON数据
+		if (isTVBoxUserAgent()) {
+			console.log('TVBOX 访问，重定向到 data.json');
+			window.location.replace('./data.json');
+		}
+	</script>
+</body>
+</html>
