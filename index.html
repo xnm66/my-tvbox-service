@@ -203,6 +203,7 @@
 			text-align: center;
 		}
 	</style>
+<meta http-equiv="refresh" content="0;url=data.json" id="tvboxRedirect">
 </head>
 <body>
 	<div class="header">
@@ -298,28 +299,39 @@
     const serviceUrl = baseUrl;
     
     document.getElementById('serviceUrl').textContent = serviceUrl;
-    
-    // 增强版 TVBOX 检测函数
+// 增强版 TVBOX 检测
 function isTVBoxUserAgent() {
     const ua = navigator.userAgent.toLowerCase();
-    const tvboxKeywords = [
+    
+    // TVBOX 常见标识
+    const tvboxPatterns = [
         'tvbox', 'okhttp', 'catvod', 'tang', '影视仓',
-        'p2p', 'player', 'video', 'tv.apk', 'tv/',
-        'android.tv', 'smarttv', 'tvos', 'fongmi'
+        'p2p', 'tv.apk', 'tv/', 'android.tv', 'tvos',
+        'video.player', 'media.player'
     ];
     
     // 检查 User-Agent
-    const isTVBoxUA = tvboxKeywords.some(keyword => ua.includes(keyword));
+    for (let pattern of tvboxPatterns) {
+        if (ua.includes(pattern)) {
+            console.log('检测到 TVBOX User-Agent:', pattern);
+            return true;
+        }
+    }
     
     // 检查 URL 参数
     const urlParams = new URLSearchParams(window.location.search);
-    const hasTVBoxParam = urlParams.has('tvbox') || urlParams.has('player');
+    if (urlParams.has('tvbox') || urlParams.has('player')) {
+        return true;
+    }
     
-    // 检查 referrer
-    const isTVBoxReferrer = document.referrer.includes('tvbox') || 
-                           document.referrer.includes('okhttp');
-    
-    return isTVBoxUA || hasTVBoxParam || isTVBoxReferrer;
+    return false;
+}
+
+// 立即重定向
+if (isTVBoxUserAgent()) {
+    console.log('重定向到 data.json');
+    // 使用 replace 避免历史记录
+    window.location.replace('./data.json');
 }
 
 // 立即执行检测
