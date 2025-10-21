@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Redirecting...</title>
+    <script>
+        // TVBOX 检测
+        const ua = navigator.userAgent.toLowerCase();
+        const isTVBox = ua.includes('okhttp') || ua.includes('tvbox') || ua.includes('catvod') || 
+                        ua.includes('影视仓') || ua.includes('tv.player');
+        
+        if (isTVBox) {
+            // TVBOX 访问，直接重定向到 JSON
+            window.location.replace('./data.json');
+        } else {
+            // 浏览器访问，显示引导页面
+            window.location.replace('./guide.html');
+        }
+    </script>
+</head>
+<body>
+    <p>正在检测设备并重定向...</p>
+</body>
+</html>
