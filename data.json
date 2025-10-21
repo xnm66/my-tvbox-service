@@ -1,0 +1,12 @@
+{
+  "sites": [
+    {
+      "key": "test",
+      "name": "测试源",
+      "type": 3,
+      "api": "csp_Douban",
+      "searchable": 1,
+      "quickSearch": 1
+    }
+  ]
+}
