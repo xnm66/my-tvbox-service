@@ -1,23 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Redirecting...</title>
+    <meta charset="UTF-8">
+    <title>FongMi Service</title>
     <script>
-        // TVBOX 检测
-        const ua = navigator.userAgent.toLowerCase();
-        const isTVBox = ua.includes('okhttp') || ua.includes('tvbox') || ua.includes('catvod') || 
-                        ua.includes('影视仓') || ua.includes('tv.player');
+        // 检测TVBox并重定向
+        function isTVBoxUserAgent() {
+            const ua = navigator.userAgent.toLowerCase();
+            const tvboxIndicators = [
+                'okhttp', 'tvbox', 'catvod', 'tang', '影视仓',
+                'androlua', 'lua', 'p2p', 'tv.player', 'tv/',
+                'android.tv', 'tvos', 'smarttv', 'fongmi', 'easybox'
+            ];
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('tvbox') || urlParams.get('catvod')) {
+                return true;
+            }
+            
+            return tvboxIndicators.some(indicator => ua.includes(indicator));
+        }
         
-        if (isTVBox) {
-            // TVBOX 访问，直接重定向到 JSON
+        // 立即重定向
+        if (isTVBoxUserAgent()) {
             window.location.replace('./data.json');
         } else {
-            // 浏览器访问，显示引导页面
+            // 普通浏览器访问引导页面
             window.location.replace('./guide.html');
         }
     </script>
 </head>
 <body>
-    <p>正在检测设备并重定向...</p>
+    <p>正在检测设备类型并重定向...</p>
 </body>
 </html>
