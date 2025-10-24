@@ -12,7 +12,7 @@ export function onRequest(context) {
         "urls": [
           {
             "name": "🏠 主线路",
-            "url": "https://xnm66.github.io/my-tvbox-service/data.json"
+            "url": "https://tvbox-5mx.pages.dev/data.json"
           }
         ]
       };
