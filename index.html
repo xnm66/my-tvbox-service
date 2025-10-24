@@ -4,33 +4,6 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<title>FongMi - 智能解析服务</title>
-	
-	<!-- TVBox智能检测 -->
-	<script>
-		// 检测TVBox并重定向到JSON
-		function isTVBoxUserAgent() {
-			const ua = navigator.userAgent.toLowerCase();
-			const tvboxIndicators = [
-				'okhttp', 'tvbox', 'catvod', 'tang', '影视仓',
-				'androlua', 'lua', 'p2p', 'tv.player', 'tv/',
-				'android.tv', 'tvos', 'smarttv', 'fongmi', 'easybox'
-			];
-			
-			const urlParams = new URLSearchParams(window.location.search);
-			if (urlParams.get('tvbox') || urlParams.get('catvod')) {
-				return true;
-			}
-			
-			return tvboxIndicators.some(indicator => ua.includes(indicator));
-		}
-		
-		// 立即重定向逻辑
-		if (isTVBoxUserAgent()) {
-			console.log('检测到TVBox，重定向到data.json');
-			window.location.replace('/my-tvbox-service/data.json');
-		}
-	</script>
-	
 	<style>
 		/* 重置样式 */
 		* {
