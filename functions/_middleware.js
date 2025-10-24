@@ -4,7 +4,7 @@ export function onRequest(context) {
   
   console.log('请求路径:', url.pathname);
   
-  // 重要：排除data.json和其他静态文件
+  // 排除data.json和其他静态文件
   if (url.pathname.includes('data.json') || 
       url.pathname.includes('.js') || 
       url.pathname.includes('.css') ||
@@ -17,8 +17,22 @@ export function onRequest(context) {
   console.log('TVBox检测结果:', isTVBox);
   
   if (isTVBox) {
-    // 重定向到data.json
-    return Response.redirect(url.origin + '/data.json', 302);
+    // 直接返回包含名称的JSON数据
+    const jsonData = {
+      "urls": [
+        {
+          "name": "🏠 FongMi智能线路",
+          "url": url.origin + "/data.json"
+        }
+      ]
+    };
+    
+    return new Response(JSON.stringify(jsonData), {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+    });
   }
   
   return context.next();
