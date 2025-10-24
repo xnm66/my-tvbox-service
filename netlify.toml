@@ -2,16 +2,11 @@
   publish = "."
 
 [[redirects]]
-  from = "/"
-  to = "/.netlify/functions/detect"
+  from = "/*"
+  to = "/.netlify/functions/smart-detect"
   status = 200
 
 [[redirects]]
-  from = "/index.html"
-  to = "/index.html"
-  status = 200
-
-[[redirects]]
-  from = "/data.json"
+  from = "/data.json" 
   to = "/data.json"
   status = 200
