@@ -1,0 +1,21 @@
+[build]
+  publish = "."
+
+# 主要重定向 - 所有请求都转到函数
+[[redirects]]
+  from = "/*"
+  to = "/.netlify/functions/detect"
+  status = 200
+
+# 静态文件排除
+[[redirects]]
+  from = "/data.json"
+  to = "/data.json"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/index.html" 
+  to = "/index.html"
+  status = 200
+  force = true
