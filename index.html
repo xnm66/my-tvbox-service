@@ -1,42 +1,672 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <title>FongMi Service</title>
-    <script>
-        // 检测TVBox并重定向到JSON
-        function isTVBoxUserAgent() {
-            const ua = navigator.userAgent.toLowerCase();
-            const tvboxIndicators = [
-                'okhttp', 'tvbox', 'catvod', 'tang', '影视仓',
-                'androlua', 'lua', 'p2p', 'tv.player', 'tv/',
-                'android.tv', 'tvos', 'smarttv', 'fongmi', 'easybox'
-            ];
-            
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('tvbox') || urlParams.get('catvod')) {
-                return true;
-            }
-            
-            return tvboxIndicators.some(indicator => ua.includes(indicator));
-        }
-        
-        // 立即重定向逻辑
-        if (isTVBoxUserAgent()) {
-            console.log('检测到TVBox，重定向到data.json');
-            window.location.replace('/my-tvbox-service/data.json');
-        } else {
-            console.log('检测到浏览器，重定向到guide.html');
-            window.location.replace('./guide.html');
-        }
-    </script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<title>FongMi - 智能解析服务</title>
+	
+	<!-- TVBox智能检测 -->
+	<script>
+		// 检测TVBox并重定向到JSON
+		function isTVBoxUserAgent() {
+			const ua = navigator.userAgent.toLowerCase();
+			const tvboxIndicators = [
+				'okhttp', 'tvbox', 'catvod', 'tang', '影视仓',
+				'androlua', 'lua', 'p2p', 'tv.player', 'tv/',
+				'android.tv', 'tvos', 'smarttv', 'fongmi', 'easybox'
+			];
+			
+			const urlParams = new URLSearchParams(window.location.search);
+			if (urlParams.get('tvbox') || urlParams.get('catvod')) {
+				return true;
+			}
+			
+			return tvboxIndicators.some(indicator => ua.includes(indicator));
+		}
+		
+		// 立即重定向逻辑
+		if (isTVBoxUserAgent()) {
+			console.log('检测到TVBox，重定向到data.json');
+			window.location.replace('/my-tvbox-service/data.json');
+		}
+	</script>
+	
+	<style>
+		/* 重置样式 */
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		/* 主体样式 */
+		body {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			width: 100%;
+			min-width: 320px;
+			max-width: 800px;
+			margin: 0 auto;
+			padding: 20px;
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			color: #e2e8f0;
+			min-height: 100vh;
+			-webkit-text-size-adjust: 100%;
+		}
+		/* 头部区域 */
+		.header {
+			text-align: center;
+			margin-bottom: 20px;
+			padding: 15px;
+		}
+		.header h1 {
+			font-size: 1.6em;
+			margin-bottom: 5px;
+			color: white;
+			font-weight: 600;
+		}
+		.header p {
+			font-size: 0.9em;
+			color: rgba(255,255,255,0.8);
+			margin-bottom: 5px;
+		}
+		/* 支持文本 */
+		.support-text {
+			font-size: 0.7em;
+			color: rgba(255,255,255,0.7);
+			margin-top: 3px;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			padding: 0 5px;
+		}
+		/* 内容容器 */
+		.container {
+			background: rgba(255, 255, 255, 0.1);
+			padding: 18px;
+			border-radius: 14px;
+			margin: 12px 0;
+			border: 1px solid rgba(255,255,255,0.2);
+			backdrop-filter: blur(15px);
+			width: 100%;
+		}
+		/* URL显示框 */
+		.url-box {
+			background: rgba(255, 255, 255, 0.1);
+			padding: 12px;
+			border-radius: 10px;
+			margin: 12px 0;
+			text-align: center;
+			border: 1px solid rgba(255,255,255,0.2);
+			width: 100%;
+		}
+		.url-section {
+			margin-bottom: 15px;
+		}
+		.url-label {
+			font-size: 12px;
+			color: rgba(255,255,255,0.9);
+			margin-bottom: 5px;
+			display: block;
+		}
+		/* URL文本样式 */
+		.url {
+			font-family: 'Courier New', monospace;
+			font-size: 13px;
+			color: white;
+			word-break: break-all;
+			margin: 8px 0;
+			padding: 6px;
+			background: rgba(255,255,255,0.1);
+			border-radius: 6px;
+			border: 1px solid rgba(255,255,255,0.2);
+			cursor: pointer;
+			position: relative;
+			width: 100%;
+		}
+		/* 复制成功状态 */
+		.url.copied::after {
+			content: "复制成功";
+			position: absolute;
+			right: 8px;
+			top: 50%;
+			transform: translateY(-50%);
+			font-size: 10px;
+			color: white;
+			background: rgba(34, 197, 94, 0.6);
+			padding: 2px 6px;
+			border-radius: 4px;
+		}
+		/* 步骤样式 */
+		.step {
+			background: rgba(255, 255, 255, 0.1);
+			padding: 10px 12px;
+			border-radius: 8px;
+			margin: 6px 0;
+			display: flex;
+			align-items: center;
+			border: 1px solid rgba(255,255,255,0.1);
+			width: 100%;
+		}
+		.step-number {
+			background: rgba(255, 255, 255, 0.2);
+			color: white;
+			width: 22px;
+			height: 22px;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin-right: 10px;
+			font-weight: 600;
+			font-size: 11px;
+			flex-shrink: 0;
+			border: 1px solid rgba(255,255,255,0.3);
+		}
+		.step-content {
+			flex: 1;
+			font-size: 13px;
+			color: white;
+		}
+		/* 下载网格布局 */
+		.download-grid {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 12px;
+			margin: 12px 0;
+			width: 100%;
+		}
+		.download-item {
+			background: rgba(255, 255, 255, 0.08);
+			padding: 15px;
+			border-radius: 10px;
+			text-align: center;
+			border: 1px solid rgba(255,255,255,0.1);
+			cursor: pointer;
+			position: relative;
+			width: 100%;
+		}
+		/* 下载中状态 */
+		.download-item.downloading::after {
+			content: "下载中";
+			position: absolute;
+			top: 8px;
+			right: 8px;
+			font-size: 10px;
+			color: white;
+			background: rgba(59, 130, 246, 0.6);
+			padding: 2px 6px;
+			border-radius: 4px;
+		}
+		/* 开发中状态 */
+		.download-item.developing::after {
+			content: "开发中";
+			position: absolute;
+			top: 8px;
+			right: 8px;
+			font-size: 10px;
+			color: white;
+			background: rgba(156, 163, 175, 0.6);
+			padding: 2px 6px;
+			border-radius: 4px;
+		}
+		.download-icon {
+			font-size: 1.8em;
+			margin-bottom: 8px;
+			display: block;
+		}
+		.download-item h4 {
+			margin: 4px 0 6px 0;
+			font-size: 14px;
+			font-weight: 600;
+			color: white;
+		}
+		.download-desc {
+			font-size: 11px;
+			color: rgba(255,255,255,0.8);
+			line-height: 1.3;
+		}
+		/* 提示区域 */
+		.tips {
+			background: rgba(255, 255, 255, 0.1);
+			padding: 12px;
+			border-radius: 8px;
+			margin: 12px 0;
+			border: 1px solid rgba(255,255,255,0.2);
+			width: 100%;
+		}
+		.tip-item {
+			margin: 4px 0;
+			padding-left: 10px;
+			position: relative;
+			font-size: 12px;
+			color: rgba(255,255,255,0.9);
+		}
+		.tip-item:before {
+			content: "•";
+			position: absolute;
+			left: 0;
+			color: rgba(255,255,255,0.8);
+			font-weight: bold;
+		}
+		/* 页脚 */
+		.footer {
+			text-align: center;
+			margin-top: 15px;
+			padding-top: 12px;
+			border-top: 1px solid rgba(255,255,255,0.2);
+			font-size: 11px;
+			color: rgba(255,255,255,0.7);
+			width: 100%;
+		}
+		h3 {
+			color: white;
+			margin-bottom: 12px;
+			font-size: 1em;
+			font-weight: 600;
+			text-align: center;
+		}
+		
+		/* 黑色风格Toast提示 */
+		.toast {
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			background: rgba(0, 0, 0, 0.9);
+			color: white;
+			padding: 14px 20px;
+			border-radius: 10px;
+			font-size: 13px;
+			z-index: 1000;
+			backdrop-filter: blur(10px);
+			border: 1px solid rgba(255,255,255,0.2);
+			box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+			animation: toastFade 2s ease-in-out forwards;
+			text-align: center;
+		}
+		@keyframes toastFade {
+			0% { opacity: 0; transform: translate(-50%, -20px); }
+			20% { opacity: 1; transform: translate(-50%, -50%); }
+			80% { opacity: 1; transform: translate(-50%, -50%); }
+			100% { opacity: 0; transform: translate(-50%, -80px); }
+		}
+		
+		/* 测试链接 */
+		.test-links {
+			text-align: center;
+			margin: 10px 0;
+		}
+		.test-link {
+			color: rgba(255,255,255,0.8);
+			font-size: 11px;
+			text-decoration: none;
+			margin: 0 5px;
+			padding: 2px 6px;
+			border: 1px solid rgba(255,255,255,0.3);
+			border-radius: 4px;
+		}
+		.action-hint {
+			font-size: 10px;
+			color: rgba(255,255,255,0.6);
+			text-align: center;
+			margin-top: 8px;
+		}
+		
+		/* 调试信息样式 */
+		.debug-info {
+			background: rgba(255, 255, 255, 0.1);
+			padding: 12px;
+			border-radius: 8px;
+			margin: 12px 0;
+			border: 1px solid rgba(255,255,255,0.2);
+			width: 100%;
+		}
+		.debug-title {
+			color: white;
+			margin-bottom: 8px;
+			font-size: 0.9em;
+			font-weight: 600;
+			text-align: center;
+		}
+		.debug-content {
+			font-family: 'Courier New', monospace;
+			font-size: 10px;
+			color: rgba(255,255,255,0.9);
+			background: rgba(0,0,0,0.2);
+			padding: 8px;
+			border-radius: 4px;
+			white-space: pre-wrap;
+			overflow-x: auto;
+		}
+
+		/* 响应式调整 */
+		@media (max-width: 480px) {
+			body {
+				padding: 15px;
+			}
+			.header h1 {
+				font-size: 1.4em;
+			}
+			.support-text {
+				font-size: 0.65em;
+				padding: 0 2px;
+			}
+			.container {
+				padding: 15px;
+			}
+			/* 始终保持两列布局，只是调整间距 */
+			.download-grid {
+				grid-template-columns: 1fr 1fr;
+				gap: 10px;
+			}
+			.download-item {
+				padding: 12px;
+			}
+			.download-icon {
+				font-size: 1.6em;
+			}
+			.download-item h4 {
+				font-size: 13px;
+			}
+			.download-desc {
+				font-size: 10px;
+			}
+		}
+
+		@media (max-width: 360px) {
+			.support-text {
+				font-size: 0.6em;
+			}
+			.test-link {
+				font-size: 10px;
+				margin: 0 3px;
+				padding: 1px 4px;
+			}
+			/* 在极小的屏幕上仍然保持两列，但进一步调整 */
+			.download-grid {
+				gap: 8px;
+			}
+			.download-item {
+				padding: 10px;
+			}
+			.download-icon {
+				font-size: 1.5em;
+			}
+		}
+	</style>
 </head>
 <body>
-    <p>正在检测设备类型...</p>
-    <p>如果长时间未跳转，请手动访问：</p>
-    <ul>
-        <li><a href="./guide.html">用户引导页面</a></li>
-        <li><a href="./data.json">JSON数据文件</a></li>
-    </ul>
+	<!-- 页面头部 -->
+	<div class="header">
+		<h1>🎬 FongMi 智能解析服务</h1>
+		<p>同一网址，智能识别播放器类型 • 提供软件下载</p>
+		<div class="support-text">已支持：TVBOX、FongMi、影视仓、EasyBox等播放器自动识别</div>
+		<!-- 测试链接区域 -->
+		<div class="test-links">
+			<a href="?debug=1" class="test-link">调试模式</a>
+			<a href="?tvbox=1" class="test-link">模拟TVBox</a>
+			<a href="./data.json" class="test-link">查看JSON</a>
+		</div>
+	</div>
+
+	<!-- 使用教程区域 -->
+	<div class="container">
+		<h3>📖 使用教程</h3>
+		
+		<div class="step">
+			<div class="step-number">1</div>
+			<div class="step-content">复制下方任一地址</div>
+		</div>
+		
+		<!-- URL显示区域 -->
+		<div class="url-box">
+			<div class="url-section">
+				<span class="url-label">🎯 智能地址：</span>
+				<div class="url" id="serviceUrl" onclick="copyServiceUrl(this)">加载中...</div>
+				<div class="action-hint">点击上方链接即可复制</div>
+			</div>
+			
+			<div class="url-section">
+				<span class="url-label">📄 JSON地址（推荐）：</span>
+				<div class="url" id="jsonUrl" onclick="copyJsonUrl(this)">加载中...</div>
+				<div class="action-hint">点击上方链接即可复制</div>
+			</div>
+		</div>
+		
+		<div class="step">
+			<div class="step-number">2</div>
+			<div class="step-content">打开 TVBOX 或 FongMi 应用</div>
+		</div>
+		
+		<div class="step">
+			<div class="step-number">3</div>
+			<div class="step-content">在配置地址中粘贴网址</div>
+		</div>
+		
+		<div class="step">
+			<div class="step-number">4</div>
+			<div class="step-content">点击确定开始使用</div>
+		</div>
+	</div>
+
+	<!-- 软件下载区域 - 始终保持横向两列布局 -->
+	<div class="container">
+		<h3>📥 软件下载</h3>
+		<div class="download-grid">
+			<!-- FongMi下载项 -->
+			<div class="download-item" onclick="downloadApp('fongmi', this)">
+				<span class="download-icon">📱</span>
+				<h4>FongMi 定制版</h4>
+				<div class="download-desc">基于官方版本优化，支持更多功能</div>
+			</div>
+			
+			<!-- TVBox下载项 -->
+			<div class="download-item" onclick="downloadApp('tvbox', this)">
+				<span class="download-icon">📺</span>
+				<h4>TVBox 定制版</h4>
+				<div class="download-desc">多版本适配，播放体验更流畅</div>
+			</div>
+		</div>
+		<div class="action-hint">点击上方卡片即可下载对应软件</div>
+	</div>
+
+	<!-- 温馨提示区域 -->
+	<div class="container tips">
+		<h3>💡 温馨提示</h3>
+		<div class="tip-item">如智能地址无效，请使用JSON地址</div>
+		<div class="tip-item">遇到播放问题请尝试切换线路或稍后重试</div>
+		<div class="tip-item">请勿相信视频中的任何付费广告或会员充值信息</div>
+		<div class="tip-item">所有数据均来源于网络，仅供学习交流使用，请勿用于商业用途</div>
+	</div>
+
+	<!-- 调试信息容器（默认隐藏） -->
+	<div id="debugContainer" style="display: none;"></div>
+
+	<!-- 页脚 -->
+	<div class="footer">
+		FongMi 智能解析服务 © 2024
+	</div>
+
+	<script>
+		// 获取基础URL - 用于生成完整的服务地址
+		function getBaseUrl() {
+			const path = window.location.pathname;
+			const basePath = path.substring(0, path.lastIndexOf('/') + 1);
+			return window.location.origin + basePath;
+		}
+		
+		// 生成服务地址
+		const baseUrl = getBaseUrl();
+		const serviceUrl = baseUrl; // 智能地址就是当前页面地址
+		const jsonUrl = baseUrl + 'data.json'; // JSON数据地址
+		
+		// 更新页面显示的URL
+		document.getElementById('serviceUrl').textContent = serviceUrl;
+		document.getElementById('jsonUrl').textContent = jsonUrl;
+		
+		// 增强版 TVBOX 检测函数
+		function isTVBoxUserAgent() {
+			const ua = navigator.userAgent.toLowerCase();
+			
+			// TVBOX 检测关键词列表
+			const tvboxIndicators = [
+				'okhttp', 'tvbox', 'catvod', 'tang', '影视仓',
+				'androlua', 'lua', 'p2p', 'tv.player', 'tv/',
+				'android.tv', 'tvos', 'smarttv', 'fongmi', 'easybox'
+			];
+			
+			// 检测URL参数（有些TVBox通过参数标识）
+			const urlParams = new URLSearchParams(window.location.search);
+			if (urlParams.get('tvbox') || urlParams.get('catvod')) {
+				return true;
+			}
+			
+			// 检测UserAgent中的TVBox标识
+			return tvboxIndicators.some(indicator => {
+				if (ua.includes(indicator)) {
+					console.log('检测到 TVBOX 标识:', indicator);
+					return true;
+				}
+				return false;
+			});
+		}
+		
+		// 改进的重定向机制 - 专门处理TVBox跳转到JSON
+		function redirectToJson() {
+			// 如果是TVBOX访问，立即重定向到JSON数据
+			if (isTVBoxUserAgent()) {
+				console.log('TVBOX 访问检测到，重定向到 data.json');
+				// 使用replace而不是assign，避免浏览器历史记录问题
+				// replace不会在历史记录中留下当前页面，TVBox无法返回
+				window.location.replace(jsonUrl);
+				return true; // 返回true表示已重定向
+			}
+			return false; // 返回false表示未重定向
+		}
+		
+		// 显示调试信息 - 仅在调试模式下显示
+		function showDebugInfo() {
+			const urlParams = new URLSearchParams(window.location.search);
+			// 只有URL中有debug参数时才显示调试信息
+			if (!urlParams.get('debug')) return;
+			
+			const debugInfo = `
+UserAgent: ${navigator.userAgent}
+检测结果: ${isTVBoxUserAgent() ? 'TVBox播放器' : '浏览器'}
+完整URL: ${window.location.href}
+重定向状态: ${redirectToJson() ? '已重定向' : '未重定向'}
+时间: ${new Date().toLocaleString()}
+			`.trim();
+			
+			const debugContainer = document.getElementById('debugContainer');
+			debugContainer.style.display = 'block';
+			
+			const debugEl = document.createElement('div');
+			debugEl.className = 'debug-info';
+			debugEl.innerHTML = `
+				<div class="debug-title">🔧 调试信息</div>
+				<div class="debug-content">${debugInfo}</div>
+			`;
+			// 插入到温馨提示后面
+			document.querySelector('.tips').after(debugEl);
+			
+			console.log('FongMi Debug Info:', debugInfo);
+		}
+		
+		// 黑色Toast提示函数
+		function showToast(message) {
+			const toast = document.createElement('div');
+			toast.className = 'toast';
+			toast.textContent = message;
+			document.body.appendChild(toast);
+			
+			// 2秒后自动移除Toast
+			setTimeout(() => {
+				if (toast.parentNode) {
+					document.body.removeChild(toast);
+				}
+			}, 2000);
+		}
+		
+		// 复制功能 - 点击链接即可复制
+		async function copyServiceUrl(element) {
+			await copyToClipboard(serviceUrl, '智能地址', element);
+		}
+		
+		async function copyJsonUrl(element) {
+			await copyToClipboard(jsonUrl, '数据地址', element);
+		}
+		
+		// 通用的复制到剪贴板函数
+		async function copyToClipboard(text, type, element) {
+			try {
+				// 显示复制成功状态
+				element.classList.add('copied');
+				
+				// 现代浏览器的剪贴板API
+				if (navigator.clipboard && window.isSecureContext) {
+					await navigator.clipboard.writeText(text);
+				} else {
+					// 降级方案：使用传统的execCommand
+					const textArea = document.createElement('textarea');
+					textArea.value = text;
+					document.body.appendChild(textArea);
+					textArea.select();
+					document.execCommand('copy');
+					document.body.removeChild(textArea);
+				}
+				
+				showToast(`${type}复制成功！`);
+				
+				// 2秒后恢复原始状态
+				setTimeout(() => {
+					element.classList.remove('copied');
+				}, 2000);
+				
+			} catch (err) {
+				console.error('复制失败:', err);
+				showToast(`${type}复制失败，请手动复制`);
+				element.classList.remove('copied');
+			}
+		}
+		
+		// 下载应用功能 - 支持任意网址
+		function downloadApp(type, element) {
+			// 在这里修改下载链接 - 支持任意网址
+			const downloadLinks = {
+				'fongmi': 'http://51qu.cn/cL', // 在这里填入FongMi下载链接，留空则显示"开发中"
+				'tvbox': '' // 在这里填入TVBox下载链接
+			};
+			
+			const url = downloadLinks[type];
+			
+			if (url && url.trim() !== '') {
+				// 有下载链接：显示下载中，跳转下载页面
+				element.classList.add('downloading');
+				setTimeout(() => {
+					window.open(url, '_blank');
+					// 2秒后恢复原始状态（与Toast同步）
+					setTimeout(() => element.classList.remove('downloading'), 2000);
+				}, 500);
+			} else {
+				// 无下载链接：显示开发中
+				element.classList.add('developing');
+				showToast('开发中，敬请期待');
+				// 2秒后恢复原始状态（与Toast同步）
+				setTimeout(() => element.classList.remove('developing'), 2000);
+			}
+		}
+		
+		// 初始化函数
+		function init() {
+			// 先尝试重定向，如果重定向了就不执行后续代码
+			if (!redirectToJson()) {
+				// 如果没有重定向，显示调试信息（如果开启了调试模式）
+				showDebugInfo();
+			}
+		}
+		
+		// 页面加载完成后初始化
+		document.addEventListener('DOMContentLoaded', init);
+	</script>
 </body>
 </html>
