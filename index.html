@@ -24,8 +24,7 @@
         // 立即重定向逻辑
         if (isTVBoxUserAgent()) {
             console.log('检测到TVBox，重定向到data.json');
-            
-window.location.replace('/my-tvbox-service/data.json');
+            window.location.replace('/my-tvbox-service/data.json');
         } else {
             console.log('检测到浏览器，重定向到guide.html');
             window.location.replace('./guide.html');
