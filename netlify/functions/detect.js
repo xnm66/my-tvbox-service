@@ -1,35 +1,34 @@
 exports.handler = async (event, context) => {
-  const ua = event.headers['user-agent'] || '';
-  const isTVBox = /okhttp|tvbox|catvod|fongmi|影视仓|easybox|androlua/i.test(ua);
+  const userAgent = event.headers['user-agent'] || '';
   
-  console.log('User-Agent:', ua);
-  console.log('Is TVBox:', isTVBox);
-  
-  if (isTVBox) {
-    // TVBox访问 - 返回JSON数据
+  // TVBox 检测关键词
+  const tvboxKeywords = [
+    'okhttp', 'tvbox', 'catvod', 'tang', '影视仓',
+    'androlua', 'lua', 'p2p', 'tv.player', 'tv/',
+    'android.tv', 'tvos', 'smarttv', 'fongmi', 'easybox',
+    'dalvik', 'tv.box', 'catbox'
+  ];
+
+  // 检查是否是 TVBox 客户端
+  const isTVBoxClient = tvboxKeywords.some(keyword => 
+    userAgent.toLowerCase().includes(keyword.toLowerCase())
+  );
+
+  if (isTVBoxClient) {
+    // TVBox访问 - 重定向到 data.json
     return {
-      statusCode: 200,
+      statusCode: 302,
       headers: {
-        'Content-Type': 'application/json',
-        'Cache-Control': 'no-cache'
-      },
-      body: JSON.stringify({
-        urls: [
-          {
-            name: "FongMi智能解析",
-            url: "/data.json"
-          }
-        ]
-      })
+        'Location': '/data.json'
+      }
     };
   } else {
-    // 浏览器访问 - 重定向到index.html
+    // 浏览器访问 - 重定向到 index.html
     return {
       statusCode: 302,
       headers: {
         'Location': '/index.html'
-      },
-      body: ''
+      }
     };
   }
 };
