@@ -1,4 +1,3 @@
-/*    /.netlify/functions/detect    200
-!/data.json    /data.json    200
-!/index.html   /index.html   200
-!/assets/*     /assets/:splat 200
+/data.json
+  Access-Control-Allow-Origin: *
+  Content-Type: application/json
