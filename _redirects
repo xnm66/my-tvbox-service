@@ -1,1 +1,4 @@
-/*    /index.html   200
+/*    /.netlify/functions/detect    200
+!/data.json    /data.json    200
+!/index.html   /index.html   200
+!/assets/*     /assets/:splat 200
