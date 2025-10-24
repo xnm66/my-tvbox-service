@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>FongMi Service</title>
+    <script>
+        // 检测TVBox并重定向到JSON
+        function isTVBoxUserAgent() {
+            const ua = navigator.userAgent.toLowerCase();
+            const tvboxIndicators = [
+                'okhttp', 'tvbox', 'catvod', 'tang', '影视仓',
+                'androlua', 'lua', 'p2p', 'tv.player', 'tv/',
+                'android.tv', 'tvos', 'smarttv', 'fongmi', 'easybox'
+            ];
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('tvbox') || urlParams.get('catvod')) {
+                return true;
+            }
+            
+            return tvboxIndicators.some(indicator => ua.includes(indicator));
+        }
+        
+        // 立即重定向逻辑
+        if (isTVBoxUserAgent()) {
+            console.log('检测到TVBox，重定向到data.json');
+            window.location.replace('./data.json');
+        } else {
+            console.log('检测到浏览器，重定向到guide.html');
+            window.location.replace('./guide.html');
+        }
+    </script>
+</head>
+<body>
+    <p>正在检测设备类型...</p>
+    <p>如果长时间未跳转，请手动访问：</p>
+    <ul>
+        <li><a href="./guide.html">用户引导页面</a></li>
+        <li><a href="./data.json">JSON数据文件</a></li>
+    </ul>
+</body>
+</html>
