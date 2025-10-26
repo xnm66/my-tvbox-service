@@ -57,7 +57,6 @@
 		}
 		
 		/* ===== 通用容器样式 ===== */
-		/* 注意：以下类名应用于多个元素 */
 		.container, .copyright, .modal-content, .qrcode-item {
 			background: rgba(255, 255, 255, 0.08);
 			border: 1px solid rgba(255,255,255,0.15);
@@ -76,7 +75,7 @@
 			margin: 12px 0;
 		}
 		
-		/* ===== URL框、步骤和下载项样式 ===== */
+		/* ===== 通用卡片样式 ===== */
 		.url-box, .step, .download-item {
 			background: rgba(255, 255, 255, 0.1);
 			border: 1px solid rgba(255,255,255,0.2);
@@ -184,7 +183,7 @@
 			margin: 12px 0;
 		}
 		
-		/* ===== 状态指示器通用样式 ===== */
+		/* ===== 状态指示器样式 ===== */
 		.download-item.downloading::after,
 		.download-item.developing::after {
 			content: attr(data-status);
@@ -240,6 +239,7 @@
 			cursor: pointer;
 			transition: all 0.3s ease;
 			font-size: 13px;
+			padding: 8px 16px;
 		}
 		
 		.sponsor-btn:hover, .close-btn:hover {
@@ -249,7 +249,6 @@
 		}
 		
 		.sponsor-btn {
-			padding: 8px 16px;
 			display: inline-flex;
 			align-items: center;
 			justify-content: center;
@@ -257,7 +256,6 @@
 		}
 		
 		.close-btn {
-			padding: 8px 16px;
 			margin-top: 8px;
 			width: 100%;
 		}
@@ -287,8 +285,14 @@
 		}
 		
 		@keyframes modalFadeIn {
-			from { opacity: 0; transform: translate(-50%, -60%); }
-			to { opacity: 1; transform: translate(-50%, -50%); }
+			from { 
+				opacity: 0; 
+				transform: translate(-50%, -60%); 
+			}
+			to { 
+				opacity: 1; 
+				transform: translate(-50%, -50%); 
+			}
 		}
 		
 		.modal-header {
@@ -334,11 +338,6 @@
 			margin: 0 auto;
 			background: white;
 			border-radius: 8px;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			font-size: 11px;
-			color: #333;
 			overflow: hidden;
 			box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 		}
@@ -365,9 +364,6 @@
 			font-weight: 600;
 			text-align: center;
 			margin-bottom: 12px;
-			display: flex;
-			align-items: center;
-			justify-content: center;
 		}
 		
 		.copyright-title::before,
@@ -381,7 +377,6 @@
 			font-size: 11px;
 			color: rgba(255,255,255,0.85);
 			line-height: 1.5;
-			text-align: left;
 		}
 		
 		.copyright-section {
@@ -430,7 +425,6 @@
 		}
 		
 		/* ===== 响应式设计 ===== */
-		/* 小屏幕设备 (手机) */
 		@media (max-width: 480px) {
 			body {
 				padding: 15px;
@@ -440,13 +434,11 @@
 			}
 			.support-text {
 				font-size: 0.7em;
-				padding: 0 2px;
 			}
 			.container, .copyright {
 				padding: 15px;
 			}
 			.download-grid {
-				grid-template-columns: 1fr 1fr;
 				gap: 10px;
 			}
 			.download-item {
@@ -470,19 +462,12 @@
 			}
 		}
 
-		/* 超小屏幕设备 (小屏手机) */
 		@media (max-width: 360px) {
-			.support-text {
-				font-size: 0.65em;
-			}
 			.download-grid {
 				gap: 8px;
 			}
 			.download-item {
 				padding: 10px;
-			}
-			.download-icon {
-				font-size: 1.5em;
 			}
 			.qrcode-img {
 				width: 140px;
@@ -511,14 +496,12 @@
 		<div class="url-box">
 			<div class="url-section">
 				<span class="url-label">🎯 智能地址（推荐）：</span>
-				<!-- 智能地址，点击可复制 -->
 				<div class="url" id="serviceUrl">http://127.0.0.1:8080/</div>
 				<div class="action-hint">点击上方链接即可复制</div>
 			</div>
 			
 			<div class="url-section">
 				<span class="url-label">📄 JSON影视地址：</span>
-				<!-- JSON地址，点击可复制 -->
 				<div class="url" id="jsonUrl">http://127.0.0.1:8080/data.json</div>
 				<div class="action-hint">点击上方链接即可复制</div>
 			</div>
@@ -526,12 +509,12 @@
 		
 		<div class="step">
 			<div class="step-number">2</div>
-			<div class="step-content">打开您的影视播放器应用</div>
+			<div class="step-content">打开您的影视TV播放器应用</div>
 		</div>
 		
 		<div class="step">
 			<div class="step-number">3</div>
-			<div class="step-content">在配置地址中粘贴网址</div>
+			<div class="step-content">在配置地址中粘贴以上网址</div>
 		</div>
 		
 		<div class="step">
@@ -544,14 +527,12 @@
 	<div class="container">
 		<h3>📥 软件下载</h3>
 		<div class="download-grid">
-			<!-- 影视播放器下载项 -->
 			<div class="download-item" data-type="player">
 				<span class="download-icon">📱</span>
 				<h4>影视播放器</h4>
 				<div class="download-desc">基于开源项目修改，仅供技术测试</div>
 			</div>
 			
-			<!-- TVBox播放器下载项 -->
 			<div class="download-item" data-type="tvbox">
 				<span class="download-icon">📺</span>
 				<h4>TVBox 播放器</h4>
@@ -612,10 +593,9 @@
 			<div class="qrcode-container">
 				<div class="qrcode-item">
 					<div class="qrcode-title">
-						<span>💚</span> 微信赞赏
+						<span>支持作者</span>
 					</div>
 					<div class="qrcode-img">
-						<!-- 微信赞赏码图片，使用项目中的图片 -->
 						<img src="./sponsor/wechat-sponsor.png" alt="微信赞赏码" class="sponsor-image">
 					</div>
 					<div class="qrcode-desc">使用微信扫描赞赏码支持作者</div>
@@ -633,14 +613,13 @@
 
 	<script>
 		// ===== 配置对象 =====
-		// 修改这里可以更改网站的基本配置
 		const config = {
 			// 基础URL，自动获取当前页面的基础路径
 			baseUrl: window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1),
 			// 下载链接配置
 			downloadLinks: {
-				player: 'http://51qu.cn/cL', // 影视播放器下载链接
-				tvbox: '' // TVBox播放器下载链接（空表示开发中）
+				player: 'http://51qu.cn/cL',
+				tvbox: ''
 			}
 		};
 
@@ -652,8 +631,6 @@
 			
 			// 绑定事件监听器
 			bindEvents();
-			
-			console.log('私人影院 - 智能影视聚合平台已初始化');
 		}
 
 		// ===== 事件绑定函数 =====
@@ -682,11 +659,8 @@
 			const text = element.textContent;
 			
 			try {
-				// 使用剪贴板API复制文本
 				await navigator.clipboard.writeText(text);
-				// 添加复制成功样式
 				element.classList.add('copied');
-				// 3秒后移除复制成功样式
 				setTimeout(() => element.classList.remove('copied'), 3000);
 			} catch (err) {
 				console.error('复制失败:', err);
@@ -696,32 +670,24 @@
 		// ===== 下载处理函数 =====
 		function handleDownload(e) {
 			const element = e.currentTarget;
-			const type = element.dataset.type; // 获取下载类型
-			const url = config.downloadLinks[type]; // 获取对应下载链接
+			const type = element.dataset.type;
+			const url = config.downloadLinks[type];
 			
-			// 检查链接是否有效
 			if (url && url.trim() !== '') {
-				// 显示下载中状态
 				element.classList.add('downloading');
 				element.dataset.status = '下载中';
 				
-				// 延迟打开下载链接，让用户看到状态变化
 				setTimeout(() => {
-					// 在新窗口打开下载链接
 					window.open(url, '_blank');
-					
-					// 3秒后移除下载中状态
 					setTimeout(() => {
 						element.classList.remove('downloading');
 						delete element.dataset.status;
 					}, 3000);
 				}, 500);
 			} else {
-				// 显示开发中状态
 				element.classList.add('developing');
 				element.dataset.status = '开发中';
 				
-				// 3秒后移除开发中状态
 				setTimeout(() => {
 					element.classList.remove('developing');
 					delete element.dataset.status;
@@ -739,7 +705,6 @@
 		}
 
 		// ===== 启动应用 =====
-		// 当DOM内容加载完成后初始化应用
 		document.addEventListener('DOMContentLoaded', init);
 	</script>
 </body>
