@@ -1,5 +1,7 @@
-// 本地密码验证模块
-const VALID_PASSWORD = "TV2025";
+// password-worker.js
+// 本地密码验证模块 - 部署在根目录
+
+const VALID_PASSWORD = "2025"; // 4位数字密码
 const TOKEN_EXPIRY_DAYS = 7;
 
 // 密码验证函数
