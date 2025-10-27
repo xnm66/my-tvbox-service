@@ -722,71 +722,63 @@
     </div>
 
     <script>
-        // ===== 配置 =====
-// 替换为你的 Cloudflare Worker 地址
-const CLOUDFLARE_WORKER_URL = "https://minna.927775354.workers.dev";
+// ===== 配置 =====
+// 使用本地模块，不需要远程 Worker URL
 
-        // ===== 密码验证功能 =====
-        async function checkPassword() {
-            const passwordInput = document.getElementById('passwordInput');
-            const errorElement = document.getElementById('passwordError');
-            const submitButton = document.getElementById('passwordSubmit');
-            const inputPassword = passwordInput.value.trim();
+// ===== 密码验证功能 =====
+async function checkPassword() {
+    const passwordInput = document.getElementById('passwordInput');
+    const errorElement = document.getElementById('passwordError');
+    const submitButton = document.getElementById('passwordSubmit');
+    const inputPassword = passwordInput.value.trim();
 
-            if (!inputPassword) {
-                errorElement.textContent = "请输入密码";
-                errorElement.style.display = 'block';
-                return;
-            }
+    if (!inputPassword) {
+        errorElement.textContent = "请输入密码";
+        errorElement.style.display = 'block';
+        return;
+    }
 
-            // 显示加载状态
-            submitButton.textContent = "验证中...";
-            submitButton.disabled = true;
+    // 显示加载状态
+    submitButton.textContent = "验证中...";
+    submitButton.disabled = true;
 
-            try {
-                const response = await fetch(CLOUDFLARE_WORKER_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ password: inputPassword })
-                });
+    try {
+        // 动态导入本地密码验证模块
+        const { verifyPassword } = await import('./password-worker.js');
+        const result = await verifyPassword(inputPassword);
 
-                const result = await response.json();
-
-                if (result.success) {
-                    // 密码正确，保存token（7天有效期）
-                    const expiryDate = new Date();
-                    expiryDate.setDate(expiryDate.getDate() + 7);
-                    localStorage.setItem('site_access_token', JSON.stringify({
-                        token: result.token,
-                        expiry: expiryDate.getTime()
-                    }));
-                    
-                    // 显示主内容
-                    document.getElementById('passwordProtection').style.display = 'none';
-                    document.getElementById('mainContent').style.display = 'block';
-                    
-                    // 初始化主页面
-                    init();
-                } else {
-                    // 密码错误
-                    errorElement.textContent = result.message || "密码错误，请重新输入";
-                    errorElement.style.display = 'block';
-                    passwordInput.value = '';
-                    passwordInput.focus();
-                }
-            } catch (error) {
-                errorElement.textContent = "网络错误，请稍后重试";
-                errorElement.style.display = 'block';
-                console.error('密码验证错误:', error);
-            } finally {
-                // 恢复按钮状态
-                submitButton.textContent = "进入网站";
-                submitButton.disabled = false;
-            }
+        if (result.success) {
+            // 密码正确，保存token（7天有效期）
+            const expiryDate = new Date();
+            expiryDate.setDate(expiryDate.getDate() + 7);
+            localStorage.setItem('site_access_token', JSON.stringify({
+                token: result.token,
+                expiry: expiryDate.getTime()
+            }));
+            
+            // 显示主内容
+            document.getElementById('passwordProtection').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+            
+            // 初始化主页面
+            init();
+        } else {
+            // 密码错误
+            errorElement.textContent = result.message || "密码错误，请重新输入";
+            errorElement.style.display = 'block';
+            passwordInput.value = '';
+            passwordInput.focus();
         }
-
+    } catch (error) {
+        errorElement.textContent = "验证模块加载失败";
+        errorElement.style.display = 'block';
+        console.error('密码验证错误:', error);
+    } finally {
+        // 恢复按钮状态
+        submitButton.textContent = "进入网站";
+        submitButton.disabled = false;
+    }
+}
         // ===== 检查是否已认证 =====
         function checkExistingAuth() {
             const savedAuth = localStorage.getItem('site_access_token');
