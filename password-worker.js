@@ -4,7 +4,7 @@
 const PASSWORD_CONFIG = {
   // === 密码设置 ===
   // 在这里修改访问密码，建议4位数字
-  currentPassword: "2029",
+  currentPassword: "2025",
   
   // === 安全设置 ===
   tokenExpiry: 7,      // 令牌有效期（天）
