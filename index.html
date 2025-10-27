@@ -25,6 +25,144 @@
 			min-height: 100vh;
 		}
 		
+		/* ===== 密码保护层样式 ===== */
+		.password-protection {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			z-index: 9999;
+			flex-direction: column;
+			padding: 20px;
+		}
+
+		.password-container {
+			background: rgba(255, 255, 255, 0.1);
+			border: 1px solid rgba(255,255,255,0.2);
+			border-radius: 14px;
+			padding: 30px;
+			backdrop-filter: blur(15px);
+			box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+			text-align: center;
+			max-width: 500px;
+			width: 90%;
+			margin-bottom: 20px;
+		}
+
+		.password-title {
+			color: white;
+			font-size: 1.5em;
+			margin-bottom: 10px;
+			font-weight: 600;
+		}
+
+		.password-desc {
+			color: rgba(255,255,255,0.8);
+			font-size: 0.9em;
+			margin-bottom: 20px;
+			line-height: 1.4;
+		}
+
+		.password-input {
+			width: 100%;
+			padding: 12px 16px;
+			border: 1px solid rgba(255,255,255,0.3);
+			border-radius: 8px;
+			background: rgba(255,255,255,0.1);
+			color: white;
+			font-size: 16px;
+			margin-bottom: 15px;
+			text-align: center;
+			transition: all 0.3s ease;
+		}
+
+		.password-input:focus {
+			outline: none;
+			border-color: rgba(59, 130, 246, 0.8);
+			background: rgba(255,255,255,0.15);
+		}
+
+		.password-input::placeholder {
+			color: rgba(255,255,255,0.5);
+		}
+
+		.password-btn {
+			background: rgba(59, 130, 246, 0.8);
+			color: white;
+			border: none;
+			border-radius: 8px;
+			padding: 12px 24px;
+			font-size: 16px;
+			cursor: pointer;
+			transition: all 0.3s ease;
+			width: 100%;
+		}
+
+		.password-btn:hover {
+			background: rgba(59, 130, 246, 1);
+			transform: translateY(-2px);
+		}
+
+		.password-error {
+			color: #f87171;
+			font-size: 0.85em;
+			margin-top: 10px;
+			display: none;
+		}
+
+		.password-hint {
+			color: rgba(255,255,255,0.6);
+			font-size: 0.8em;
+			margin-top: 15px;
+			line-height: 1.4;
+		}
+
+		.agreement-text {
+			color: rgba(255,255,255,0.7);
+			font-size: 0.75em;
+			margin-top: 15px;
+			text-align: center;
+		}
+
+		/* 使用条款在密码页面的样式 */
+		.terms-container {
+			background: rgba(255, 255, 255, 0.08);
+			border: 1px solid rgba(255,255,255,0.15);
+			border-radius: 14px;
+			backdrop-filter: blur(15px);
+			box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+			padding: 20px;
+			max-width: 500px;
+			width: 90%;
+		}
+
+		.terms-content {
+			font-size: 11px;
+			color: rgba(255,255,255,0.85);
+			line-height: 1.5;
+		}
+
+		.terms-section {
+			margin-bottom: 10px;
+		}
+
+		.terms-section-title {
+			font-weight: 600;
+			margin-bottom: 5px;
+			color: white;
+			font-size: 12px;
+		}
+
+		/* 隐藏主内容 */
+		.main-content {
+			display: none;
+		}
+		
 		/* ===== 主页面头部样式 ===== */
 		.header {
 			text-align: center;
@@ -460,12 +598,44 @@
 			.copyright-content {
 				font-size: 10px;
 			}
+			.password-container, .terms-container {
+				padding: 20px;
+			}
 		}
 	</style>
 </head>
 <body>
+	<!-- 密码保护层 -->
+	<div id="passwordProtection" class="password-protection">
+		<div class="password-container">
+			<div class="password-title">🔒 访问密码</div>
+			<div class="password-desc">请输入访问密码以继续浏览内容</div>
+			<input type="password" id="passwordInput" class="password-input" placeholder="请输入4位数字密码" maxlength="4" inputmode="numeric">
+			<button id="passwordSubmit" class="password-btn">进入网站</button>
+			<div id="passwordError" class="password-error">密码错误，请重新输入</div>
+			<div class="password-hint">密码会定期更换，请勿外传</div>
+			<div class="agreement-text">登录即表示您已阅读、理解并同意下方的使用条款</div>
+		</div>
+
+		<!-- 使用条款在密码页面（简化版） -->
+		<div class="terms-container">
+			<div class="terms-content">
+				<div class="terms-section">
+					<div class="terms-section-title">⚖️ 使用条款</div>
+					<p>请用户严格遵守以下条款：</p>
+					<ul style="margin: 5px 0 5px 15px; font-size: 10px;">
+						<li>仅限个人学习、研究使用，禁止商业用途</li>
+						<li>请在下载后24小时内删除相关内容</li>
+						<li>不得用于非法用途，否则后果自负</li>
+						<li>若涉及版权问题，请联系：xiaopgys@163.com 及时处理</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<!-- 主内容区域 -->
-	<div class="main-content">
+	<div id="mainContent" class="main-content">
 		<!-- 页面头部 -->
 		<div class="header">
 			<h1>🎬 私人影院 - 智能影视聚合平台</h1>
@@ -531,7 +701,7 @@
 			<div class="action-hint">点击上方卡片即可下载对应软件</div>
 		</div>
 
-		<!-- 版权声明区域 -->
+		<!-- 版权声明区域（主页面保持完整） -->
 		<div class="copyright">
 			<div class="copyright-title">重要声明</div>
 			<div class="copyright-content">
@@ -602,37 +772,118 @@
 	</div>
 
 	<script>
-		// ===== 检查认证状态 =====
-		function checkAuth() {
-			const PASSWORD_KEY = "site_access_token";
-			const savedAuth = localStorage.getItem(PASSWORD_KEY);
-			
-			if (!savedAuth) {
-				// 未认证，跳转到密码页面
-				window.location.href = 'password.html';
+		// ===== 密码配置 =====
+		const PASSWORD_KEY = "site_access_token"; // localStorage存储键名
+		let CURRENT_PASSWORD = "2025"; // 默认密码，会从配置文件加载
+
+		// ===== 从配置文件加载密码 =====
+		async function loadPasswordConfig() {
+			try {
+				const response = await fetch('./password-worker.js');
+				const configText = await response.text();
+				
+				// 从配置文件中提取密码
+				const passwordMatch = configText.match(/currentPassword:\s*"(\d+)"/);
+				if (passwordMatch && passwordMatch[1]) {
+					CURRENT_PASSWORD = passwordMatch[1];
+					console.log('密码配置加载成功');
+				}
+			} catch (error) {
+				console.error('加载密码配置失败，使用默认密码');
+			}
+		}
+
+		// ===== 密码验证功能 =====
+		function checkPassword() {
+			const passwordInput = document.getElementById('passwordInput');
+			const errorElement = document.getElementById('passwordError');
+			const inputPassword = passwordInput.value.trim();
+
+			// 验证密码
+			if (inputPassword === CURRENT_PASSWORD) {
+				// 密码正确，保存到localStorage（7天有效期）
+				const expiryDate = new Date();
+				expiryDate.setDate(expiryDate.getDate() + 7);
+				localStorage.setItem(PASSWORD_KEY, JSON.stringify({
+					token: btoa(CURRENT_PASSWORD + '_' + expiryDate.getTime()),
+					expiry: expiryDate.getTime()
+				}));
+				
+				// 显示主内容，隐藏密码层
+				document.getElementById('passwordProtection').style.display = 'none';
+				document.getElementById('mainContent').style.display = 'block';
+				init(); // 初始化主内容
+				return true;
+			} else {
+				// 密码错误提示
+				errorElement.style.display = 'block';
+				passwordInput.value = '';
+				passwordInput.focus();
 				return false;
 			}
-			
-			try {
-				const authData = JSON.parse(savedAuth);
-				if (authData.expiry <= Date.now()) {
-					// Token过期，跳转到密码页面
+		}
+
+		// ===== 检查是否已认证 =====
+		function checkExistingAuth() {
+			const savedAuth = localStorage.getItem(PASSWORD_KEY);
+			if (savedAuth) {
+				try {
+					const authData = JSON.parse(savedAuth);
+					// 检查token是否过期
+					if (authData.expiry > Date.now()) {
+						// Token有效，直接显示主内容
+						document.getElementById('passwordProtection').style.display = 'none';
+						document.getElementById('mainContent').style.display = 'block';
+						return true;
+					} else {
+						// Token过期，清除
+						localStorage.removeItem(PASSWORD_KEY);
+					}
+				} catch (e) {
+					// 数据损坏，清除
 					localStorage.removeItem(PASSWORD_KEY);
-					window.location.href = 'password.html';
-					return false;
 				}
-				return true;
-			} catch (e) {
-				// 数据损坏，跳转到密码页面
-				localStorage.removeItem(PASSWORD_KEY);
-				window.location.href = 'password.html';
-				return false;
+			}
+			return false;
+		}
+
+		// ===== 密码保护初始化 =====
+		async function initPasswordProtection() {
+			// 先加载密码配置
+			await loadPasswordConfig();
+			
+			// 检查是否已认证
+			if (!checkExistingAuth()) {
+				// 设置密码输入事件
+				const passwordInput = document.getElementById('passwordInput');
+				const submitButton = document.getElementById('passwordSubmit');
+				
+				// 回车键提交
+				passwordInput.addEventListener('keypress', function(e) {
+					if (e.key === 'Enter') checkPassword();
+				});
+				
+				// 按钮提交
+				submitButton.addEventListener('click', checkPassword);
+				
+				// 限制只能输入数字
+				passwordInput.addEventListener('input', function(e) {
+					this.value = this.value.replace(/[^0-9]/g, '');
+				});
+				
+				// 自动聚焦输入框
+				passwordInput.focus();
+			} else {
+				// 已认证，初始化主内容
+				init();
 			}
 		}
 
 		// ===== 主内容配置 =====
 		const config = {
+			// 基础URL，自动获取当前页面的基础路径
 			baseUrl: window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1),
+			// 下载链接配置
 			downloadLinks: {
 				player: 'https://m997.lanzoue.com/iziv137ai40d',
 				tvbox: ''
@@ -641,11 +892,6 @@
 
 		// ===== 主内容初始化函数 =====
 		function init() {
-			// 检查认证
-			if (!checkAuth()) {
-				return;
-			}
-			
 			// 设置URL显示
 			document.getElementById('serviceUrl').textContent = config.baseUrl;
 			document.getElementById('jsonUrl').textContent = config.baseUrl + 'data.json';
@@ -695,6 +941,7 @@
 			const url = config.downloadLinks[type];
 			
 			if (url && url.trim() !== '') {
+				// 有下载链接
 				element.classList.add('downloading');
 				element.dataset.status = '下载中';
 				
@@ -706,6 +953,7 @@
 					}, 3000);
 				}, 500);
 			} else {
+				// 无下载链接，显示开发中
 				element.classList.add('developing');
 				element.dataset.status = '开发中';
 				
@@ -726,7 +974,10 @@
 		}
 
 		// ===== 启动应用 =====
-		document.addEventListener('DOMContentLoaded', init);
+		document.addEventListener('DOMContentLoaded', function() {
+			// 初始化密码保护系统
+			initPasswordProtection();
+		});
 	</script>
 </body>
 </html>
