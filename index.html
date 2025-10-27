@@ -5,6 +5,26 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>私人影院 - 智能影视聚合平台</title>
 	<style>
+		/* ===== 全局样式重置 ===== */
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		
+		/* ===== 主体样式 ===== */
+		body {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			width: 100%;
+			min-width: 320px;
+			max-width: 800px;
+			margin: 0 auto;
+			padding: 20px;
+			background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+			color: #e2e8f0;
+			min-height: 100vh;
+		}
+		
 		/* ===== 密码保护层样式 ===== */
 		.password-protection {
 			position: fixed;
@@ -19,7 +39,6 @@
 			z-index: 9999;
 			flex-direction: column;
 			padding: 20px;
-			overflow-y: auto;
 		}
 
 		.password-container {
@@ -110,8 +129,8 @@
 			text-align: center;
 		}
 
-		/* 重要声明在密码页面的样式 */
-		.copyright-password {
+		/* 使用条款在密码页面的样式 */
+		.terms-container {
 			background: rgba(255, 255, 255, 0.08);
 			border: 1px solid rgba(255,255,255,0.15);
 			border-radius: 14px;
@@ -120,10 +139,9 @@
 			padding: 20px;
 			max-width: 500px;
 			width: 90%;
-			margin-top: 20px;
 		}
 
-		.copyright-title {
+		.terms-title {
 			color: white;
 			font-size: 14px;
 			font-weight: 600;
@@ -131,32 +149,17 @@
 			margin-bottom: 12px;
 		}
 
-		.copyright-title::before,
-		.copyright-title::after {
-			content: "⚠️";
-			margin: 0 8px;
-			font-size: 12px;
-		}
-
-		.copyright-content {
+		.terms-content {
 			font-size: 11px;
 			color: rgba(255,255,255,0.85);
 			line-height: 1.5;
 		}
 
-		.copyright-section {
+		.terms-section {
 			margin-bottom: 10px;
-			padding-bottom: 10px;
-			border-bottom: 1px solid rgba(255,255,255,0.1);
 		}
 
-		.copyright-section:last-child {
-			margin-bottom: 0;
-			padding-bottom: 0;
-			border-bottom: none;
-		}
-
-		.copyright-section-title {
+		.terms-section-title {
 			font-weight: 600;
 			margin-bottom: 5px;
 			color: white;
@@ -167,29 +170,8 @@
 		.main-content {
 			display: none;
 		}
-
-		/* 原有的其他样式保持不变 */
-		/* ===== 全局样式重置 ===== */
-		* {
-			margin: 0;
-			padding: 0;
-			box-sizing: border-box;
-		}
 		
-		/* ===== 主体样式 ===== */
-		body {
-			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-			width: 100%;
-			min-width: 320px;
-			max-width: 800px;
-			margin: 0 auto;
-			padding: 20px;
-			background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-			color: #e2e8f0;
-			min-height: 100vh;
-		}
-		
-		/* ===== 头部样式 ===== */
+		/* ===== 主页面头部样式 ===== */
 		.header {
 			text-align: center;
 			margin-bottom: 20px;
@@ -530,13 +512,6 @@
 			margin-bottom: 12px;
 		}
 		
-		.copyright-title::before,
-		.copyright-title::after {
-			content: "⚠️";
-			margin: 0 8px;
-			font-size: 12px;
-		}
-		
 		.copyright-content {
 			font-size: 11px;
 			color: rgba(255,255,255,0.85);
@@ -545,14 +520,6 @@
 		
 		.copyright-section {
 			margin-bottom: 10px;
-			padding-bottom: 10px;
-			border-bottom: 1px solid rgba(255,255,255,0.1);
-		}
-		
-		.copyright-section:last-child {
-			margin-bottom: 0;
-			padding-bottom: 0;
-			border-bottom: none;
 		}
 		
 		.copyright-section-title {
@@ -624,21 +591,8 @@
 			.copyright-content {
 				font-size: 10px;
 			}
-			.password-container, .copyright-password {
+			.password-container, .terms-container {
 				padding: 20px;
-			}
-		}
-
-		@media (max-width: 360px) {
-			.download-grid {
-				gap: 8px;
-			}
-			.download-item {
-				padding: 10px;
-			}
-			.qrcode-img {
-				width: 140px;
-				height: 140px;
 			}
 		}
 	</style>
@@ -653,25 +607,15 @@
 			<button id="passwordSubmit" class="password-btn">进入网站</button>
 			<div id="passwordError" class="password-error">密码错误，请重新输入</div>
 			<div class="password-hint">密码会定期更换，请勿外传</div>
-			<div class="agreement-text">登录即表示您已阅读、理解并同意下方的重要声明</div>
+			<div class="agreement-text">登录即表示您已阅读、理解并同意下方的使用条款</div>
 		</div>
 
-		<!-- 重要声明在密码页面 -->
-		<div class="copyright-password">
-			<div class="copyright-title">重要声明</div>
-			<div class="copyright-content">
-				<div class="copyright-section">
-					<div class="copyright-section-title">📱 关于软件</div>
-					<p>本站提供的软件均基于开源项目二次开发，仅提供下载信息。软件本身不存储、不制作、不上传任何内容，所有资源均来源于互联网公开渠道，仅供技术学习研究使用。</p>
-				</div>
-				
-				<div class="copyright-section">
-					<div class="copyright-section-title">🎬 关于技术接口</div>
-					<p>本站展示的技术接口信息均来自第三方公开网络资源，仅用于技术交流演示。用户应自行确保使用行为的合法性，并支持正版资源。</p>
-				</div>
-				
-				<div class="copyright-section">
-					<div class="copyright-section-title">⚖️ 使用条款</div>
+		<!-- 使用条款在密码页面 -->
+		<div class="terms-container">
+			<div class="terms-title">📋 使用条款</div>
+			<div class="terms-content">
+				<div class="terms-section">
+					<div class="terms-section-title">⚖️ 使用条款</div>
 					<p>请用户严格遵守以下条款：</p>
 					<ul style="margin: 5px 0 5px 15px; font-size: 10px;">
 						<li>仅限个人学习、研究使用，禁止商业用途</li>
@@ -681,8 +625,8 @@
 					</ul>
 				</div>
 				
-				<div class="copyright-section">
-					<div class="copyright-section-title">🛡️ 免责声明</div>
+				<div class="terms-section">
+					<div class="terms-section-title">🛡️ 免责声明</div>
 					<p>本站按"原样"提供技术服务，不提供任何明示或暗示的担保。使用者应对使用本站产生的任何后果自行承担全部责任。本站不承担任何直接、间接、偶然或特殊的法律责任。若您使用本站，即表示您已阅读、理解并同意以上所有条款。</p>
 				</div>
 			</div>
@@ -756,20 +700,10 @@
 			<div class="action-hint">点击上方卡片即可下载对应软件</div>
 		</div>
 
-		<!-- 版权声明区域（主内容页面也保留） -->
+		<!-- 版权声明区域 -->
 		<div class="copyright">
 			<div class="copyright-title">重要声明</div>
 			<div class="copyright-content">
-				<div class="copyright-section">
-					<div class="copyright-section-title">📱 关于软件</div>
-					<p>本站提供的软件均基于开源项目二次开发，仅提供下载信息。软件本身不存储、不制作、不上传任何内容，所有资源均来源于互联网公开渠道，仅供技术学习研究使用。</p>
-				</div>
-				
-				<div class="copyright-section">
-					<div class="copyright-section-title">🎬 关于技术接口</div>
-					<p>本站展示的技术接口信息均来自第三方公开网络资源，仅用于技术交流演示。用户应自行确保使用行为的合法性，并支持正版资源。</p>
-				</div>
-				
 				<div class="copyright-section">
 					<div class="copyright-section-title">⚖️ 使用条款</div>
 					<p>请用户严格遵守以下条款：</p>
@@ -783,7 +717,7 @@
 				
 				<div class="copyright-section">
 					<div class="copyright-section-title">🛡️ 免责声明</div>
-					<p>本站按"原样"提供技术服务，不提供任何明示或暗示的担保。使用者应对使用本站产生的任何后果自行承担全部责任。本站不承担任何直接、间接、偶然或特殊的法律责任。若您使用本站，即表示您已阅读、理解并同意以上所有条款。</p>
+					<p>本站按"原样"提供技术服务，不提供任何明示或暗示的担保。使用者应对使用本站产生的任何后果自行承担全部责任。本站不承担任何直接、间接、偶然或特殊的法律责任。</p>
 				</div>
 			</div>
 		</div>
@@ -828,7 +762,7 @@
 
 	<script>
 		// ===== 密码配置 =====
-		const PASSWORD_KEY = "site_access_token";
+		const PASSWORD_KEY = "site_access_token"; // localStorage存储键名
 		let CURRENT_PASSWORD = "2025"; // 默认密码，会从配置文件加载
 
 		// ===== 从配置文件加载密码 =====
@@ -842,12 +776,9 @@
 				if (passwordMatch && passwordMatch[1]) {
 					CURRENT_PASSWORD = passwordMatch[1];
 					console.log('密码配置加载成功');
-				} else {
-					console.warn('无法从配置文件读取密码，使用默认密码');
 				}
 			} catch (error) {
-				console.error('加载密码配置失败:', error);
-				// 使用默认密码
+				console.error('加载密码配置失败，使用默认密码');
 			}
 		}
 
@@ -857,6 +788,7 @@
 			const errorElement = document.getElementById('passwordError');
 			const inputPassword = passwordInput.value.trim();
 
+			// 验证密码
 			if (inputPassword === CURRENT_PASSWORD) {
 				// 密码正确，保存到localStorage（7天有效期）
 				const expiryDate = new Date();
@@ -866,13 +798,13 @@
 					expiry: expiryDate.getTime()
 				}));
 				
-				// 显示主内容
+				// 显示主内容，隐藏密码层
 				document.getElementById('passwordProtection').style.display = 'none';
 				document.getElementById('mainContent').style.display = 'block';
 				init(); // 初始化主内容
 				return true;
 			} else {
-				// 密码错误
+				// 密码错误提示
 				errorElement.style.display = 'block';
 				passwordInput.value = '';
 				passwordInput.focus();
@@ -886,9 +818,9 @@
 			if (savedAuth) {
 				try {
 					const authData = JSON.parse(savedAuth);
-					// 检查是否过期
+					// 检查token是否过期
 					if (authData.expiry > Date.now()) {
-						// Token有效
+						// Token有效，直接显示主内容
 						document.getElementById('passwordProtection').style.display = 'none';
 						document.getElementById('mainContent').style.display = 'block';
 						return true;
@@ -909,17 +841,15 @@
 			// 先加载密码配置
 			await loadPasswordConfig();
 			
-			// 然后检查是否已认证
+			// 检查是否已认证
 			if (!checkExistingAuth()) {
 				// 设置密码输入事件
 				const passwordInput = document.getElementById('passwordInput');
 				const submitButton = document.getElementById('passwordSubmit');
 				
-				// 回车提交
+				// 回车键提交
 				passwordInput.addEventListener('keypress', function(e) {
-					if (e.key === 'Enter') {
-						checkPassword();
-					}
+					if (e.key === 'Enter') checkPassword();
 				});
 				
 				// 按钮提交
@@ -930,7 +860,7 @@
 					this.value = this.value.replace(/[^0-9]/g, '');
 				});
 				
-				// 自动聚焦
+				// 自动聚焦输入框
 				passwordInput.focus();
 			} else {
 				// 已认证，初始化主内容
@@ -938,7 +868,7 @@
 			}
 		}
 
-		// ===== 配置对象 =====
+		// ===== 主内容配置 =====
 		const config = {
 			// 基础URL，自动获取当前页面的基础路径
 			baseUrl: window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1),
@@ -949,7 +879,7 @@
 			}
 		};
 
-		// ===== 初始化函数 =====
+		// ===== 主内容初始化函数 =====
 		function init() {
 			// 设置URL显示
 			document.getElementById('serviceUrl').textContent = config.baseUrl;
@@ -1000,6 +930,7 @@
 			const url = config.downloadLinks[type];
 			
 			if (url && url.trim() !== '') {
+				// 有下载链接
 				element.classList.add('downloading');
 				element.dataset.status = '下载中';
 				
@@ -1011,6 +942,7 @@
 					}, 3000);
 				}, 500);
 			} else {
+				// 无下载链接，显示开发中
 				element.classList.add('developing');
 				element.dataset.status = '开发中';
 				
@@ -1032,7 +964,7 @@
 
 		// ===== 启动应用 =====
 		document.addEventListener('DOMContentLoaded', function() {
-			// 初始化密码保护
+			// 初始化密码保护系统
 			initPasswordProtection();
 		});
 	</script>
