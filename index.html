@@ -54,18 +54,38 @@
 			margin-bottom: 20px;
 		}
 
+		.password-header {
+			text-align: center;
+			margin-bottom: 25px;
+		}
+
+		.password-icon {
+			font-size: 2.5em;
+			margin-bottom: 10px;
+			animation: float 3s ease-in-out infinite;
+		}
+
+		@keyframes float {
+			0%, 100% { transform: translateY(0px); }
+			50% { transform: translateY(-5px); }
+		}
+
 		.password-title {
 			color: white;
 			font-size: 1.5em;
-			margin-bottom: 10px;
+			margin-bottom: 8px;
 			font-weight: 600;
 		}
 
 		.password-desc {
 			color: rgba(255,255,255,0.8);
 			font-size: 0.9em;
-			margin-bottom: 20px;
 			line-height: 1.4;
+		}
+
+		.password-input-group {
+			position: relative;
+			margin-bottom: 20px;
 		}
 
 		.password-input {
@@ -76,7 +96,6 @@
 			background: rgba(255,255,255,0.1);
 			color: white;
 			font-size: 16px;
-			margin-bottom: 15px;
 			text-align: center;
 			transition: all 0.3s ease;
 		}
@@ -85,10 +104,29 @@
 			outline: none;
 			border-color: rgba(59, 130, 246, 0.8);
 			background: rgba(255,255,255,0.15);
+			transform: translateY(-2px);
+			box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
 		}
 
 		.password-input::placeholder {
 			color: rgba(255,255,255,0.5);
+		}
+
+		.password-requirements {
+			display: flex;
+			justify-content: center;
+			gap: 15px;
+			margin-top: 10px;
+			font-size: 0.75em;
+			color: rgba(255,255,255,0.6);
+		}
+
+		.requirement-item {
+			transition: all 0.3s ease;
+		}
+
+		.requirement-item[data-valid="true"] {
+			color: rgba(34, 197, 94, 0.8);
 		}
 
 		.password-btn {
@@ -101,31 +139,65 @@
 			cursor: pointer;
 			transition: all 0.3s ease;
 			width: 100%;
+			position: relative;
+			overflow: hidden;
 		}
 
 		.password-btn:hover {
 			background: rgba(59, 130, 246, 1);
 			transform: translateY(-2px);
+			box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+		}
+
+		.password-btn:active {
+			transform: translateY(0);
+		}
+
+		.btn-loading {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
 		}
 
 		.password-error {
-			color: #f87171;
-			font-size: 0.85em;
-			margin-top: 10px;
 			display: none;
+			align-items: center;
+			justify-content: center;
+			gap: 8px;
+			padding: 10px;
+			background: rgba(239, 68, 68, 0.1);
+			border: 1px solid rgba(239, 68, 68, 0.3);
+			border-radius: 6px;
+			margin: 15px 0;
+			animation: shake 0.5s ease-in-out;
+		}
+
+		@keyframes shake {
+			0%, 100% { transform: translateX(0); }
+			25% { transform: translateX(-5px); }
+			75% { transform: translateX(5px); }
+		}
+
+		.error-icon {
+			font-size: 0.9em;
+		}
+
+		.password-footer {
+			text-align: center;
+			margin-top: 20px;
 		}
 
 		.password-hint {
 			color: rgba(255,255,255,0.6);
 			font-size: 0.8em;
-			margin-top: 15px;
+			margin-bottom: 8px;
 			line-height: 1.4;
 		}
 
 		.agreement-text {
 			color: rgba(255,255,255,0.7);
 			font-size: 0.75em;
-			margin-top: 15px;
 			text-align: center;
 		}
 
@@ -139,6 +211,33 @@
 			padding: 20px;
 			max-width: 500px;
 			width: 90%;
+			opacity: 0.9;
+			transition: all 0.3s ease;
+		}
+
+		.terms-container:hover {
+			opacity: 1;
+			transform: translateY(-2px);
+		}
+
+		.terms-header {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 8px;
+			margin-bottom: 15px;
+			padding-bottom: 10px;
+			border-bottom: 1px solid rgba(255,255,255,0.1);
+		}
+
+		.terms-icon {
+			font-size: 1.1em;
+		}
+
+		.terms-title {
+			color: white;
+			font-size: 14px;
+			font-weight: 600;
 		}
 
 		.terms-content {
@@ -156,6 +255,15 @@
 			margin-bottom: 5px;
 			color: white;
 			font-size: 12px;
+		}
+
+		.terms-list {
+			margin: 5px 0 5px 15px;
+			font-size: 10px;
+		}
+
+		.terms-list li {
+			margin-bottom: 3px;
 		}
 
 		/* 隐藏主内容 */
@@ -601,6 +709,10 @@
 			.password-container, .terms-container {
 				padding: 20px;
 			}
+			.password-requirements {
+				flex-direction: column;
+				gap: 5px;
+			}
 		}
 	</style>
 </head>
@@ -608,22 +720,48 @@
 	<!-- 密码保护层 -->
 	<div id="passwordProtection" class="password-protection">
 		<div class="password-container">
-			<div class="password-title">🔒 访问密码</div>
-			<div class="password-desc">请输入访问密码以继续浏览内容</div>
-			<input type="password" id="passwordInput" class="password-input" placeholder="请输入4位数字密码" maxlength="4" inputmode="numeric">
-			<button id="passwordSubmit" class="password-btn">进入网站</button>
-			<div id="passwordError" class="password-error">密码错误，请重新输入</div>
-			<div class="password-hint">密码会定期更换，请勿外传</div>
-			<div class="agreement-text">登录即表示您已阅读、理解并同意下方的使用条款</div>
+			<div class="password-header">
+				<div class="password-icon">🔒</div>
+				<div class="password-title">访问验证</div>
+				<div class="password-desc">请输入访问密码继续浏览</div>
+			</div>
+			
+			<div class="password-input-group">
+				<input type="password" id="passwordInput" class="password-input" 
+					   placeholder="请输入4位数字密码" maxlength="4" inputmode="numeric">
+				<div class="password-requirements">
+					<span class="requirement-item" data-valid="false">● 4位数字</span>
+					<span class="requirement-item" data-valid="false">● 纯数字组合</span>
+				</div>
+			</div>
+			
+			<button id="passwordSubmit" class="password-btn">
+				<span class="btn-text">进入网站</span>
+				<span class="btn-loading" style="display: none;">验证中...</span>
+			</button>
+			
+			<div id="passwordError" class="password-error">
+				<span class="error-icon">❌</span>
+				<span class="error-text">密码错误，请重新输入</span>
+			</div>
+			
+			<div class="password-footer">
+				<div class="password-hint">密码定期更换，请勿外传</div>
+				<div class="agreement-text">登录即表示您已阅读、理解并同意下方使用条款</div>
+			</div>
 		</div>
 
-		<!-- 使用条款在密码页面（简化版） -->
+		<!-- 使用条款区域 -->
 		<div class="terms-container">
+			<div class="terms-header">
+				<span class="terms-icon">📋</span>
+				<span class="terms-title">使用条款</span>
+			</div>
 			<div class="terms-content">
 				<div class="terms-section">
 					<div class="terms-section-title">⚖️ 使用条款</div>
 					<p>请用户严格遵守以下条款：</p>
-					<ul style="margin: 5px 0 5px 15px; font-size: 10px;">
+					<ul class="terms-list">
 						<li>仅限个人学习、研究使用，禁止商业用途</li>
 						<li>请在下载后24小时内删除相关内容</li>
 						<li>不得用于非法用途，否则后果自负</li>
@@ -797,29 +935,75 @@
 		function checkPassword() {
 			const passwordInput = document.getElementById('passwordInput');
 			const errorElement = document.getElementById('passwordError');
+			const submitButton = document.getElementById('passwordSubmit');
 			const inputPassword = passwordInput.value.trim();
 
-			// 验证密码
-			if (inputPassword === CURRENT_PASSWORD) {
-				// 密码正确，保存到localStorage（7天有效期）
-				const expiryDate = new Date();
-				expiryDate.setDate(expiryDate.getDate() + 7);
-				localStorage.setItem(PASSWORD_KEY, JSON.stringify({
-					token: btoa(CURRENT_PASSWORD + '_' + expiryDate.getTime()),
-					expiry: expiryDate.getTime()
-				}));
-				
-				// 显示主内容，隐藏密码层
-				document.getElementById('passwordProtection').style.display = 'none';
-				document.getElementById('mainContent').style.display = 'block';
-				init(); // 初始化主内容
-				return true;
+			// 显示加载状态
+			submitButton.querySelector('.btn-text').style.display = 'none';
+			submitButton.querySelector('.btn-loading').style.display = 'block';
+			submitButton.disabled = true;
+
+			setTimeout(() => {
+				// 验证密码
+				if (inputPassword === CURRENT_PASSWORD) {
+					// 密码正确，保存到localStorage（7天有效期）
+					const expiryDate = new Date();
+					expiryDate.setDate(expiryDate.getDate() + 7);
+					localStorage.setItem(PASSWORD_KEY, JSON.stringify({
+						token: btoa(CURRENT_PASSWORD + '_' + expiryDate.getTime()),
+						expiry: expiryDate.getTime()
+					}));
+					
+					// 成功动画
+					passwordInput.style.borderColor = 'rgba(34, 197, 94, 0.8)';
+					passwordInput.style.background = 'rgba(34, 197, 94, 0.1)';
+					
+					setTimeout(() => {
+						// 显示主内容，隐藏密码层
+						document.getElementById('passwordProtection').style.display = 'none';
+						document.getElementById('mainContent').style.display = 'block';
+						init(); // 初始化主内容
+					}, 500);
+					
+				} else {
+					// 密码错误提示
+					errorElement.style.display = 'flex';
+					passwordInput.style.borderColor = 'rgba(239, 68, 68, 0.8)';
+					passwordInput.style.background = 'rgba(239, 68, 68, 0.1)';
+					passwordInput.value = '';
+					passwordInput.focus();
+					
+					// 恢复按钮状态
+					submitButton.querySelector('.btn-text').style.display = 'block';
+					submitButton.querySelector('.btn-loading').style.display = 'none';
+					submitButton.disabled = false;
+				}
+			}, 800); // 模拟验证延迟
+		}
+
+		// ===== 实时密码验证 =====
+		function validatePasswordInput() {
+			const passwordInput = document.getElementById('passwordInput');
+			const requirements = document.querySelectorAll('.requirement-item');
+			const inputValue = passwordInput.value;
+			
+			// 验证4位数字
+			const isValidLength = inputValue.length === 4;
+			const isNumericOnly = /^\d+$/.test(inputValue);
+			
+			// 更新验证提示
+			requirements[0].setAttribute('data-valid', isValidLength.toString());
+			requirements[1].setAttribute('data-valid', isNumericOnly.toString());
+			
+			// 实时样式反馈
+			if (inputValue.length > 0) {
+				if (isValidLength && isNumericOnly) {
+					passwordInput.style.borderColor = 'rgba(34, 197, 94, 0.6)';
+				} else {
+					passwordInput.style.borderColor = 'rgba(234, 179, 8, 0.6)';
+				}
 			} else {
-				// 密码错误提示
-				errorElement.style.display = 'block';
-				passwordInput.value = '';
-				passwordInput.focus();
-				return false;
+				passwordInput.style.borderColor = 'rgba(255,255,255,0.3)';
 			}
 		}
 
@@ -858,6 +1042,9 @@
 				const passwordInput = document.getElementById('passwordInput');
 				const submitButton = document.getElementById('passwordSubmit');
 				
+				// 实时验证
+				passwordInput.addEventListener('input', validatePasswordInput);
+				
 				// 回车键提交
 				passwordInput.addEventListener('keypress', function(e) {
 					if (e.key === 'Enter') checkPassword();
@@ -869,6 +1056,7 @@
 				// 限制只能输入数字
 				passwordInput.addEventListener('input', function(e) {
 					this.value = this.value.replace(/[^0-9]/g, '');
+					validatePasswordInput(); // 实时验证
 				});
 				
 				// 自动聚焦输入框
