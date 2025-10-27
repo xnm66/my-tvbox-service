@@ -2,7 +2,7 @@
 // 部署到 Cloudflare Workers - 密码验证后端
 
 // ===== 在这里设置你的密码 =====
-const VALID_PASSWORD = "Movie2025!"; // 改成你想要的密码
+const VALID_PASSWORD = "TV2025"; // 改成你想要的密码
 
 // Token 有效期（天）
 const TOKEN_EXPIRY_DAYS = 7;
