@@ -7,7 +7,7 @@ const PASSWORD_CONFIG = {
   currentPassword: "2025",
   
   // === 安全设置 ===
-  tokenExpiry: 7,      // 令牌有效期（天）
+  tokenExpiry: 0,      // 令牌有效期（天）
   maxAttempts: 5,      // 最大尝试次数
   allowNumbersOnly: true, // 只允许数字密码
   
