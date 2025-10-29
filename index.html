@@ -1,1078 +1,1078 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>私人影院 - 智能影视聚合平台</title>
-	<style>
-		/* ===== 全局样式重置 ===== */
-		* {
-			margin: 0;
-			padding: 0;
-			box-sizing: border-box;
-		}
-		
-		/* ===== 主体样式 ===== */
-		body {
-			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-			width: 100%;
-			min-width: 320px;
-			max-width: 800px;
-			margin: 0 auto;
-			padding: 20px;
-			background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-			color: #e2e8f0;
-			min-height: 100vh;
-		}
-		
-		/* ===== 密码保护层样式 ===== */
-		.password-protection {
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			z-index: 9999;
-			flex-direction: column;
-			padding: 20px;
-		}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>私人影院 - 智能影视聚合平台</title>
+    <style>
+        /* ===== 全局样式重置 ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* ===== 主体样式 ===== */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            width: 100%;
+            min-width: 320px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        
+        /* ===== 密码保护层样式 ===== */
+        .password-protection {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            flex-direction: column;
+            padding: 20px;
+        }
 
-		.password-container {
-			background: rgba(255, 255, 255, 0.1);
-			border: 1px solid rgba(255,255,255,0.2);
-			border-radius: 14px;
-			padding: 30px;
-			backdrop-filter: blur(15px);
-			box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-			text-align: center;
-			max-width: 500px;
-			width: 90%;
-			margin-bottom: 20px;
-		}
+        .password-container {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 14px;
+            padding: 30px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            margin-bottom: 20px;
+        }
 
-		.password-title {
-			color: white;
-			font-size: 1.5em;
-			margin-bottom: 10px;
-			font-weight: 600;
-		}
+        .password-title {
+            color: white;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
 
-		.password-desc {
-			color: rgba(255,255,255,0.8);
-			font-size: 0.9em;
-			margin-bottom: 20px;
-			line-height: 1.4;
-		}
+        .password-desc {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9em;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
 
-		.password-input {
-			width: 100%;
-			padding: 12px 16px;
-			border: 1px solid rgba(255,255,255,0.3);
-			border-radius: 8px;
-			background: rgba(255,255,255,0.1);
-			color: white;
-			font-size: 16px;
-			margin-bottom: 15px;
-			text-align: center;
-			transition: all 0.3s ease;
-		}
+        .password-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 16px;
+            margin-bottom: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
 
-		.password-input:focus {
-			outline: none;
-			border-color: rgba(59, 130, 246, 0.8);
-			background: rgba(255,255,255,0.15);
-		}
+        .password-input:focus {
+            outline: none;
+            border-color: rgba(59, 130, 246, 0.8);
+            background: rgba(255,255,255,0.15);
+        }
 
-		.password-input::placeholder {
-			color: rgba(255,255,255,0.5);
-		}
+        .password-input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
 
-		.password-btn {
-			background: rgba(59, 130, 246, 0.8);
-			color: white;
-			border: none;
-			border-radius: 8px;
-			padding: 12px 24px;
-			font-size: 16px;
-			cursor: pointer;
-			transition: all 0.3s ease;
-			width: 100%;
-		}
+        .password-btn {
+            background: rgba(59, 130, 246, 0.8);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
 
-		.password-btn:hover {
-			background: rgba(59, 130, 246, 1);
-			transform: translateY(-2px);
-		}
+        .password-btn:hover {
+            background: rgba(59, 130, 246, 1);
+            transform: translateY(-2px);
+        }
 
-		.password-error {
-			color: #f87171;
-			font-size: 0.85em;
-			margin-top: 10px;
-			display: none;
-		}
+        .password-error {
+            color: #f87171;
+            font-size: 0.85em;
+            margin-top: 10px;
+            display: none;
+        }
 
-		.password-hint {
-			color: rgba(255,255,255,0.6);
-			font-size: 0.8em;
-			margin-top: 15px;
-			line-height: 1.4;
-		}
+        .password-hint {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.8em;
+            margin-top: 15px;
+            line-height: 1.4;
+        }
 
-		.agreement-text {
-			font-size: 0.7em;
-			line-height: 1.2;
-			margin-top: 12px;
-			white-space: nowrap;
-			color: rgba(255,255,255,0.7);
-			text-align: center;
-		}
+        .agreement-text {
+            font-size: 0.7em;
+            line-height: 1.2;
+            margin-top: 12px;
+            white-space: nowrap;
+            color: rgba(255,255,255,0.7);
+            text-align: center;
+        }
 
-		.terms-link {
-			color: rgba(59, 130, 246, 0.9);
-			text-decoration: underline;
-			cursor: pointer;
-			transition: color 0.3s ease;
-		}
+        .terms-link {
+            color: rgba(59, 130, 246, 0.9);
+            text-decoration: underline;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
 
-		.terms-link:hover {
-			color: rgba(59, 130, 246, 1);
-		}
+        .terms-link:hover {
+            color: rgba(59, 130, 246, 1);
+        }
 
-		/* 条款弹窗样式 */
-		.terms-modal {
-			display: none;
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			background: rgba(0,0,0,0.7);
-			z-index: 10000;
-			backdrop-filter: blur(5px);
-		}
+        /* 条款弹窗样式 */
+        .terms-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 10000;
+            backdrop-filter: blur(5px);
+        }
 
-		.terms-modal-content {
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			background: rgba(26, 26, 46, 0.95);
-			border: 1px solid rgba(255,255,255,0.2);
-			border-radius: 14px;
-			padding: 25px;
-			width: 90%;
-			max-width: 500px;
-			max-height: 80vh;
-			overflow-y: auto;
-			backdrop-filter: blur(15px);
-			box-shadow: 0 8px 30px rgba(0,0,0,0.4);
-		}
+        .terms-modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 14px;
+            padding: 25px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
 
-		.terms-modal-header {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			margin-bottom: 20px;
-			padding-bottom: 15px;
-			border-bottom: 1px solid rgba(255,255,255,0.2);
-		}
+        .terms-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
 
-		.terms-modal-title {
-			color: white;
-			font-size: 1.2em;
-			font-weight: 600;
-		}
+        .terms-modal-title {
+            color: white;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
 
-		.terms-close-btn {
-			background: none;
-			border: none;
-			color: rgba(255,255,255,0.7);
-			font-size: 1.5em;
-			cursor: pointer;
-			transition: color 0.3s ease;
-		}
+        .terms-close-btn {
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.7);
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
 
-		.terms-close-btn:hover {
-			color: white;
-		}
+        .terms-close-btn:hover {
+            color: white;
+        }
 
-		/* 隐藏主内容 */
-		.main-content {
-			display: none;
-		}
-		
-		/* ===== 主页面头部样式 ===== */
-		.header {
-			text-align: center;
-			margin-bottom: 20px;
-			padding: 15px;
-		}
-		
-		.header h1 {
-			font-size: 1.8em;
-			margin-bottom: 8px;
-			color: white;
-			font-weight: 700;
-			text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-		}
-		
-		.header p {
-			font-size: 0.9em;
-			color: rgba(255,255,255,0.8);
-			margin-bottom: 5px;
-		}
-		
-		.support-text {
-			font-size: 0.75em;
-			color: rgba(255,255,255,0.7);
-			margin-top: 5px;
-			white-space: nowrap;
-			overflow: hidden;
-			text-overflow: ellipsis;
-			padding: 0 5px;
-		}
-		
-		/* ===== 通用容器样式 ===== */
-		.container, .copyright, .modal-content, .qrcode-item {
-			background: rgba(255, 255, 255, 0.08);
-			border: 1px solid rgba(255,255,255,0.15);
-			border-radius: 14px;
-			backdrop-filter: blur(15px);
-			box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-		}
-		
-		.container {
-			padding: 18px;
-			margin: 12px 0;
-		}
-		
-		.copyright {
-			padding: 15px;
-			margin: 12px 0;
-		}
-		
-		/* ===== 版权声明样式 ===== */
-		.copyright-title {
-			color: white;
-			font-size: 14px;
-			font-weight: 600;
-			text-align: center;
-			margin-bottom: 12px;
-		}
-		
-		.copyright-title::before,
-		.copyright-title::after {
-			content: "⚠️";
-			margin: 0 8px;
-			font-size: 12px;
-		}
-		
-		.copyright-content {
-			font-size: 11px;
-			color: rgba(255,255,255,0.85);
-			line-height: 1.5;
-		}
-		
-		.copyright-section {
-			margin-bottom: 10px;
-			padding-bottom: 10px;
-			border-bottom: 1px solid rgba(255,255,255,0.1);
-		}
-		
-		.copyright-section:last-child {
-			margin-bottom: 0;
-			padding-bottom: 0;
-			border-bottom: none;
-		}
-		
-		.copyright-section-title {
-			font-weight: 600;
-			margin-bottom: 5px;
-			color: white;
-			font-size: 12px;
-		}
-		
-		/* ===== 通用卡片样式 ===== */
-		.url-box, .step, .download-item {
-			background: rgba(255, 255, 255, 0.1);
-			border: 1px solid rgba(255,255,255,0.2);
-			border-radius: 10px;
-			transition: all 0.3s ease;
-		}
-		
-		.url-box {
-			padding: 12px;
-			margin: 12px 0;
-			text-align: center;
-		}
-		
-		.step {
-			padding: 10px 12px;
-			margin: 6px 0;
-			display: flex;
-			align-items: center;
-		}
-		
-		.step:hover, .url:hover, .download-item:hover {
-			background: rgba(255, 255, 255, 0.15);
-		}
-		
-		.download-item {
-			padding: 15px;
-			text-align: center;
-			cursor: pointer;
-			position: relative;
-		}
-		
-		.download-item:hover {
-			transform: translateY(-2px);
-		}
-		
-		/* ===== URL区域样式 ===== */
-		.url-section {
-			margin-bottom: 15px;
-		}
-		
-		.url-label {
-			font-size: 12px;
-			color: rgba(255,255,255,0.9);
-			margin-bottom: 5px;
-			display: block;
-		}
-		
-		.url {
-			font-family: 'Courier New', monospace;
-			font-size: 13px;
-			color: white;
-			word-break: break-all;
-			margin: 8px 0;
-			padding: 8px;
-			background: rgba(255,255,255,0.1);
-			border-radius: 6px;
-			border: 1px solid rgba(255,255,255,0.2);
-			cursor: pointer;
-			position: relative;
-			transition: all 0.3s ease;
-		}
-		
-		/* 复制成功提示样式 */
-		.url.copied::after {
-			content: "复制成功";
-			position: absolute;
-			right: 8px;
-			top: 50%;
-			transform: translateY(-50%);
-			font-size: 10px;
-			color: white;
-			background: rgba(34, 197, 94, 0.6);
-			padding: 2px 6px;
-			border-radius: 4px;
-		}
-		
-		/* ===== 步骤编号样式 ===== */
-		.step-number {
-			background: rgba(255, 255, 255, 0.2);
-			color: white;
-			width: 22px;
-			height: 22px;
-			border-radius: 50%;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			margin-right: 10px;
-			font-weight: 600;
-			font-size: 11px;
-			flex-shrink: 0;
-			border: 1px solid rgba(255,255,255,0.3);
-		}
-		
-		.step-content {
-			flex: 1;
-			font-size: 13px;
-			color: white;
-		}
-		
-		/* ===== 下载网格布局 ===== */
-		.download-grid {
-			display: grid;
-			grid-template-columns: 1fr 1fr;
-			gap: 12px;
-			margin: 12px 0;
-		}
-		
-		/* ===== 状态指示器样式 ===== */
-		.download-item.downloading::after,
-		.download-item.developing::after {
-			content: attr(data-status);
-			position: absolute;
-			top: 8px;
-			right: 8px;
-			font-size: 10px;
-			color: white;
-			padding: 2px 6px;
-			border-radius: 4px;
-		}
-		
-		.download-item.downloading::after {
-			background: rgba(59, 130, 246, 0.6);
-		}
-		
-		.download-item.developing::after {
-			background: rgba(156, 163, 175, 0.6);
-		}
-		
-		.download-icon {
-			font-size: 1.8em;
-			margin-bottom: 8px;
-			display: block;
-		}
-		
-		.download-item h4 {
-			margin: 4px 0 6px 0;
-			font-size: 14px;
-			font-weight: 600;
-			color: white;
-		}
-		
-		.download-desc {
-			font-size: 11px;
-			color: rgba(255,255,255,0.8);
-			line-height: 1.3;
-		}
-		
-		/* ===== 赞助区域样式 ===== */
-		.simple-sponsor {
-			text-align: center;
-			margin: 15px 0;
-			padding: 12px;
-		}
-		
-		/* ===== 按钮通用样式 ===== */
-		.sponsor-btn, .close-btn {
-			background: transparent;
-			color: rgba(255,255,255,0.7);
-			border: 1px solid rgba(255,255,255,0.2);
-			border-radius: 6px;
-			cursor: pointer;
-			transition: all 0.3s ease;
-			font-size: 13px;
-			padding: 8px 16px;
-		}
-		
-		.sponsor-btn:hover, .close-btn:hover {
-			color: rgba(255,255,255,0.9);
-			border-color: rgba(255,255,255,0.3);
-			background: rgba(255,255,255,0.05);
-		}
-		
-		.sponsor-btn {
-			display: inline-flex;
-			align-items: center;
-			justify-content: center;
-			gap: 6px;
-		}
-		
-		.close-btn {
-			margin-top: 8px;
-			width: 100%;
-		}
-		
-		/* ===== 赞助弹窗样式 ===== */
-		.sponsor-modal {
-			display: none;
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			z-index: 1000;
-			background: transparent;
-		}
-		
-		.modal-content {
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			padding: 20px;
-			width: 90%;
-			max-width: 300px;
-			text-align: center;
-			animation: modalFadeIn 0.3s ease-out;
-		}
-		
-		@keyframes modalFadeIn {
-			from { 
-				opacity: 0; 
-				transform: translate(-50%, -60%); 
-			}
-			to { 
-				opacity: 1; 
-				transform: translate(-50%, -50%); 
-			}
-		}
-		
-		.modal-header {
-			margin-bottom: 15px;
-		}
-		
-		.modal-header h3 {
-			color: white;
-			font-size: 1.2em;
-			margin-bottom: 6px;
-			font-weight: 600;
-		}
-		
-		.modal-header p {
-			color: rgba(255,255,255,0.8);
-			font-size: 0.85em;
-			line-height: 1.4;
-		}
-		
-		/* ===== 二维码容器样式 ===== */
-		.qrcode-container {
-			margin: 15px 0;
-		}
-		
-		.qrcode-item {
-			padding: 15px;
-		}
-		
-		.qrcode-title {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			gap: 6px;
-			margin-bottom: 10px;
-			color: white;
-			font-weight: 500;
-			font-size: 0.9em;
-		}
-		
-		.qrcode-img {
-			width: 180px;
-			height: 180px;
-			margin: 0 auto;
-			background: white;
-			border-radius: 8px;
-			overflow: hidden;
-			box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-		}
-		
-		/* 赞助码图片样式 */
-		.sponsor-image {
-			width: 100%;
-			height: 100%;
-			object-fit: cover;
-			border-radius: 6px;
-		}
-		
-		.qrcode-desc {
-			margin-top: 10px;
-			font-size: 11px;
-			color: rgba(255,255,255,0.6);
-			line-height: 1.4;
-		}
-		
-		/* ===== 页脚样式 ===== */
-		.footer {
-			text-align: center;
-			margin-top: 15px;
-			padding-top: 12px;
-			border-top: 1px solid rgba(255,255,255,0.2);
-			font-size: 11px;
-			color: rgba(255,255,255,0.7);
-		}
-		
-		/* ===== 标题样式 ===== */
-		h3 {
-			color: white;
-			margin-bottom: 12px;
-			font-size: 1em;
-			font-weight: 600;
-			text-align: center;
-		}
-		
-		.action-hint {
-			font-size: 10px;
-			color: rgba(255,255,255,0.6);
-			text-align: center;
-			margin-top: 8px;
-		}
-		
-		/* ===== 响应式设计 ===== */
-		@media (max-width: 480px) {
-			body {
-				padding: 15px;
-			}
-			.header h1 {
-				font-size: 1.5em;
-			}
-			.support-text {
-				font-size: 0.7em;
-			}
-			.container, .copyright {
-				padding: 15px;
-			}
-			.download-grid {
-				gap: 10px;
-			}
-			.download-item {
-				padding: 12px;
-			}
-			.download-icon {
-				font-size: 1.6em;
-			}
-			.download-item h4 {
-				font-size: 13px;
-			}
-			.download-desc {
-				font-size: 10px;
-			}
-			.qrcode-img {
-				width: 160px;
-				height: 160px;
-			}
-			.copyright-content {
-				font-size: 10px;
-			}
-			.password-container {
-				padding: 20px;
-			}
-			.terms-modal-content {
-				padding: 20px;
-			}
-			/* 移动端调整同意文字 */
-			.agreement-text {
-				font-size: 0.65em;
-				white-space: normal;
-				line-height: 1.3;
-			}
-		}
-	</style>
+        /* 隐藏主内容 */
+        .main-content {
+            display: none;
+        }
+        
+        /* ===== 主页面头部样式 ===== */
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px;
+        }
+        
+        .header h1 {
+            font-size: 1.8em;
+            margin-bottom: 8px;
+            color: white;
+            font-weight: 700;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 0.9em;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 5px;
+        }
+        
+        .support-text {
+            font-size: 0.75em;
+            color: rgba(255,255,255,0.7);
+            margin-top: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 0 5px;
+        }
+        
+        /* ===== 通用容器样式 ===== */
+        .container, .copyright, .modal-content, .qrcode-item {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 14px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        
+        .container {
+            padding: 18px;
+            margin: 12px 0;
+        }
+        
+        .copyright {
+            padding: 15px;
+            margin: 12px 0;
+        }
+        
+        /* ===== 版权声明样式 ===== */
+        .copyright-title {
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        
+        .copyright-title::before,
+        .copyright-title::after {
+            content: "⚠️";
+            margin: 0 8px;
+            font-size: 12px;
+        }
+        
+        .copyright-content {
+            font-size: 11px;
+            color: rgba(255,255,255,0.85);
+            line-height: 1.5;
+        }
+        
+        .copyright-section {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .copyright-section:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .copyright-section-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: white;
+            font-size: 12px;
+        }
+        
+        /* ===== 通用卡片样式 ===== */
+        .url-box, .step, .download-item {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .url-box {
+            padding: 12px;
+            margin: 12px 0;
+            text-align: center;
+        }
+        
+        .step {
+            padding: 10px 12px;
+            margin: 6px 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .step:hover, .url:hover, .download-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .download-item {
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .download-item:hover {
+            transform: translateY(-2px);
+        }
+        
+        /* ===== URL区域样式 ===== */
+        .url-section {
+            margin-bottom: 15px;
+        }
+        
+        .url-label {
+            font-size: 12px;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 5px;
+            display: block;
+        }
+        
+        .url {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: white;
+            word-break: break-all;
+            margin: 8px 0;
+            padding: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.2);
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        /* 复制成功提示样式 */
+        .url.copied::after {
+            content: "复制成功";
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 10px;
+            color: white;
+            background: rgba(34, 197, 94, 0.6);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        
+        /* ===== 步骤编号样式 ===== */
+        .step-number {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-weight: 600;
+            font-size: 11px;
+            flex-shrink: 0;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .step-content {
+            flex: 1;
+            font-size: 13px;
+            color: white;
+        }
+        
+        /* ===== 下载网格布局 ===== */
+        .download-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 12px 0;
+        }
+        
+        /* ===== 状态指示器样式 ===== */
+        .download-item.downloading::after,
+        .download-item.developing::after {
+            content: attr(data-status);
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            font-size: 10px;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        
+        .download-item.downloading::after {
+            background: rgba(59, 130, 246, 0.6);
+        }
+        
+        .download-item.developing::after {
+            background: rgba(156, 163, 175, 0.6);
+        }
+        
+        .download-icon {
+            font-size: 1.8em;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .download-item h4 {
+            margin: 4px 0 6px 0;
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .download-desc {
+            font-size: 11px;
+            color: rgba(255,255,255,0.8);
+            line-height: 1.3;
+        }
+        
+        /* ===== 赞助区域样式 ===== */
+        .simple-sponsor {
+            text-align: center;
+            margin: 15px 0;
+            padding: 12px;
+        }
+        
+        /* ===== 按钮通用样式 ===== */
+        .sponsor-btn, .close-btn {
+            background: transparent;
+            color: rgba(255,255,255,0.7);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 13px;
+            padding: 8px 16px;
+        }
+        
+        .sponsor-btn:hover, .close-btn:hover {
+            color: rgba(255,255,255,0.9);
+            border-color: rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.05);
+        }
+        
+        .sponsor-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        
+        .close-btn {
+            margin-top: 8px;
+            width: 100%;
+        }
+        
+        /* ===== 赞助弹窗样式 ===== */
+        .sponsor-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            background: transparent;
+        }
+        
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            width: 90%;
+            max-width: 300px;
+            text-align: center;
+            animation: modalFadeIn 0.3s ease-out;
+        }
+        
+        @keyframes modalFadeIn {
+            from { 
+                opacity: 0; 
+                transform: translate(-50%, -60%); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translate(-50%, -50%); 
+            }
+        }
+        
+        .modal-header {
+            margin-bottom: 15px;
+        }
+        
+        .modal-header h3 {
+            color: white;
+            font-size: 1.2em;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+        
+        .modal-header p {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.85em;
+            line-height: 1.4;
+        }
+        
+        /* ===== 二维码容器样式 ===== */
+        .qrcode-container {
+            margin: 15px 0;
+        }
+        
+        .qrcode-item {
+            padding: 15px;
+        }
+        
+        .qrcode-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-bottom: 10px;
+            color: white;
+            font-weight: 500;
+            font-size: 0.9em;
+        }
+        
+        .qrcode-img {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        
+        /* 赞助码图片样式 */
+        .sponsor-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+        
+        .qrcode-desc {
+            margin-top: 10px;
+            font-size: 11px;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.4;
+        }
+        
+        /* ===== 页脚样式 ===== */
+        .footer {
+            text-align: center;
+            margin-top: 15px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            font-size: 11px;
+            color: rgba(255,255,255,0.7);
+        }
+        
+        /* ===== 标题样式 ===== */
+        h3 {
+            color: white;
+            margin-bottom: 12px;
+            font-size: 1em;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .action-hint {
+            font-size: 10px;
+            color: rgba(255,255,255,0.6);
+            text-align: center;
+            margin-top: 8px;
+        }
+        
+        /* ===== 响应式设计 ===== */
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+            .header h1 {
+                font-size: 1.5em;
+            }
+            .support-text {
+                font-size: 0.7em;
+            }
+            .container, .copyright {
+                padding: 15px;
+            }
+            .download-grid {
+                gap: 10px;
+            }
+            .download-item {
+                padding: 12px;
+            }
+            .download-icon {
+                font-size: 1.6em;
+            }
+            .download-item h4 {
+                font-size: 13px;
+            }
+            .download-desc {
+                font-size: 10px;
+            }
+            .qrcode-img {
+                width: 160px;
+                height: 160px;
+            }
+            .copyright-content {
+                font-size: 10px;
+            }
+            .password-container {
+                padding: 20px;
+            }
+            .terms-modal-content {
+                padding: 20px;
+            }
+            /* 移动端调整同意文字 */
+            .agreement-text {
+                font-size: 0.65em;
+                white-space: normal;
+                line-height: 1.3;
+            }
+        }
+    </style>
 </head>
 <body>
-	<!-- 密码保护层 -->
-	<div id="passwordProtection" class="password-protection">
-		<div class="password-container">
-			<div class="password-title">🔒 访问密码</div>
-			<div class="password-desc">请输入访问密码以继续浏览内容</div>
-			<input type="password" id="passwordInput" class="password-input" placeholder="请输入4位数字密码" maxlength="4" inputmode="numeric">
-			<button id="passwordSubmit" class="password-btn">进入网站</button>
-			<div id="passwordError" class="password-error">密码错误，请重新输入</div>
-			<div class="password-hint">密码会定期更换，请勿外传</div>
-			<div class="agreement-text">
-				登录即表示您已阅读、理解并同意<span class="terms-link" id="showTermsLink">《使用条款和免责声明》</span>
-			</div>
-		</div>
-	</div>
+    <!-- 密码保护层 -->
+    <div id="passwordProtection" class="password-protection">
+        <div class="password-container">
+            <div class="password-title">🔒 访问密码</div>
+            <div class="password-desc">请输入访问密码以继续浏览内容</div>
+            <input type="password" id="passwordInput" class="password-input" placeholder="请输入4位数字密码" maxlength="4" inputmode="numeric">
+            <button id="passwordSubmit" class="password-btn">进入网站</button>
+            <div id="passwordError" class="password-error">密码错误，请重新输入</div>
+            <div class="password-hint">密码会定期更换，请勿外传</div>
+            <div class="agreement-text">
+                登录即表示您已阅读、理解并同意<span class="terms-link" id="showTermsLink">《使用条款和免责声明》</span>
+            </div>
+        </div>
+    </div>
 
-	<!-- 条款弹窗 -->
-	<div id="termsModal" class="terms-modal">
-		<div class="terms-modal-content">
-			<div class="terms-modal-header">
-				<div class="terms-modal-title">📄 使用条款和免责声明</div>
-				<button class="terms-close-btn" id="closeTermsModal">&times;</button>
-			</div>
-			<div class="copyright-content">
-				<div class="copyright-section">
-					<div class="copyright-section-title">📱 关于软件</div>
-					<p>本站提供的软件均基于开源项目二次开发，仅提供下载信息。软件本身不存储、不制作、不上传任何内容，所有资源均来源于互联网公开渠道，仅供技术学习研究使用。</p>
-				</div>
-				
-				<div class="copyright-section">
-					<div class="copyright-section-title">🎬 关于技术接口</div>
-					<p>本站展示的技术接口信息均来自第三方公开网络资源，仅用于技术交流演示。用户应自行确保使用行为的合法性，并支持正版资源。</p>
-				</div>
-				
-				<div class="copyright-section">
-					<div class="copyright-section-title">⚖️ 使用条款</div>
-					<p>请用户严格遵守以下条款：</p>
-					<ul style="margin: 5px 0 5px 15px; font-size: 10px;">
-						<li>仅限个人学习、研究使用，禁止商业用途</li>
-						<li>请在下载后24小时内删除相关内容</li>
-						<li>不得用于非法用途，否则后果自负</li>
-						<li>若涉及版权问题，请联系：xiaopgys@163.com 及时处理</li>
-					</ul>
-				</div>
-				
-				<div class="copyright-section">
-					<div class="copyright-section-title">🛡️ 免责声明</div>
-					<p>本站按"原样"提供技术服务，不提供任何明示或暗示的担保。使用者应对使用本站产生的任何后果自行承担全部责任。本站不承担任何直接、间接、偶然或特殊的法律责任。若您使用本站，即表示您已阅读、理解并同意以上所有条款。</p>
-				</div>
-			</div>
-			<button class="close-btn" id="agreeTermsBtn">我已阅读并同意</button>
-		</div>
-	</div>
+    <!-- 条款弹窗 -->
+    <div id="termsModal" class="terms-modal">
+        <div class="terms-modal-content">
+            <div class="terms-modal-header">
+                <div class="terms-modal-title">📄 使用条款和免责声明</div>
+                <button class="terms-close-btn" id="closeTermsModal">&times;</button>
+            </div>
+            <div class="copyright-content">
+                <div class="copyright-section">
+                    <div class="copyright-section-title">📱 关于软件</div>
+                    <p>本站提供的软件均基于开源项目二次开发，仅提供下载信息。软件本身不存储、不制作、不上传任何内容，所有资源均来源于互联网公开渠道，仅供技术学习研究使用。</p>
+                </div>
+                
+                <div class="copyright-section">
+                    <div class="copyright-section-title">🎬 关于技术接口</div>
+                    <p>本站展示的技术接口信息均来自第三方公开网络资源，仅用于技术交流演示。用户应自行确保使用行为的合法性，并支持正版资源。</p>
+                </div>
+                
+                <div class="copyright-section">
+                    <div class="copyright-section-title">⚖️ 使用条款</div>
+                    <p>请用户严格遵守以下条款：</p>
+                    <ul style="margin: 5px 0 5px 15px; font-size: 10px;">
+                        <li>仅限个人学习、研究使用，禁止商业用途</li>
+                        <li>请在下载后24小时内删除相关内容</li>
+                        <li>不得用于非法用途，否则后果自负</li>
+                        <li>若涉及版权问题，请联系：xiaopgys@163.com 及时处理</li>
+                    </ul>
+                </div>
+                
+                <div class="copyright-section">
+                    <div class="copyright-section-title">🛡️ 免责声明</div>
+                    <p>本站按"原样"提供技术服务，不提供任何明示或暗示的担保。使用者应对使用本站产生的任何后果自行承担全部责任。本站不承担任何直接、间接、偶然或特殊的法律责任。若您使用本站，即表示您已阅读、理解并同意以上所有条款。</p>
+                </div>
+            </div>
+            <button class="close-btn" id="agreeTermsBtn">我已阅读并同意</button>
+        </div>
+    </div>
 
-	<!-- 主内容区域 -->
-	<div id="mainContent" class="main-content">
-		<!-- 页面头部 -->
-		<div class="header">
-			<h1>🎬 私人影院 - 智能影视聚合平台</h1>
-			<p>技术演示平台 • 多软件支持 • 接口整合展示</p>
-			<div class="support-text">已支持：TVBOX、影视仓、EasyBox等播放器自动识别</div>
-		</div>
+    <!-- 主内容区域 -->
+    <div id="mainContent" class="main-content">
+        <!-- 页面头部 -->
+        <div class="header">
+            <h1>🎬 私人影院 - 智能影视聚合平台</h1>
+            <p>技术演示平台 • 多软件支持 • 接口整合展示</p>
+            <div class="support-text">已支持：TVBOX、影视仓、EasyBox等播放器自动识别</div>
+        </div>
 
-		<!-- 使用教程区域 -->
-		<div class="container">
-			<h3>📖 使用教程</h3>
-			
-			<div class="step">
-				<div class="step-number">1</div>
-				<div class="step-content">复制下方任一地址</div>
-			</div>
-			
-			<div class="url-box">
-				<div class="url-section">
-					<span class="url-label">🎯 智能地址（推荐）：</span>
-					<div class="url" id="serviceUrl">http://127.0.0.1:8080/</div>
-					<div class="action-hint">点击上方链接即可复制</div>
-				</div>
-				
-				<div class="url-section">
-					<span class="url-label">📄 JSON影视地址：</span>
-					<div class="url" id="jsonUrl">http://127.0.0.1:8080/data.json</div>
-					<div class="action-hint">点击上方链接即可复制</div>
-				</div>
-			</div>
-			
-			<div class="step">
-				<div class="step-number">2</div>
-				<div class="step-content">打开您的影视TV播放器应用</div>
-			</div>
-			
-			<div class="step">
-				<div class="step-number">3</div>
-				<div class="step-content">在配置地址中粘贴以上网址</div>
-			</div>
-			
-			<div class="step">
-				<div class="step-number">4</div>
-				<div class="step-content">点击确定开始技术体验</div>
-			</div>
-		</div>
+        <!-- 使用教程区域 -->
+        <div class="container">
+            <h3>📖 使用教程</h3>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">复制下方任一地址</div>
+            </div>
+            
+            <div class="url-box">
+                <div class="url-section">
+                    <span class="url-label">🎯 智能地址（推荐）：</span>
+                    <div class="url" id="serviceUrl">http://127.0.0.1:8080/</div>
+                    <div class="action-hint">点击上方链接即可复制</div>
+                </div>
+                
+                <div class="url-section">
+                    <span class="url-label">📄 JSON影视地址：</span>
+                    <div class="url" id="jsonUrl">http://127.0.0.1:8080/data.json</div>
+                    <div class="action-hint">点击上方链接即可复制</div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">打开您的影视TV播放器应用</div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">在配置地址中粘贴以上网址</div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">点击确定开始技术体验</div>
+            </div>
+        </div>
 
-		<!-- 软件下载区域 -->
-		<div class="container">
-			<h3>📥 软件下载</h3>
-			<div class="download-grid">
-				<div class="download-item" data-type="player">
-					<span class="download-icon">📱</span>
-					<h4>影视播放器</h4>
-					<div class="download-desc">基于开源项目修改，仅供技术测试</div>
-				</div>
-				
-				<div class="download-item" data-type="tvbox">
-					<span class="download-icon">📺</span>
-					<h4>TVBox 播放器</h4>
-					<div class="download-desc">多版本适配，播放体验测试</div>
-				</div>
-			</div>
-			<div class="action-hint">点击上方卡片即可下载对应软件</div>
-		</div>
+        <!-- 软件下载区域 -->
+        <div class="container">
+            <h3>📥 软件下载</h3>
+            <div class="download-grid">
+                <div class="download-item" data-type="player">
+                    <span class="download-icon">📱</span>
+                    <h4>影视播放器</h4>
+                    <div class="download-desc">基于开源项目修改，仅供技术测试</div>
+                </div>
+                
+                <div class="download-item" data-type="tvbox">
+                    <span class="download-icon">📺</span>
+                    <h4>TVBox 播放器</h4>
+                    <div class="download-desc">多版本适配，播放体验测试</div>
+                </div>
+            </div>
+            <div class="action-hint">点击上方卡片即可下载对应软件</div>
+        </div>
 
-		<!-- 版权声明区域 -->
-		<div class="copyright">
-			<div class="copyright-title">重要声明</div>
-			<div class="copyright-content">
-				<div class="copyright-section">
-					<div class="copyright-section-title">📱 关于软件</div>
-					<p>本站提供的软件均基于开源项目二次开发，仅提供下载信息。软件本身不存储、不制作、不上传任何内容，所有资源均来源于互联网公开渠道，仅供技术学习研究使用。</p>
-				</div>
-				
-				<div class="copyright-section">
-					<div class="copyright-section-title">🎬 关于技术接口</div>
-					<p>本站展示的技术接口信息均来自第三方公开网络资源，仅用于技术交流演示。用户应自行确保使用行为的合法性，并支持正版资源。</p>
-				</div>
-				
-				<div class="copyright-section">
-					<div class="copyright-section-title">⚖️ 使用条款</div>
-					<p>请用户严格遵守以下条款：</p>
-					<ul style="margin: 5px 0 5px 15px; font-size: 10px;">
-						<li>仅限个人学习、研究使用，禁止商业用途</li>
-						<li>请在下载后24小时内删除相关内容</li>
-						<li>不得用于非法用途，否则后果自负</li>
-						<li>若涉及版权问题，请联系：xiaopgys@163.com 及时处理</li>
-					</ul>
-				</div>
-				
-				<div class="copyright-section">
-					<div class="copyright-section-title">🛡️ 免责声明</div>
-					<p>本站按"原样"提供技术服务，不提供任何明示或暗示的担保。使用者应对使用本站产生的任何后果自行承担全部责任。本站不承担任何直接、间接、偶然或特殊的法律责任。若您使用本站，即表示您已阅读、理解并同意以上所有条款。</p>
-				</div>
-			</div>
-		</div>
+        <!-- 版权声明区域 -->
+        <div class="copyright">
+            <div class="copyright-title">重要声明</div>
+            <div class="copyright-content">
+                <div class="copyright-section">
+                    <div class="copyright-section-title">📱 关于软件</div>
+                    <p>本站提供的软件均基于开源项目二次开发，仅提供下载信息。软件本身不存储、不制作、不上传任何内容，所有资源均来源于互联网公开渠道，仅供技术学习研究使用。</p>
+                </div>
+                
+                <div class="copyright-section">
+                    <div class="copyright-section-title">🎬 关于技术接口</div>
+                    <p>本站展示的技术接口信息均来自第三方公开网络资源，仅用于技术交流演示。用户应自行确保使用行为的合法性，并支持正版资源。</p>
+                </div>
+                
+                <div class="copyright-section">
+                    <div class="copyright-section-title">⚖️ 使用条款</div>
+                    <p>请用户严格遵守以下条款：</p>
+                    <ul style="margin: 5px 0 5px 15px; font-size: 10px;">
+                        <li>仅限个人学习、研究使用，禁止商业用途</li>
+                        <li>请在下载后24小时内删除相关内容</li>
+                        <li>不得用于非法用途，否则后果自负</li>
+                        <li>若涉及版权问题，请联系：xiaopgys@163.com 及时处理</li>
+                    </ul>
+                </div>
+                
+                <div class="copyright-section">
+                    <div class="copyright-section-title">🛡️ 免责声明</div>
+                    <p>本站按"原样"提供技术服务，不提供任何明示或暗示的担保。使用者应对使用本站产生的任何后果自行承担全部责任。本站不承担任何直接、间接、偶然或特殊的法律责任。若您使用本站，即表示您已阅读、理解并同意以上所有条款。</p>
+                </div>
+            </div>
+        </div>
 
-		<!-- 赞助区域 -->
-		<div class="simple-sponsor">
-			<button class="sponsor-btn">
-				<span>☕</span>
-				请作者喝咖啡
-			</button>
-		</div>
+        <!-- 赞助区域 -->
+        <div class="simple-sponsor">
+            <button class="sponsor-btn">
+                <span>☕</span>
+                请作者喝咖啡
+            </button>
+        </div>
 
-		<!-- 赞助弹窗 -->
-		<div id="sponsorModal" class="sponsor-modal">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h3>☕ 请喝咖啡</h3>
-					<p>如果技术演示对您有帮助<br>可以请我喝杯咖啡，感谢您的支持！</p>
-				</div>
-				
-				<div class="qrcode-container">
-					<div class="qrcode-item">
-						<div class="qrcode-title">
-							<span>支持作者</span>
-						</div>
-						<div class="qrcode-img">
-							<img src="./sponsor/wechat-sponsor.png" alt="微信赞赏码" class="sponsor-image">
-						</div>
-						<div class="qrcode-desc">使用微信扫描赞赏码支持作者</div>
-					</div>
-				</div>
-				
-				<button class="close-btn" id="closeSponsorBtn">关闭</button>
-			</div>
-		</div>
+        <!-- 赞助弹窗 -->
+        <div id="sponsorModal" class="sponsor-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>☕ 请喝咖啡</h3>
+                    <p>如果技术演示对您有帮助<br>可以请我喝杯咖啡，感谢您的支持！</p>
+                </div>
+                
+                <div class="qrcode-container">
+                    <div class="qrcode-item">
+                        <div class="qrcode-title">
+                            <span>支持作者</span>
+                        </div>
+                        <div class="qrcode-img">
+                            <img src="./sponsor/wechat-sponsor.png" alt="微信赞赏码" class="sponsor-image">
+                        </div>
+                        <div class="qrcode-desc">使用微信扫描赞赏码支持作者</div>
+                    </div>
+                </div>
+                
+                <button class="close-btn" id="closeSponsorBtn">关闭</button>
+            </div>
+        </div>
 
-		<!-- 页脚 -->
-		<div class="footer">
-			私人影院 - 智能影视聚合平台 © 2025
-		</div>
-	</div>
+        <!-- 页脚 -->
+        <div class="footer">
+            私人影院 - 智能影视聚合平台 © 2025
+        </div>
+    </div>
 
-	<script>
-		// ===== 密码配置 =====
-		const PASSWORD_KEY = "site_access_token"; // localStorage存储键名
-		let CURRENT_PASSWORD = "2025"; // 默认密码，会从配置文件加载
+    <script>
+        // ===== 密码配置 =====
+        const PASSWORD_KEY = "site_access_token"; // localStorage存储键名
+        let CURRENT_PASSWORD = "2025"; // 默认密码，会从配置文件加载
 
-		// ===== 从配置文件加载密码 =====
-		async function loadPasswordConfig() {
-			try {
-				const response = await fetch('./password-worker.js');
-				const configText = await response.text();
-				
-				// 从配置文件中提取密码
-				const passwordMatch = configText.match(/currentPassword:\s*"(\d+)"/);
-				if (passwordMatch && passwordMatch[1]) {
-					CURRENT_PASSWORD = passwordMatch[1];
-					console.log('密码配置加载成功');
-				}
-			} catch (error) {
-				console.error('加载密码配置失败，使用默认密码');
-			}
-		}
+        // ===== 从配置文件加载密码 =====
+        async function loadPasswordConfig() {
+            try {
+                const response = await fetch('./password-worker.js');
+                const configText = await response.text();
+                
+                // 从配置文件中提取密码
+                const passwordMatch = configText.match(/currentPassword:\s*"(\d+)"/);
+                if (passwordMatch && passwordMatch[1]) {
+                    CURRENT_PASSWORD = passwordMatch[1];
+                    console.log('密码配置加载成功');
+                }
+            } catch (error) {
+                console.error('加载密码配置失败，使用默认密码');
+            }
+        }
 
-		// ===== 密码验证功能 =====
-		function checkPassword() {
-			const passwordInput = document.getElementById('passwordInput');
-			const errorElement = document.getElementById('passwordError');
-			const inputPassword = passwordInput.value.trim();
+        // ===== 密码验证功能 =====
+        function checkPassword() {
+            const passwordInput = document.getElementById('passwordInput');
+            const errorElement = document.getElementById('passwordError');
+            const inputPassword = passwordInput.value.trim();
 
-			// 验证密码
-			if (inputPassword === CURRENT_PASSWORD) {
-				// 密码正确，保存到localStorage（7天有效期）
-				const expiryDate = new Date();
-				expiryDate.setDate(expiryDate.getDate() + 7);
-				localStorage.setItem(PASSWORD_KEY, JSON.stringify({
-					token: btoa(CURRENT_PASSWORD + '_' + expiryDate.getTime()),
-					expiry: expiryDate.getTime()
-				}));
-				
-				// 显示主内容，隐藏密码层
-				document.getElementById('passwordProtection').style.display = 'none';
-				document.getElementById('mainContent').style.display = 'block';
-				init(); // 初始化主内容
-				return true;
-			} else {
-				// 密码错误提示
-				errorElement.style.display = 'block';
-				passwordInput.value = '';
-				passwordInput.focus();
-				return false;
-			}
-		}
+            // 验证密码
+            if (inputPassword === CURRENT_PASSWORD) {
+                // 密码正确，保存到localStorage（7天有效期）
+                const expiryDate = new Date();
+                expiryDate.setDate(expiryDate.getDate() + 7);
+                localStorage.setItem(PASSWORD_KEY, JSON.stringify({
+                    token: btoa(CURRENT_PASSWORD + '_' + expiryDate.getTime()),
+                    expiry: expiryDate.getTime()
+                }));
+                
+                // 显示主内容，隐藏密码层
+                document.getElementById('passwordProtection').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+                init(); // 初始化主内容
+                return true;
+            } else {
+                // 密码错误提示
+                errorElement.style.display = 'block';
+                passwordInput.value = '';
+                passwordInput.focus();
+                return false;
+            }
+        }
 
-		// ===== 检查是否已认证 =====
-		function checkExistingAuth() {
-			const savedAuth = localStorage.getItem(PASSWORD_KEY);
-			if (savedAuth) {
-				try {
-					const authData = JSON.parse(savedAuth);
-					// 检查token是否过期
-					if (authData.expiry > Date.now()) {
-						// Token有效，直接显示主内容
-						document.getElementById('passwordProtection').style.display = 'none';
-						document.getElementById('mainContent').style.display = 'block';
-						return true;
-					} else {
-						// Token过期，清除
-						localStorage.removeItem(PASSWORD_KEY);
-					}
-				} catch (e) {
-					// 数据损坏，清除
-					localStorage.removeItem(PASSWORD_KEY);
-				}
-			}
-			return false;
-		}
+        // ===== 检查是否已认证 =====
+        function checkExistingAuth() {
+            const savedAuth = localStorage.getItem(PASSWORD_KEY);
+            if (savedAuth) {
+                try {
+                    const authData = JSON.parse(savedAuth);
+                    // 检查token是否过期
+                    if (authData.expiry > Date.now()) {
+                        // Token有效，直接显示主内容
+                        document.getElementById('passwordProtection').style.display = 'none';
+                        document.getElementById('mainContent').style.display = 'block';
+                        return true;
+                    } else {
+                        // Token过期，清除
+                        localStorage.removeItem(PASSWORD_KEY);
+                    }
+                } catch (e) {
+                    // 数据损坏，清除
+                    localStorage.removeItem(PASSWORD_KEY);
+                }
+            }
+            return false;
+        }
 
-		// ===== 条款弹窗功能 =====
-		function openTermsModal() {
-			document.getElementById('termsModal').style.display = 'block';
-		}
+        // ===== 条款弹窗功能 =====
+        function openTermsModal() {
+            document.getElementById('termsModal').style.display = 'block';
+        }
 
-		function closeTermsModal() {
-			document.getElementById('termsModal').style.display = 'none';
-		}
+        function closeTermsModal() {
+            document.getElementById('termsModal').style.display = 'none';
+        }
 
-		// ===== 密码保护初始化 =====
-		async function initPasswordProtection() {
-			// 先加载密码配置
-			await loadPasswordConfig();
-			
-			// 检查是否已认证
-			if (!checkExistingAuth()) {
-				// 设置密码输入事件
-				const passwordInput = document.getElementById('passwordInput');
-				const submitButton = document.getElementById('passwordSubmit');
-				const termsLink = document.getElementById('showTermsLink');
-				const closeTermsBtn = document.getElementById('closeTermsModal');
-				const agreeTermsBtn = document.getElementById('agreeTermsBtn');
-				
-				// 回车键提交
-				passwordInput.addEventListener('keypress', function(e) {
-					if (e.key === 'Enter') checkPassword();
-				});
-				
-				// 按钮提交
-				submitButton.addEventListener('click', checkPassword);
-				
-				// 限制只能输入数字
-				passwordInput.addEventListener('input', function(e) {
-					this.value = this.value.replace(/[^0-9]/g, '');
-				});
-				
-				// 条款弹窗事件
-				termsLink.addEventListener('click', openTermsModal);
-				closeTermsBtn.addEventListener('click', closeTermsModal);
-				agreeTermsBtn.addEventListener('click', closeTermsModal);
-				document.getElementById('termsModal').addEventListener('click', e => {
-					if (e.target === e.currentTarget) closeTermsModal();
-				});
-				
-				// 自动聚焦输入框
-				passwordInput.focus();
-			} else {
-				// 已认证，初始化主内容
-				init();
-			}
-		}
+        // ===== 密码保护初始化 =====
+        async function initPasswordProtection() {
+            // 先加载密码配置
+            await loadPasswordConfig();
+            
+            // 检查是否已认证
+            if (!checkExistingAuth()) {
+                // 设置密码输入事件
+                const passwordInput = document.getElementById('passwordInput');
+                const submitButton = document.getElementById('passwordSubmit');
+                const termsLink = document.getElementById('showTermsLink');
+                const closeTermsBtn = document.getElementById('closeTermsModal');
+                const agreeTermsBtn = document.getElementById('agreeTermsBtn');
+                
+                // 回车键提交
+                passwordInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') checkPassword();
+                });
+                
+                // 按钮提交
+                submitButton.addEventListener('click', checkPassword);
+                
+                // 限制只能输入数字
+                passwordInput.addEventListener('input', function(e) {
+                    this.value = this.value.replace(/[^0-9]/g, '');
+                });
+                
+                // 条款弹窗事件
+                termsLink.addEventListener('click', openTermsModal);
+                closeTermsBtn.addEventListener('click', closeTermsModal);
+                agreeTermsBtn.addEventListener('click', closeTermsModal);
+                document.getElementById('termsModal').addEventListener('click', e => {
+                    if (e.target === e.currentTarget) closeTermsModal();
+                });
+                
+                // 自动聚焦输入框
+                passwordInput.focus();
+            } else {
+                // 已认证，初始化主内容
+                init();
+            }
+        }
 
-		// ===== 主内容配置 =====
-		const config = {
-			// 基础URL，自动获取当前页面的基础路径
-			baseUrl: window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1),
-			// 下载链接配置
-			downloadLinks: {
-				player: 'https://m997.lanzoue.com/iziv137ai40d',
-				tvbox: ''
-			}
-		};
+        // ===== 主内容配置 =====
+        const config = {
+            // 基础URL，自动获取当前页面的基础路径
+            baseUrl: window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1),
+            // 下载链接配置
+            downloadLinks: {
+                player: 'https://m997.lanzoue.com/iziv137ai40d',
+                tvbox: ''
+            }
+        };
 
-		// ===== 主内容初始化函数 =====
-		function init() {
-			// 设置URL显示
-			document.getElementById('serviceUrl').textContent = config.baseUrl;
-			document.getElementById('jsonUrl').textContent = config.baseUrl + 'data.json';
-			
-			// 绑定事件监听器
-			bindEvents();
-		}
+        // ===== 主内容初始化函数 =====
+        function init() {
+            // 设置URL显示
+            document.getElementById('serviceUrl').textContent = config.baseUrl;
+            document.getElementById('jsonUrl').textContent = config.baseUrl + 'data.json';
+            
+            // 绑定事件监听器
+            bindEvents();
+        }
 
-		// ===== 事件绑定函数 =====
-		function bindEvents() {
-			// URL复制事件
-			document.querySelectorAll('.url').forEach(url => {
-				url.addEventListener('click', copyUrl);
-			});
-			
-			// 下载事件
-			document.querySelectorAll('.download-item').forEach(item => {
-				item.addEventListener('click', handleDownload);
-			});
-			
-			// 赞助弹窗事件 - 修复关闭按钮
-			document.querySelector('.sponsor-btn').addEventListener('click', openSponsorModal);
-			document.getElementById('closeSponsorBtn').addEventListener('click', closeSponsorModal);
-			document.getElementById('sponsorModal').addEventListener('click', e => {
-				if (e.target === e.currentTarget) closeSponsorModal();
-			});
-		}
+        // ===== 事件绑定函数 =====
+        function bindEvents() {
+            // URL复制事件
+            document.querySelectorAll('.url').forEach(url => {
+                url.addEventListener('click', copyUrl);
+            });
+            
+            // 下载事件
+            document.querySelectorAll('.download-item').forEach(item => {
+                item.addEventListener('click', handleDownload);
+            });
+            
+            // 赞助弹窗事件 - 修复关闭按钮
+            document.querySelector('.sponsor-btn').addEventListener('click', openSponsorModal);
+            document.getElementById('closeSponsorBtn').addEventListener('click', closeSponsorModal);
+            document.getElementById('sponsorModal').addEventListener('click', e => {
+                if (e.target === e.currentTarget) closeSponsorModal();
+            });
+        }
 
-		// ===== URL复制功能 =====
-		async function copyUrl(e) {
-			const element = e.target;
-			const text = element.textContent;
-			
-			try {
-				await navigator.clipboard.writeText(text);
-				element.classList.add('copied');
-				setTimeout(() => element.classList.remove('copied'), 3000);
-			} catch (err) {
-				console.error('复制失败:', err);
-			}
-		}
+        // ===== URL复制功能 =====
+        async function copyUrl(e) {
+            const element = e.target;
+            const text = element.textContent;
+            
+            try {
+                await navigator.clipboard.writeText(text);
+                element.classList.add('copied');
+                setTimeout(() => element.classList.remove('copied'), 3000);
+            } catch (err) {
+                console.error('复制失败:', err);
+            }
+        }
 
-		// ===== 下载处理函数 =====
-		function handleDownload(e) {
-			const element = e.currentTarget;
-			const type = element.dataset.type;
-			const url = config.downloadLinks[type];
-			
-			if (url && url.trim() !== '') {
-				// 有下载链接
-				element.classList.add('downloading');
-				element.dataset.status = '下载中';
-				
-				setTimeout(() => {
-					window.open(url, '_blank');
-					setTimeout(() => {
-						element.classList.remove('downloading');
-						delete element.dataset.status;
-					}, 3000);
-				}, 500);
-			} else {
-				// 无下载链接，显示开发中
-				element.classList.add('developing');
-				element.dataset.status = '开发中';
-				
-				setTimeout(() => {
-					element.classList.remove('developing');
-					delete element.dataset.status;
-				}, 3000);
-			}
-		}
+        // ===== 下载处理函数 =====
+        function handleDownload(e) {
+            const element = e.currentTarget;
+            const type = element.dataset.type;
+            const url = config.downloadLinks[type];
+            
+            if (url && url.trim() !== '') {
+                // 有下载链接
+                element.classList.add('downloading');
+                element.dataset.status = '下载中';
+                
+                setTimeout(() => {
+                    window.open(url, '_blank');
+                    setTimeout(() => {
+                        element.classList.remove('downloading');
+                        delete element.dataset.status;
+                    }, 3000);
+                }, 500);
+            } else {
+                // 无下载链接，显示开发中
+                element.classList.add('developing');
+                element.dataset.status = '开发中';
+                
+                setTimeout(() => {
+                    element.classList.remove('developing');
+                    delete element.dataset.status;
+                }, 3000);
+            }
+        }
 
-		// ===== 赞助弹窗功能 =====
-		function openSponsorModal() {
-			document.getElementById('sponsorModal').style.display = 'block';
-		}
+        // ===== 赞助弹窗功能 =====
+        function openSponsorModal() {
+            document.getElementById('sponsorModal').style.display = 'block';
+        }
 
-		function closeSponsorModal() {
-			document.getElementById('sponsorModal').style.display = 'none';
-		}
+        function closeSponsorModal() {
+            document.getElementById('sponsorModal').style.display = 'none';
+        }
 
-		// ===== 启动应用 =====
-		document.addEventListener('DOMContentLoaded', function() {
-			// 初始化密码保护系统
-			initPasswordProtection();
-		});
-	</script>
+        // ===== 启动应用 =====
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化密码保护系统
+            initPasswordProtection();
+        });
+    </script>
 </body>
 </html>
