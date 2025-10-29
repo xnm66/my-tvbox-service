@@ -47,7 +47,7 @@
 			border-radius: 14px;
 			padding: 30px;
 			backdrop-filter: blur(15px);
-			box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+			box-shadow: 0 8px 20px rgba(0,0,0,0.2);
 			text-align: center;
 			max-width: 500px;
 			width: 90%;
@@ -71,7 +71,7 @@
 		.password-input {
 			width: 100%;
 			padding: 12px 16px;
-			border: 1px solid rgba(255,255,255,0.3);
+			border: 1px solid rgba(255,255,255,0.2);
 			border-radius: 8px;
 			background: rgba(255,255,255,0.1);
 			color: white;
@@ -169,7 +169,7 @@
 			max-height: 80vh;
 			overflow-y: auto;
 			backdrop-filter: blur(15px);
-			box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+			box-shadow: 0 8px 20px rgba(0,0,0,0.2);
 		}
 
 		.terms-modal-header {
@@ -178,7 +178,7 @@
 			align-items: center;
 			margin-bottom: 20px;
 			padding-bottom: 15px;
-			border-bottom: 1px solid rgba(255,255,255,0.2);
+			border-bottom: 1px solid rgba(255,255,255,0.1);
 		}
 
 		.terms-modal-title {
@@ -200,29 +200,30 @@
 			color: white;
 		}
 
-		/* 勾选动画按钮样式 */
+		/* 勾选动画按钮样式 - 方案一：简约风格 */
 		.agree-btn {
-			background: rgba(34, 197, 94, 0.8);
+			background: rgba(59, 130, 246, 0.8);
 			color: white;
 			border: none;
 			border-radius: 8px;
 			padding: 12px 24px;
 			font-size: 16px;
 			cursor: pointer;
-			transition: all 0.3s ease;
+			transition: all 0.5s ease;
 			width: 100%;
 			position: relative;
 			overflow: hidden;
 			font-weight: 600;
+			margin-top: 25px; /* 增加与内容的间距 */
 		}
 
 		.agree-btn:hover {
-			background: rgba(34, 197, 94, 0.9);
+			background: rgba(59, 130, 246, 0.9);
 			transform: translateY(-2px);
 		}
 
 		.agree-btn.checked {
-			background: rgba(34, 197, 94, 1);
+			background: rgba(34, 197, 94, 0.9);
 			padding-right: 50px;
 		}
 
@@ -230,15 +231,15 @@
 			position: absolute;
 			right: 20px;
 			top: 50%;
-			transform: translateY(-50%) scale(0);
+			transform: translateY(-50%) scale(0) rotate(-45deg);
 			width: 20px;
 			height: 20px;
-			transition: all 0.3s ease;
+			transition: all 0.5s ease;
 			opacity: 0;
 		}
 
 		.agree-btn.checked .checkmark {
-			transform: translateY(-50%) scale(1);
+			transform: translateY(-50%) scale(1) rotate(0deg);
 			opacity: 1;
 		}
 
@@ -250,11 +251,51 @@
 		}
 
 		.agree-btn .btn-text {
-			transition: all 0.3s ease;
+			transition: all 0.5s ease;
+			display: inline-block;
 		}
 
 		.agree-btn.checked .btn-text {
-			transform: translateX(-10px);
+			transform: translateX(-15px);
+		}
+
+		/* 方案二：脉冲动画风格 */
+		.agree-btn.pulse-effect.checked {
+			animation: pulse 0.6s ease;
+		}
+
+		@keyframes pulse {
+			0% { transform: scale(1); }
+			50% { transform: scale(1.05); }
+			100% { transform: scale(1); }
+		}
+
+		/* 方案三：填充动画风格 */
+		.agree-btn.fill-effect {
+			position: relative;
+			z-index: 1;
+		}
+
+		.agree-btn.fill-effect::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: -100%;
+			width: 100%;
+			height: 100%;
+			background: rgba(34, 197, 94, 0.9);
+			transition: left 0.5s ease;
+			z-index: -1;
+			border-radius: 8px;
+		}
+
+		.agree-btn.fill-effect.checked::before {
+			left: 0;
+		}
+
+		.agree-btn.fill-effect.checked {
+			color: white;
+			border-color: rgba(34, 197, 94, 0.9);
 		}
 
 		/* 隐藏主内容 */
@@ -267,6 +308,11 @@
 			text-align: center;
 			margin-bottom: 20px;
 			padding: 15px;
+			background: rgba(255, 255, 255, 0.08);
+			border: 1px solid rgba(255,255,255,0.15);
+			border-radius: 14px;
+			backdrop-filter: blur(15px);
+			box-shadow: 0 8px 20px rgba(0,0,0,0.2);
 		}
 		
 		.header h1 {
@@ -762,10 +808,21 @@
 					<p>本站按"原样"提供技术服务，不提供任何明示或暗示的担保。使用者应对使用本站产生的任何后果自行承担全部责任。本站不承担任何直接、间接、偶然或特殊的法律责任。若您使用本站，即表示您已阅读、理解并同意以上所有条款。</p>
 				</div>
 			</div>
+			<!-- 可以选择不同的动画效果，去掉注释即可切换 -->
 			<button class="agree-btn" id="agreeTermsBtn">
 				<span class="btn-text">我已阅读并同意</span>
 				<span class="checkmark"></span>
 			</button>
+			<!-- 
+			<button class="agree-btn pulse-effect" id="agreeTermsBtn">
+				<span class="btn-text">我已阅读并同意</span>
+				<span class="checkmark"></span>
+			</button>
+			<button class="agree-btn fill-effect" id="agreeTermsBtn">
+				<span class="btn-text">我已阅读并同意</span>
+				<span class="checkmark"></span>
+			</button>
+			-->
 		</div>
 	</div>
 
@@ -999,15 +1056,10 @@
 				// 添加勾选动画类
 				this.classList.add('checked');
 				
-				// 2秒后关闭弹窗
+				// 1.2秒后关闭弹窗，给用户足够时间看到动画
 				setTimeout(() => {
 					closeTermsModal();
-					
-					// 可选：重置按钮状态（如果需要重复使用）
-					// setTimeout(() => {
-					// 	this.classList.remove('checked');
-					// }, 1000);
-				}, 800);
+				}, 1200);
 			});
 		}
 
