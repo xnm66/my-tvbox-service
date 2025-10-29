@@ -42,8 +42,8 @@
 		}
 
 		.password-container {
-			background: rgba(255, 255, 255, 0.1);
-			border: 1px solid rgba(255,255,255,0.2);
+			background: rgba(255, 255, 255, 0.08);
+			border: 1px solid rgba(255,255,255,0.15);
 			border-radius: 14px;
 			padding: 30px;
 			backdrop-filter: blur(15px);
@@ -160,8 +160,8 @@
 			top: 50%;
 			left: 50%;
 			transform: translate(-50%, -50%);
-			background: rgba(26, 26, 46, 0.95);
-			border: 1px solid rgba(255,255,255,0.2);
+			background: rgba(255, 255, 255, 0.08);
+			border: 1px solid rgba(255,255,255,0.15);
 			border-radius: 14px;
 			padding: 25px;
 			width: 90%;
@@ -198,6 +198,63 @@
 
 		.terms-close-btn:hover {
 			color: white;
+		}
+
+		/* 勾选动画按钮样式 */
+		.agree-btn {
+			background: rgba(34, 197, 94, 0.8);
+			color: white;
+			border: none;
+			border-radius: 8px;
+			padding: 12px 24px;
+			font-size: 16px;
+			cursor: pointer;
+			transition: all 0.3s ease;
+			width: 100%;
+			position: relative;
+			overflow: hidden;
+			font-weight: 600;
+		}
+
+		.agree-btn:hover {
+			background: rgba(34, 197, 94, 0.9);
+			transform: translateY(-2px);
+		}
+
+		.agree-btn.checked {
+			background: rgba(34, 197, 94, 1);
+			padding-right: 50px;
+		}
+
+		.agree-btn .checkmark {
+			position: absolute;
+			right: 20px;
+			top: 50%;
+			transform: translateY(-50%) scale(0);
+			width: 20px;
+			height: 20px;
+			transition: all 0.3s ease;
+			opacity: 0;
+		}
+
+		.agree-btn.checked .checkmark {
+			transform: translateY(-50%) scale(1);
+			opacity: 1;
+		}
+
+		.agree-btn .checkmark::before {
+			content: "✓";
+			font-size: 16px;
+			color: white;
+			font-weight: bold;
+		}
+
+		.agree-btn .btn-text {
+			transition: all 0.3s ease;
+		}
+
+		.agree-btn.checked .btn-text {
+			transform: translateX(-10px);
 		}
 
 		/* 隐藏主内容 */
@@ -705,7 +762,10 @@
 					<p>本站按"原样"提供技术服务，不提供任何明示或暗示的担保。使用者应对使用本站产生的任何后果自行承担全部责任。本站不承担任何直接、间接、偶然或特殊的法律责任。若您使用本站，即表示您已阅读、理解并同意以上所有条款。</p>
 				</div>
 			</div>
-			<button class="close-btn" id="agreeTermsBtn">我已阅读并同意</button>
+			<button class="agree-btn" id="agreeTermsBtn">
+				<span class="btn-text">我已阅读并同意</span>
+				<span class="checkmark"></span>
+			</button>
 		</div>
 	</div>
 
@@ -931,6 +991,26 @@
 			document.getElementById('termsModal').style.display = 'none';
 		}
 
+		// ===== 勾选动画功能 =====
+		function setupAgreeButton() {
+			const agreeBtn = document.getElementById('agreeTermsBtn');
+			
+			agreeBtn.addEventListener('click', function() {
+				// 添加勾选动画类
+				this.classList.add('checked');
+				
+				// 2秒后关闭弹窗
+				setTimeout(() => {
+					closeTermsModal();
+					
+					// 可选：重置按钮状态（如果需要重复使用）
+					// setTimeout(() => {
+					// 	this.classList.remove('checked');
+					// }, 1000);
+				}, 800);
+			});
+		}
+
 		// ===== 密码保护初始化 =====
 		async function initPasswordProtection() {
 			// 先加载密码配置
@@ -943,7 +1023,9 @@
 				const submitButton = document.getElementById('passwordSubmit');
 				const termsLink = document.getElementById('showTermsLink');
 				const closeTermsBtn = document.getElementById('closeTermsModal');
-				const agreeTermsBtn = document.getElementById('agreeTermsBtn');
+				
+				// 设置同意按钮动画
+				setupAgreeButton();
 				
 				// 回车键提交
 				passwordInput.addEventListener('keypress', function(e) {
@@ -961,7 +1043,6 @@
 				// 条款弹窗事件
 				termsLink.addEventListener('click', openTermsModal);
 				closeTermsBtn.addEventListener('click', closeTermsModal);
-				agreeTermsBtn.addEventListener('click', closeTermsModal);
 				document.getElementById('termsModal').addEventListener('click', e => {
 					if (e.target === e.currentTarget) closeTermsModal();
 				});
