@@ -879,10 +879,14 @@
                 // 密码正确，保存到localStorage（7天有效期）
                 const expiryDate = new Date();
                 expiryDate.setDate(expiryDate.getDate() + 7);
-                localStorage.setItem(PASSWORD_KEY, JSON.stringify({
+                
+                const authData = {
                     token: btoa(CURRENT_PASSWORD + '_' + expiryDate.getTime()),
-                    expiry: expiryDate.getTime()
-                }));
+                    expiry: expiryDate.getTime(),
+                    created: Date.now()
+                };
+                
+                localStorage.setItem(PASSWORD_KEY, JSON.stringify(authData));
                 
                 // 显示主内容，隐藏密码层
                 document.getElementById('passwordProtection').style.display = 'none';
@@ -904,18 +908,29 @@
             if (savedAuth) {
                 try {
                     const authData = JSON.parse(savedAuth);
-                    // 检查token是否过期
-                    if (authData.expiry > Date.now()) {
-                        // Token有效，直接显示主内容
-                        document.getElementById('passwordProtection').style.display = 'none';
-                        document.getElementById('mainContent').style.display = 'block';
-                        return true;
-                    } else {
-                        // Token过期，清除
-                        localStorage.removeItem(PASSWORD_KEY);
+                    
+                    // 检查是否过期
+                    if (authData.expiry && authData.expiry > Date.now()) {
+                        // 验证token格式（增强安全性）
+                        try {
+                            const tokenParts = atob(authData.token).split('_');
+                            if (tokenParts.length === 2 && tokenParts[1] == authData.expiry) {
+                                // 验证通过，显示主内容
+                                document.getElementById('passwordProtection').style.display = 'none';
+                                document.getElementById('mainContent').style.display = 'block';
+                                return true;
+                            }
+                        } catch (e) {
+                            console.error('Token解析失败:', e);
+                        }
                     }
+                    
+                    // 清除无效token
+                    localStorage.removeItem(PASSWORD_KEY);
+                    console.log('清除无效的登录状态');
+                    
                 } catch (e) {
-                    // 数据损坏，清除
+                    console.error('解析登录信息失败:', e);
                     localStorage.removeItem(PASSWORD_KEY);
                 }
             }
