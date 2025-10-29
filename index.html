@@ -848,8 +848,9 @@
 
     <script>
         // ===== 密码配置 =====
-        const PASSWORD_KEY = "site_access_token"; // localStorage存储键名
-        let CURRENT_PASSWORD = "2025"; // 默认密码，会从配置文件加载
+        const PASSWORD_KEY = "site_access_token";
+        let CURRENT_PASSWORD = "2025";
+        let TOKEN_EXPIRY_DAYS = 7;
 
         // ===== 从配置文件加载密码 =====
         async function loadPasswordConfig() {
@@ -861,10 +862,16 @@
                 const passwordMatch = configText.match(/currentPassword:\s*"(\d+)"/);
                 if (passwordMatch && passwordMatch[1]) {
                     CURRENT_PASSWORD = passwordMatch[1];
-                    console.log('密码配置加载成功');
+                }
+                
+                // 从配置文件中提取有效期天数
+                const expiryMatch = configText.match(/tokenExpiry:\s*(\d+)/);
+                if (expiryMatch && expiryMatch[1]) {
+                    TOKEN_EXPIRY_DAYS = parseInt(expiryMatch[1]);
+                    console.log('密码配置加载成功，有效期:', TOKEN_EXPIRY_DAYS + '天');
                 }
             } catch (error) {
-                console.error('加载密码配置失败，使用默认密码');
+                console.error('加载密码配置失败，使用默认设置');
             }
         }
 
@@ -874,27 +881,25 @@
             const errorElement = document.getElementById('passwordError');
             const inputPassword = passwordInput.value.trim();
 
-            // 验证密码
             if (inputPassword === CURRENT_PASSWORD) {
-                // 密码正确，保存到localStorage（7天有效期）
+                // 密码正确，保存到localStorage（使用配置文件的有效期）
                 const expiryDate = new Date();
-                expiryDate.setDate(expiryDate.getDate() + 7);
+                expiryDate.setDate(expiryDate.getDate() + TOKEN_EXPIRY_DAYS);
                 
                 const authData = {
                     token: btoa(CURRENT_PASSWORD + '_' + expiryDate.getTime()),
                     expiry: expiryDate.getTime(),
-                    created: Date.now()
+                    created: Date.now(),
+                    expiryDays: TOKEN_EXPIRY_DAYS
                 };
                 
                 localStorage.setItem(PASSWORD_KEY, JSON.stringify(authData));
                 
-                // 显示主内容，隐藏密码层
                 document.getElementById('passwordProtection').style.display = 'none';
                 document.getElementById('mainContent').style.display = 'block';
-                init(); // 初始化主内容
+                init();
                 return true;
             } else {
-                // 密码错误提示
                 errorElement.style.display = 'block';
                 passwordInput.value = '';
                 passwordInput.focus();
@@ -911,11 +916,10 @@
                     
                     // 检查是否过期
                     if (authData.expiry && authData.expiry > Date.now()) {
-                        // 验证token格式（增强安全性）
+                        // 验证token格式
                         try {
                             const tokenParts = atob(authData.token).split('_');
                             if (tokenParts.length === 2 && tokenParts[1] == authData.expiry) {
-                                // 验证通过，显示主内容
                                 document.getElementById('passwordProtection').style.display = 'none';
                                 document.getElementById('mainContent').style.display = 'block';
                                 return true;
@@ -925,9 +929,7 @@
                         }
                     }
                     
-                    // 清除无效token
                     localStorage.removeItem(PASSWORD_KEY);
-                    console.log('清除无效的登录状态');
                     
                 } catch (e) {
                     console.error('解析登录信息失败:', e);
