@@ -21,7 +21,7 @@ export function onRequest(context) {
     const jsonData = {
       "urls": [
         {
-          "name": "🏠 FongMi智能线路",
+          "name": "🍎小苹果",
           "url": url.origin + "/data.json"
         }
       ]
