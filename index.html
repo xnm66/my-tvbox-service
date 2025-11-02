@@ -5,12 +5,14 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>小苹果影视 - 比你更懂你，片荒终结者</title>
 	<style>
+		/* 重置所有元素的默认样式 */
 		* {
 			margin: 0;
 			padding: 0;
 			box-sizing: border-box;
 		}
 		
+		/* 页面主体样式 */
 		body {
 			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 			width: 100%;
@@ -23,6 +25,7 @@
 			min-height: 100vh;
 		}
 		
+		/* 密码保护层样式 */
 		.password-protection {
 			position: fixed;
 			top: 0;
@@ -38,6 +41,7 @@
 			padding: 20px;
 		}
 
+		/* 密码输入容器样式 */
 		.password-container {
 			background: rgba(255, 255, 255, 0.08);
 			border: 1px solid rgba(255,255,255,0.15);
@@ -50,6 +54,7 @@
 			width: 90%;
 		}
 
+		/* 密码标题样式 */
 		.password-title {
 			color: white;
 			font-size: 1.5em;
@@ -57,6 +62,7 @@
 			font-weight: 600;
 		}
 
+		/* 密码描述文字样式 */
 		.password-desc {
 			color: rgba(255,255,255,0.8);
 			font-size: 0.9em;
@@ -64,6 +70,7 @@
 			line-height: 1.4;
 		}
 
+		/* 密码输入框样式 */
 		.password-input {
 			width: 100%;
 			padding: 12px 16px;
@@ -77,16 +84,19 @@
 			transition: all 0.3s ease;
 		}
 
+		/* 密码输入框聚焦状态 */
 		.password-input:focus {
 			outline: none;
 			border-color: rgba(59, 130, 246, 0.8);
 			background: rgba(255,255,255,0.15);
 		}
 
+		/* 密码输入框占位符文字 */
 		.password-input::placeholder {
 			color: rgba(255,255,255,0.5);
 		}
 
+		/* 密码提交按钮样式 */
 		.password-btn {
 			background: rgba(59, 130, 246, 0.8);
 			color: white;
@@ -99,11 +109,13 @@
 			width: 100%;
 		}
 
+		/* 密码提交按钮悬停效果 */
 		.password-btn:hover {
 			background: rgba(59, 130, 246, 1);
 			transform: translateY(-2px);
 		}
 
+		/* 密码错误提示样式 */
 		.password-error {
 			color: #f87171;
 			font-size: 0.85em;
@@ -111,6 +123,7 @@
 			display: none;
 		}
 
+		/* 密码提示文字样式 */
 		.password-hint {
 			color: rgba(255,255,255,0.6);
 			font-size: 0.8em;
@@ -118,6 +131,7 @@
 			line-height: 1.4;
 		}
 
+		/* 用户协议文字样式 */
 		.agreement-text {
 			font-size: 0.7em;
 			line-height: 1.2;
@@ -126,11 +140,13 @@
 			text-align: center;
 		}
 
+		/* 条款链接样式 */
 		.terms-link {
 			color: rgba(59, 130, 246, 0.9);
 			cursor: pointer;
 		}
 
+		/* 条款模态框样式 */
 		.terms-modal {
 			display: none;
 			position: fixed;
@@ -143,6 +159,7 @@
 			backdrop-filter: blur(5px);
 		}
 
+		/* 条款模态框内容样式 */
 		.terms-modal-content {
 			position: absolute;
 			top: 50%;
@@ -159,6 +176,7 @@
 			backdrop-filter: blur(15px);
 		}
 
+		/* 条款模态框头部样式 */
 		.terms-modal-header {
 			display: flex;
 			justify-content: space-between;
@@ -168,12 +186,14 @@
 			border-bottom: 1px solid rgba(255,255,255,0.2);
 		}
 
+		/* 条款模态框标题样式 */
 		.terms-modal-title {
 			color: white;
 			font-size: 1.2em;
 			font-weight: 600;
 		}
 
+		/* 条款模态框关闭按钮样式 */
 		.terms-close-btn {
 			background: none;
 			border: none;
@@ -182,17 +202,19 @@
 			cursor: pointer;
 		}
 
+		/* 主内容区域样式 */
 		.main-content {
 			display: none;
 		}
 		
-		/* 头部区域 */
+		/* 页面头部区域样式 */
 		.header {
 			text-align: center;
 			margin-bottom: 8px;
 			padding: 12px;
 		}
 		
+		/* 主标题样式 */
 		.main-title {
 			display: flex;
 			align-items: center;
@@ -201,6 +223,7 @@
 			margin-bottom: 15px;
 		}
 		
+		/* 主标题文字样式 */
 		.main-title h1 {
 			font-size: 1.8em;
 			margin: 0;
@@ -209,16 +232,19 @@
 			text-shadow: 0 2px 10px rgba(0,0,0,0.3);
 		}
 
+		/* 标题图标样式 */
 		.title-icon {
 			font-size: 1.6em;
 			color: white;
 		}
 		
+		/* 标语容器样式 */
 		.slogan-container {
 			text-align: center;
 			margin-bottom: 6px;
 		}
 
+		/* 主标语样式 */
 		.slogan-main {
 			font-size: 1.2em;
 			font-weight: 800;
@@ -228,6 +254,7 @@
 			line-height: 1.3;
 		}
 
+		/* 副标语样式 */
 		.slogan-sub {
 			font-size: 0.85em;
 			color: rgba(255,255,255,0.95);
@@ -235,6 +262,7 @@
 			line-height: 1.4;
 		}
 
+		/* 特性标签容器样式 */
 		.slogan-features {
 			display: flex;
 			justify-content: center;
@@ -243,6 +271,7 @@
 			margin-bottom: 4px;
 		}
 
+		/* 单个特性标签样式 */
 		.feature-item {
 			background: linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(139, 92, 246, 0.25));
 			color: #93c5fd;
@@ -256,11 +285,13 @@
 			white-space: nowrap;
 		}
 
+		/* 特性标签悬停效果 */
 		.feature-item:hover {
 			transform: translateY(-2px);
 			background: linear-gradient(135deg, rgba(59, 130, 246, 0.35), rgba(139, 92, 246, 0.35));
 		}
 		
+		/* 通用容器样式（配置区域、版权声明、模态框等） */
 		.container, .copyright, .modal-content, .qrcode-item {
 			background: rgba(255, 255, 255, 0.08);
 			border: 1px solid rgba(255,255,255,0.15);
@@ -269,16 +300,19 @@
 			box-shadow: 0 8px 20px rgba(0,0,0,0.2);
 		}
 		
+		/* 配置和下载容器样式 */
 		.container {
 			padding: 18px;
 			margin: 12px 0;
 		}
 		
+		/* 版权声明容器样式 */
 		.copyright {
 			padding: 15px;
 			margin: 12px 0;
 		}
 		
+		/* 版权标题样式 */
 		.copyright-title {
 			color: white;
 			font-size: 14px;
@@ -287,6 +321,7 @@
 			margin-bottom: 12px;
 		}
 		
+		/* 版权标题前后警告图标 */
 		.copyright-title::before,
 		.copyright-title::after {
 			content: "⚠️";
@@ -294,24 +329,28 @@
 			font-size: 12px;
 		}
 		
+		/* 版权内容样式 */
 		.copyright-content {
 			font-size: 11px;
 			color: rgba(255,255,255,0.85);
 			line-height: 1.5;
 		}
 		
+		/* 版权段落样式 */
 		.copyright-section {
 			margin-bottom: 10px;
 			padding-bottom: 10px;
 			border-bottom: 1px solid rgba(255,255,255,0.1);
 		}
 		
+		/* 最后一个版权段落样式 */
 		.copyright-section:last-child {
 			margin-bottom: 0;
 			padding-bottom: 0;
 			border-bottom: none;
 		}
 		
+		/* 版权段落标题样式 */
 		.copyright-section-title {
 			font-weight: 600;
 			margin-bottom: 5px;
@@ -319,6 +358,7 @@
 			font-size: 12px;
 		}
 		
+		/* URL框样式 */
 		.url-box {
 			background: rgba(255, 255, 255, 0.1);
 			border: 1px solid rgba(255,255,255,0.2);
@@ -329,6 +369,7 @@
 			text-align: center;
 		}
 		
+		/* URL标签样式 */
 		.url-label {
 			font-size: 12px;
 			color: rgba(255,255,255,0.9);
@@ -336,6 +377,7 @@
 			display: block;
 		}
 		
+		/* URL文字样式 */
 		.url {
 			font-family: 'Courier New', monospace;
 			font-size: 13px;
@@ -351,11 +393,13 @@
 			transition: all 0.3s ease;
 		}
 		
+		/* URL悬停效果 */
 		.url:hover {
 			background: rgba(255,255,255,0.15);
 			transform: translateY(-1px);
 		}
 		
+		/* URL复制成功状态 */
 		.url.copied::after {
 			content: "复制成功";
 			position: absolute;
@@ -369,6 +413,7 @@
 			border-radius: 4px;
 		}
 		
+		/* 操作提示文字样式 */
 		.action-hint {
 			font-size: 10px;
 			color: rgba(255,255,255,0.6);
@@ -376,7 +421,7 @@
 			margin-top: 8px;
 		}
 		
-		/* 下载区域样式 - 保持原有样式不变 */
+		/* 下载项样式 */
 		.download-item {
 			background: rgba(255, 255, 255, 0.1);
 			border: 1px solid rgba(255,255,255,0.2);
@@ -388,11 +433,13 @@
 			transition: all 0.3s ease;
 		}
 		
+		/* 下载项悬停效果 */
 		.download-item:hover {
 			transform: translateY(-2px);
 			background: rgba(255, 255, 255, 0.15);
 		}
 		
+		/* 下载网格布局 */
 		.download-grid {
 			display: grid;
 			grid-template-columns: 1fr 1fr;
@@ -400,6 +447,7 @@
 			margin: 12px 0;
 		}
 		
+		/* 下载状态指示器 */
 		.download-item.downloading::after,
 		.download-item.developing::after {
 			content: attr(data-status);
@@ -412,20 +460,24 @@
 			border-radius: 4px;
 		}
 		
+		/* 下载中状态样式 */
 		.download-item.downloading::after {
 			background: rgba(59, 130, 246, 0.6);
 		}
 		
+		/* 开发中状态样式 */
 		.download-item.developing::after {
 			background: rgba(156, 163, 175, 0.6);
 		}
 		
+		/* 下载图标样式 */
 		.download-icon {
 			font-size: 1.8em;
 			margin-bottom: 8px;
 			display: block;
 		}
 		
+		/* 下载项标题样式 */
 		.download-item h4 {
 			margin: 4px 0 6px 0;
 			font-size: 14px;
@@ -433,18 +485,21 @@
 			color: white;
 		}
 		
+		/* 下载项描述样式 */
 		.download-desc {
 			font-size: 11px;
 			color: rgba(255,255,255,0.8);
 			line-height: 1.3;
 		}
 		
+		/* 赞助区域样式 */
 		.simple-sponsor {
 			text-align: center;
 			margin: 15px 0;
 			padding: 12px;
 		}
 		
+		/* 赞助按钮和关闭按钮样式 */
 		.sponsor-btn, .close-btn {
 			background: transparent;
 			color: rgba(255,255,255,0.7);
@@ -456,12 +511,14 @@
 			padding: 8px 16px;
 		}
 		
+		/* 按钮悬停效果 */
 		.sponsor-btn:hover, .close-btn:hover {
 			color: rgba(255,255,255,0.9);
 			border-color: rgba(255,255,255,0.3);
 			background: rgba(255,255,255,0.05);
 		}
 		
+		/* 赞助按钮特殊样式 */
 		.sponsor-btn {
 			display: inline-flex;
 			align-items: center;
@@ -469,11 +526,13 @@
 			gap: 6px;
 		}
 		
+		/* 关闭按钮特殊样式 */
 		.close-btn {
 			margin-top: 8px;
 			width: 100%;
 		}
 		
+		/* 赞助模态框样式 */
 		.sponsor-modal {
 			display: none;
 			position: fixed;
@@ -484,6 +543,7 @@
 			z-index: 1000;
 		}
 		
+		/* 模态框内容样式 */
 		.modal-content {
 			position: absolute;
 			top: 50%;
@@ -495,10 +555,12 @@
 			text-align: center;
 		}
 		
+		/* 模态框头部样式 */
 		.modal-header {
 			margin-bottom: 15px;
 		}
 		
+		/* 模态框标题样式 */
 		.modal-header h3 {
 			color: white;
 			font-size: 1.2em;
@@ -506,20 +568,24 @@
 			font-weight: 600;
 		}
 		
+		/* 模态框描述文字样式 */
 		.modal-header p {
 			color: rgba(255,255,255,0.8);
 			font-size: 0.85em;
 			line-height: 1.4;
 		}
 		
+		/* 二维码容器样式 */
 		.qrcode-container {
 			margin: 15px 0;
 		}
 		
+		/* 二维码项样式 */
 		.qrcode-item {
 			padding: 15px;
 		}
 		
+		/* 二维码标题样式 */
 		.qrcode-title {
 			display: flex;
 			align-items: center;
@@ -531,6 +597,7 @@
 			font-size: 0.9em;
 		}
 		
+		/* 二维码图片容器样式 */
 		.qrcode-img {
 			width: 180px;
 			height: 180px;
@@ -540,6 +607,7 @@
 			overflow: hidden;
 		}
 		
+		/* 赞助图片样式 */
 		.sponsor-image {
 			width: 100%;
 			height: 100%;
@@ -547,6 +615,7 @@
 			border-radius: 6px;
 		}
 		
+		/* 二维码描述文字样式 */
 		.qrcode-desc {
 			margin-top: 10px;
 			font-size: 11px;
@@ -554,6 +623,7 @@
 			line-height: 1.4;
 		}
 		
+		/* 页脚样式 */
 		.footer {
 			text-align: center;
 			margin-top: 15px;
@@ -563,6 +633,7 @@
 			color: rgba(255,255,255,0.7);
 		}
 		
+		/* 小标题样式 */
 		h3 {
 			color: white;
 			margin-bottom: 12px;
@@ -571,6 +642,7 @@
 			text-align: center;
 		}
 		
+		/* 移动端响应式设计 */
 		@media (max-width: 480px) {
 			body {
 				padding: 15px;
@@ -644,7 +716,7 @@
 			<div id="passwordError" class="password-error">密码错误，请重新输入</div>
 			<div class="password-hint">密码会定期更换，请勿外传</div>
 			<div class="agreement-text">
-				登录即表示您已阅读、理解并同意<span class="terms-link" id="showTermsLink">《使用条款和免责声明》</span>
+				登录即表示您已阅读、理解并同意👉<span class="terms-link" id="showTermsLink">《使用条款和免责声明》</span>
 			</div>
 		</div>
 	</div>
@@ -740,32 +812,11 @@
 
 		<!-- 简化后的重要声明区域 -->
 		<div class="copyright">
-			<div class="copyright-title">使用须知</div>
+			<div class="copyright-title">重要声明</div>
 			<div class="copyright-content">
-				<div class="copyright-section">
-					<div class="copyright-section-title">📱 软件来源</div>
-					<p>本站软件基于GitHub开源项目，仅供技术学习研究使用。</p>
-				</div>
-				
-				<div class="copyright-section">
-					<div class="copyright-section-title">🔗 技术来源</div>
-					<p>本站技术信息来源于网络公开资源，仅用于技术交流演示。</p>
-				</div>
-				
-				<div class="copyright-section">
-					<div class="copyright-section-title">⚖️ 使用条款</div>
-					<p>请严格遵守：仅限个人学习使用，禁止商业用途，下载后请及时删除，支持正版资源。</p>
-				</div>
-				
-				<div class="copyright-section">
-					<div class="copyright-section-title">🛡️ 免责声明</div>
-					<p>本站仅提供技术演示服务，使用者需对自身行为承担全部法律责任。</p>
-				</div>
-				
-				<div class="copyright-section">
-					<div class="copyright-section-title">📧 联系我们</div>
-					<p>版权问题请联系：xiaopgys@163.com</p>
-				</div>
+				<p>⚠️ 本站内容仅供技术学习交流，使用者应确保行为合法性并支持正版资源。</p>
+				<p>⚠️ 详细使用条款请参考登录时的《使用条款和免责声明》。</p>
+				<p>📧 版权问题请联系：xiaopgys@163.com</p>
 			</div>
 		</div>
 
@@ -791,9 +842,8 @@
 							<span>支持作者</span>
 						</div>
 						<div class="qrcode-img">
-							<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#f5f5f5;color:#666;font-size:12px;">
-								微信赞赏码
-							</div>
+							<!-- 修复微信赞赏码图片路径 -->
+							<img src="./sponsor/wechat-sponsor.png" alt="微信赞赏码" class="sponsor-image">
 						</div>
 						<div class="qrcode-desc">使用微信扫描赞赏码支持作者</div>
 					</div>
@@ -810,11 +860,24 @@
 	</div>
 
 	<script>
-		// JavaScript代码保持不变
-		const PASSWORD_KEY = "site_access_token";
-		let CURRENT_PASSWORD = "2025";
-		let TOKEN_EXPIRY_DAYS = 7;
+		// 配置常量
+		const PASSWORD_KEY = "site_access_token"; // 本地存储的键名
+		let CURRENT_PASSWORD = "2025"; // 默认密码
+		let TOKEN_EXPIRY_DAYS = 7; // token过期天数
 
+		// 应用配置
+		const config = {
+			baseUrl: window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1),
+			downloadLinks: {
+				player: 'https://m997.lanzoue.com/iziv137ai40d', // 播放器下载链接
+				tvbox: '' // TVBox下载链接（暂空）
+			}
+		};
+
+		/**
+		 * 加载密码配置
+		 * 从外部文件加载密码配置，如果失败则使用默认配置
+		 */
 		async function loadPasswordConfig() {
 			try {
 				const response = await fetch('./password-worker.js');
@@ -832,12 +895,17 @@
 			}
 		}
 
+		/**
+		 * 检查密码是否正确
+		 * @returns {boolean} 密码是否正确
+		 */
 		function checkPassword() {
 			const passwordInput = document.getElementById('passwordInput');
 			const errorElement = document.getElementById('passwordError');
 			const inputPassword = passwordInput.value.trim();
 
 			if (inputPassword === CURRENT_PASSWORD) {
+				// 密码正确，设置认证信息
 				const expiryDate = new Date();
 				expiryDate.setDate(expiryDate.getDate() + TOKEN_EXPIRY_DAYS);
 				const authData = {
@@ -852,6 +920,7 @@
 				init();
 				return true;
 			} else {
+				// 密码错误，显示错误信息
 				errorElement.style.display = 'block';
 				passwordInput.value = '';
 				passwordInput.focus();
@@ -859,6 +928,10 @@
 			}
 		}
 
+		/**
+		 * 检查是否存在有效的认证信息
+		 * @returns {boolean} 是否存在有效认证
+		 */
 		function checkExistingAuth() {
 			const savedAuth = localStorage.getItem(PASSWORD_KEY);
 			if (savedAuth) {
@@ -885,33 +958,50 @@
 			return false;
 		}
 
+		/**
+		 * 打开条款模态框
+		 */
 		function openTermsModal() {
 			document.getElementById('termsModal').style.display = 'block';
 		}
 
+		/**
+		 * 关闭条款模态框
+		 */
 		function closeTermsModal() {
 			document.getElementById('termsModal').style.display = 'none';
 		}
 
+		/**
+		 * 初始化密码保护系统
+		 */
 		async function initPasswordProtection() {
 			await loadPasswordConfig();
 			if (!checkExistingAuth()) {
+				// 绑定密码页面事件监听器
 				const passwordInput = document.getElementById('passwordInput');
 				const submitButton = document.getElementById('passwordSubmit');
 				const termsLink = document.getElementById('showTermsLink');
 				const closeTermsBtn = document.getElementById('closeTermsModal');
 				const agreeTermsBtn = document.getElementById('agreeTermsBtn');
 				
+				// 回车键提交
 				passwordInput.addEventListener('keypress', function(e) {
 					if (e.key === 'Enter') checkPassword();
 				});
+				// 点击提交按钮
 				submitButton.addEventListener('click', checkPassword);
+				// 限制输入为数字
 				passwordInput.addEventListener('input', function(e) {
 					this.value = this.value.replace(/[^0-9]/g, '');
 				});
+				// 条款链接点击事件
 				termsLink.addEventListener('click', openTermsModal);
+				// 关闭按钮点击事件
 				closeTermsBtn.addEventListener('click', closeTermsModal);
+				// 同意按钮点击事件
 				agreeTermsBtn.addEventListener('click', closeTermsModal);
+				// 点击模态框背景关闭
 				document.getElementById('termsModal').addEventListener('click', e => {
 					if (e.target === e.currentTarget) closeTermsModal();
 				});
@@ -921,26 +1011,29 @@
 			}
 		}
 
-		const config = {
-			baseUrl: window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1),
-			downloadLinks: {
-				player: 'https://m997.lanzoue.com/iziv137ai40d',
-				tvbox: ''
-			}
-		};
-
+		/**
+		 * 初始化主内容
+		 */
 		function init() {
 			document.getElementById('serviceUrl').textContent = config.baseUrl;
 			bindEvents();
 		}
 
+		/**
+		 * 绑定事件监听器
+		 */
 		function bindEvents() {
+			// URL复制功能
 			document.querySelectorAll('.url').forEach(url => {
 				url.addEventListener('click', copyUrl);
 			});
+			
+			// 下载功能
 			document.querySelectorAll('.download-item').forEach(item => {
 				item.addEventListener('click', handleDownload);
 			});
+			
+			// 赞助模态框
 			document.querySelector('.sponsor-btn').addEventListener('click', openSponsorModal);
 			document.getElementById('closeSponsorBtn').addEventListener('click', closeSponsorModal);
 			document.getElementById('sponsorModal').addEventListener('click', e => {
@@ -948,6 +1041,10 @@
 			});
 		}
 
+		/**
+		 * 复制URL到剪贴板
+		 * @param {Event} e 点击事件
+		 */
 		async function copyUrl(e) {
 			const element = e.target;
 			const text = element.textContent;
@@ -960,11 +1057,16 @@
 			}
 		}
 
+		/**
+		 * 处理下载操作
+		 * @param {Event} e 点击事件
+		 */
 		function handleDownload(e) {
 			const element = e.currentTarget;
 			const type = element.dataset.type;
 			const url = config.downloadLinks[type];
 			if (url && url.trim() !== '') {
+				// 有下载链接的情况
 				element.classList.add('downloading');
 				element.dataset.status = '下载中';
 				setTimeout(() => {
@@ -975,6 +1077,7 @@
 					}, 3000);
 				}, 500);
 			} else {
+				// 无下载链接的情况（开发中）
 				element.classList.add('developing');
 				element.dataset.status = '开发中';
 				setTimeout(() => {
@@ -984,14 +1087,21 @@
 			}
 		}
 
+		/**
+		 * 打开赞助模态框
+		 */
 		function openSponsorModal() {
 			document.getElementById('sponsorModal').style.display = 'block';
 		}
 
+		/**
+		 * 关闭赞助模态框
+		 */
 		function closeSponsorModal() {
 			document.getElementById('sponsorModal').style.display = 'none';
 		}
 
+		// 页面加载完成后初始化密码保护系统
 		document.addEventListener('DOMContentLoaded', function() {
 			initPasswordProtection();
 		});
