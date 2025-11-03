@@ -6,64 +6,116 @@
 	<title>小苹果影视 - 比你更懂你，片荒终结者</title>
 	<style>
 		* { margin: 0; padding: 0; box-sizing: border-box; }
-		
 		body {
 			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-			width: 100%;
-			min-width: 320px;
-			max-width: 800px;
-			margin: 0 auto;
-			padding: 20px;
-			background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-			color: #e2e8f0;
-			min-height: 100vh;
+			width: 100%; min-width: 320px; max-width: 800px; margin: 0 auto; padding: 20px;
+			background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: #e2e8f0; min-height: 100vh;
 		}
 		
+		/* 密码保护 */
 		.password-protection {
-			position: fixed;
-			top: 0; left: 0;
-			width: 100%; height: 100%;
+			position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999;
 			background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-			display: flex; align-items: center; justify-content: center;
-			z-index: 9999; flex-direction: column; padding: 20px;
+			display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 20px;
 		}
-
 		.password-container {
-			background: rgba(255, 255, 255, 0.08);
-			border: 1px solid rgba(255,255,255,0.15);
-			border-radius: 14px; padding: 30px;
-			backdrop-filter: blur(15px);
-			box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+			background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 14px;
+			padding: 30px; backdrop-filter: blur(15px); box-shadow: 0 8px 20px rgba(0,0,0,0.2);
 			text-align: center; max-width: 500px; width: 90%;
 		}
-
 		.password-title { color: white; font-size: 1.5em; margin-bottom: 10px; font-weight: 600; }
 		.password-desc { color: rgba(255,255,255,0.8); font-size: 0.9em; margin-bottom: 20px; line-height: 1.4; }
-		.password-input { width: 100%; padding: 12px 16px; border: 1px solid rgba(255,255,255,0.3); border-radius: 8px; background: rgba(255,255,255,0.1); color: white; font-size: 16px; margin-bottom: 15px; text-align: center; transition: all 0.3s ease; }
+		.password-input {
+			width: 100%; padding: 12px 16px; border: 1px solid rgba(255,255,255,0.3); border-radius: 8px;
+			background: rgba(255,255,255,0.1); color: white; font-size: 16px; margin-bottom: 15px; text-align: center;
+			transition: all 0.3s ease;
+		}
 		.password-input:focus { outline: none; border-color: rgba(59, 130, 246, 0.8); background: rgba(255,255,255,0.15); }
 		.password-input::placeholder { color: rgba(255,255,255,0.5); }
-		.password-btn { background: rgba(59, 130, 246, 0.8); color: white; border: none; border-radius: 8px; padding: 12px 24px; font-size: 16px; cursor: pointer; transition: all 0.3s ease; width: 100%; }
+		.password-btn {
+			background: rgba(59, 130, 246, 0.8); color: white; border: none; border-radius: 8px;
+			padding: 12px 24px; font-size: 16px; cursor: pointer; transition: all 0.3s ease; width: 100%;
+		}
 		.password-btn:hover { background: rgba(59, 130, 246, 1); transform: translateY(-2px); }
 		.password-error { color: #f87171; font-size: 0.85em; margin-top: 10px; display: none; }
 		.password-hint { color: rgba(255,255,255,0.6); font-size: 0.8em; margin-top: 15px; line-height: 1.4; }
 		.agreement-text { font-size: 0.7em; line-height: 1.2; margin-top: 12px; color: rgba(255,255,255,0.7); text-align: center; }
 		.terms-link { color: rgba(59, 130, 246, 0.9); cursor: pointer; }
 
+		/* 弹窗基础样式 - 全部没有背景 */
+		.terms-modal, .complaint-modal, .sponsor-modal { 
+			display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000; 
+		}
+		.modal-content {
+			position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+			background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 14px;
+			padding: 20px; width: 90%; max-width: 300px; text-align: center;
+			backdrop-filter: blur(15px); box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+		}
+		.modal-header { margin-bottom: 15px; }
+		.modal-header h3 { color: white; font-size: 1.2em; margin-bottom: 6px; font-weight: 600; }
+		.modal-header p { color: rgba(255,255,255,0.8); font-size: 0.85em; line-height: 1.4; }
+
+		/* 自定义提示框样式 - 黑色背景 */
+		.custom-alert {
+			position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+			background: rgba(0, 0, 0, 0.9); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px;
+			padding: 20px 25px; backdrop-filter: blur(10px); box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+			color: white; text-align: center; z-index: 10002; max-width: 280px;
+			animation: fadeIn 0.3s ease;
+		}
+		.custom-alert h4 { margin-bottom: 10px; font-size: 1.1em; font-weight: 600; }
+		.custom-alert p { color: rgba(255,255,255,0.9); font-size: 0.9em; line-height: 1.4; margin-bottom: 15px; }
+		.custom-alert .alert-btn {
+			background: rgba(59, 130, 246, 0.8); color: white; border: none; border-radius: 6px;
+			padding: 8px 16px; font-size: 0.9em; cursor: pointer; transition: all 0.3s ease; width: 100%;
+		}
+		.custom-alert .alert-btn:hover { background: rgba(59, 130, 246, 1); }
+
+		/* 错误提示样式 - 黑色背景，2秒消失 */
+		.error-toast {
+			position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+			background: rgba(0, 0, 0, 0.9); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px;
+			padding: 20px 25px; backdrop-filter: blur(10px); box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+			color: white; text-align: center; z-index: 10002; max-width: 280px;
+			animation: fadeInOut 2s ease; font-weight: 600;
+		}
+		.error-toast h4 { margin-bottom: 10px; font-size: 1.1em; color: #f87171; }
+		.error-toast p { color: rgba(255,255,255,0.9); font-size: 0.9em; line-height: 1.4; }
+
+		@keyframes fadeIn {
+			from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+			to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+		}
+		@keyframes fadeInOut {
+			0% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+			20% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+			80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+			100% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+		}
+
+		/* 主内容 */
 		.main-content { display: none; }
-		
 		.header { text-align: center; margin-bottom: 8px; padding: 12px; }
 		.main-title { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 15px; }
 		.main-title h1 { font-size: 1.8em; margin: 0; color: white; font-weight: 700; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
 		.title-icon { font-size: 1.6em; color: white; }
-		
 		.slogan-container { text-align: center; margin-bottom: 6px; }
 		.slogan-main { font-size: 1.2em; font-weight: 800; color: #ffd700; margin-bottom: 6px; text-shadow: 0 2px 8px rgba(255,215,0,0.3); line-height: 1.3; }
 		.slogan-sub { font-size: 0.85em; color: rgba(255,255,255,0.95); margin-bottom: 12px; line-height: 1.4; }
 		.slogan-features { display: flex; justify-content: center; gap: 6px; flex-wrap: nowrap; margin-bottom: 4px; }
-		.feature-item { background: linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(139, 92, 246, 0.25)); color: #93c5fd; padding: 3px 6px; border-radius: 8px; font-size: 0.65em; font-weight: 600; border: 1px solid rgba(255,255,255,0.15); backdrop-filter: blur(10px); transition: all 0.3s ease; white-space: nowrap; }
+		.feature-item {
+			background: linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(139, 92, 246, 0.25)); color: #93c5fd;
+			padding: 3px 6px; border-radius: 8px; font-size: 0.65em; font-weight: 600; border: 1px solid rgba(255,255,255,0.15);
+			backdrop-filter: blur(10px); transition: all 0.3s ease; white-space: nowrap;
+		}
 		.feature-item:hover { transform: translateY(-2px); background: linear-gradient(135deg, rgba(59, 130, 246, 0.35), rgba(139, 92, 246, 0.35)); }
 		
-		.container, .copyright, .modal-content, .qrcode-item { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 14px; backdrop-filter: blur(15px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+		/* 内容区块 */
+		.container, .copyright, .qrcode-item {
+			background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 14px;
+			backdrop-filter: blur(15px); box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+		}
 		.container { padding: 18px; margin: 12px 0; }
 		.copyright { padding: 15px; margin: 12px 0; }
 		.copyright-title { color: white; font-size: 14px; font-weight: 600; text-align: center; margin-bottom: 12px; }
@@ -73,35 +125,53 @@
 		.copyright-section:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
 		.copyright-section-title { font-weight: 600; margin-bottom: 5px; color: white; font-size: 12px; }
 		
-		.url-box { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; transition: all 0.3s ease; padding: 15px; margin: 12px 0; text-align: center; }
+		/* URL和下载 */
+		.url-box {
+			background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 10px;
+			transition: all 0.3s ease; padding: 15px; margin: 12px 0; text-align: center;
+		}
 		.url-label { font-size: 12px; color: rgba(255,255,255,0.9); margin-bottom: 8px; display: block; }
-		.url { font-family: 'Courier New', monospace; font-size: 13px; color: white; word-break: break-all; margin: 8px 0; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; position: relative; transition: all 0.3s ease; }
+		.url {
+			font-family: 'Courier New', monospace; font-size: 13px; color: white; word-break: break-all;
+			margin: 8px 0; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px;
+			border: 1px solid rgba(255,255,255,0.2); cursor: pointer; position: relative; transition: all 0.3s ease;
+		}
 		.url:hover { background: rgba(255,255,255,0.15); transform: translateY(-1px); }
-		.url.copied::after { content: "复制成功"; position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-size: 10px; color: white; background: rgba(34, 197, 94, 0.6); padding: 2px 6px; border-radius: 4px; }
+		.url.copied::after {
+			content: "复制成功"; position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+			font-size: 10px; color: white; background: rgba(34, 197, 94, 0.6); padding: 2px 6px; border-radius: 4px;
+		}
 		.action-hint { font-size: 10px; color: rgba(255,255,255,0.6); text-align: center; margin-top: 8px; }
 		
 		.download-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; }
-		.download-item { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; padding: 15px; text-align: center; cursor: pointer; position: relative; transition: all 0.3s ease; }
+		.download-item {
+			background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 10px;
+			padding: 15px; text-align: center; cursor: pointer; position: relative; transition: all 0.3s ease;
+		}
 		.download-item:hover { transform: translateY(-2px); background: rgba(255, 255, 255, 0.15); }
-		.download-item.downloading::after, .download-item.developing::after { content: attr(data-status); position: absolute; top: 8px; right: 8px; font-size: 10px; color: white; padding: 2px 6px; border-radius: 4px; }
+		.download-item.downloading::after, .download-item.developing::after {
+			content: attr(data-status); position: absolute; top: 8px; right: 8px; font-size: 10px; color: white;
+			padding: 2px 6px; border-radius: 4px;
+		}
 		.download-item.downloading::after { background: rgba(59, 130, 246, 0.6); }
 		.download-item.developing::after { background: rgba(156, 163, 175, 0.6); }
 		.download-icon { font-size: 1.8em; margin-bottom: 8px; display: block; }
 		.download-item h4 { margin: 4px 0 6px 0; font-size: 14px; font-weight: 600; color: white; }
 		.download-desc { font-size: 11px; color: rgba(255,255,255,0.8); line-height: 1.3; }
 		
+		/* 按钮 */
 		.simple-sponsor { text-align: center; margin: 15px 0; padding: 12px; }
-		.sponsor-btn, .close-btn { background: transparent; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; cursor: pointer; transition: all 0.3s ease; font-size: 13px; padding: 8px 16px; }
-		.sponsor-btn:hover, .close-btn:hover { color: rgba(255,255,255,0.9); border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.05); }
+		.sponsor-btn, .close-btn {
+			background: transparent; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.2);
+			border-radius: 6px; cursor: pointer; transition: all 0.3s ease; font-size: 13px; padding: 8px 16px;
+		}
+		.sponsor-btn:hover, .close-btn:hover {
+			color: rgba(255,255,255,0.9); border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.05);
+		}
 		.sponsor-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
 		.close-btn { margin-top: 8px; width: 100%; }
 		
-		.sponsor-modal, .complaint-modal, .terms-modal, .admin-panel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000; }
-		.modal-content { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px; width: 90%; max-width: 300px; text-align: center; }
-		.modal-header { margin-bottom: 15px; }
-		.modal-header h3 { color: white; font-size: 1.2em; margin-bottom: 6px; font-weight: 600; }
-		.modal-header p { color: rgba(255,255,255,0.8); font-size: 0.85em; line-height: 1.4; }
-		
+		/* 二维码 */
 		.qrcode-container { margin: 15px 0; }
 		.qrcode-item { padding: 15px; }
 		.qrcode-title { display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 10px; color: white; font-weight: 500; font-size: 0.9em; }
@@ -110,46 +180,44 @@
 		.qrcode-desc { margin-top: 10px; font-size: 11px; color: rgba(255,255,255,0.6); line-height: 1.4; }
 		
 		.footer { text-align: center; margin-top: 15px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.2); font-size: 11px; color: rgba(255,255,255,0.7); }
-		
 		h3 { color: white; margin-bottom: 12px; font-size: 1em; font-weight: 600; text-align: center; }
 		
+		/* 表单 */
 		.complaint-form { margin-top: 15px; }
 		.form-group { margin-bottom: 15px; text-align: left; }
 		.form-label { display: block; margin-bottom: 5px; font-size: 0.85em; color: rgba(255,255,255,0.9); }
-		.form-input, .form-textarea { width: 100%; padding: 10px 12px; border: 1px solid rgba(255,255,255,0.3); border-radius: 8px; background: rgba(255,255,255,0.1); color: white; font-size: 14px; transition: all 0.3s ease; }
+		.form-input, .form-textarea {
+			width: 100%; padding: 10px 12px; border: 1px solid rgba(255,255,255,0.3); border-radius: 8px;
+			background: rgba(255,255,255,0.1); color: white; font-size: 14px; transition: all 0.3s ease;
+		}
 		.form-input:focus, .form-textarea:focus { outline: none; border-color: rgba(59, 130, 246, 0.8); background: rgba(255,255,255,0.15); }
 		.form-input::placeholder, .form-textarea::placeholder { color: rgba(255,255,255,0.5); }
 		.form-textarea { resize: vertical; min-height: 100px; }
-		.submit-btn { background: rgba(59, 130, 246, 0.8); color: white; border: none; border-radius: 8px; padding: 12px 24px; font-size: 14px; cursor: pointer; transition: all 0.3s ease; width: 100%; }
+		.submit-btn {
+			background: rgba(59, 130, 246, 0.8); color: white; border: none; border-radius: 8px;
+			padding: 12px 24px; font-size: 14px; cursor: pointer; transition: all 0.3s ease; width: 100%;
+		}
 		.submit-btn:hover { background: rgba(59, 130, 246, 1); transform: translateY(-2px); }
 		
-		.custom-alert, .error-toast {
-			position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-			background: rgba(0, 0, 0, 0.9); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px;
-			padding: 20px 25px; backdrop-filter: blur(10px); box-shadow: 0 8px 25px rgba(0,0,0,0.6);
-			color: white; text-align: center; z-index: 10002; max-width: 280px;
+		/* 管理面板 */
+		.admin-panel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10001; backdrop-filter: blur(10px); }
+		.admin-content {
+			position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+			background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border: 1px solid rgba(255,255,255,0.15);
+			border-radius: 14px; padding: 25px; width: 90%; max-width: 400px; max-height: 80vh; overflow-y: auto;
+			backdrop-filter: blur(15px);
 		}
-		.custom-alert { animation: fadeIn 0.3s ease; }
-		.error-toast { animation: fadeInOut 2s ease; font-weight: 600; }
-		.custom-alert h4 { margin-bottom: 10px; font-size: 1.1em; font-weight: 600; }
-		.custom-alert p { color: rgba(255,255,255,0.9); font-size: 0.9em; line-height: 1.4; margin-bottom: 15px; }
-		.error-toast h4 { margin-bottom: 10px; font-size: 1.1em; color: #f87171; }
-		.error-toast p { color: rgba(255,255,255,0.9); font-size: 0.9em; line-height: 1.4; }
-		.custom-alert .alert-btn { background: rgba(59, 130, 246, 0.8); color: white; border: none; border-radius: 6px; padding: 8px 16px; font-size: 0.9em; cursor: pointer; transition: all 0.3s ease; width: 100%; }
-		.custom-alert .alert-btn:hover { background: rgba(59, 130, 246, 1); }
-
-		.admin-panel { background: rgba(0,0,0,0.8); z-index: 10001; backdrop-filter: blur(10px); }
-		.admin-content { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border: 1px solid rgba(255,255,255,0.15); border-radius: 14px; padding: 25px; width: 90%; max-width: 400px; max-height: 80vh; overflow-y: auto; backdrop-filter: blur(15px); }
 		.admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.2); }
 		.admin-title { color: white; font-size: 1.2em; font-weight: 600; }
 		.admin-close-btn { background: none; border: none; color: rgba(255,255,255,0.7); font-size: 1.5em; cursor: pointer; }
 		.admin-menu { display: grid; gap: 10px; margin-bottom: 20px; }
-		.admin-btn { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 12px; color: white; cursor: pointer; transition: all 0.3s ease; text-align: center; }
+		.admin-btn {
+			background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px;
+			padding: 12px; color: white; cursor: pointer; transition: all 0.3s ease; text-align: center;
+		}
 		.admin-btn:hover { background: rgba(255, 255, 255, 0.15); transform: translateY(-2px); }
 
-		@keyframes fadeIn { from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
-		@keyframes fadeInOut { 0% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); } 20% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 80% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); } }
-		
+		/* 响应式 */
 		@media (max-width: 480px) {
 			body { padding: 15px; }
 			.main-title h1 { font-size: 1.6em; }
@@ -348,20 +416,254 @@
 	</div>
 
 	<script>
-		// 从外部配置文件读取密码
-		let PASSWORD_CONFIG = { CURRENT_PASSWORD: "2025", TOKEN_EXPIRY_DAYS: 7 };
-		let ADMIN_CONFIG = { ADMIN_PASSWORD: "admin888" };
+		// 密码配置 - 从外部文件读取
+		let PASSWORD_CONFIG = { 
+			CURRENT_PASSWORD: "2025",  // 默认值，会被外部配置覆盖
+			TOKEN_EXPIRY_DAYS: 7 
+		};
+		
+		let ADMIN_CONFIG = { 
+			ADMIN_PASSWORD: "admin888"  // 默认值，会被外部配置覆盖
+		};
 
-		// 系统配置
+		// 动态加载外部密码配置
+		function loadPasswordConfig() {
+			// 尝试从 password-worker.js 加载配置
+			if (typeof PASSWORD_CONFIG_EXTERNAL !== 'undefined') {
+				PASSWORD_CONFIG.CURRENT_PASSWORD = PASSWORD_CONFIG_EXTERNAL.currentPassword || "2025";
+				if (PASSWORD_CONFIG_EXTERNAL.adminPassword) {
+					ADMIN_CONFIG.ADMIN_PASSWORD = PASSWORD_CONFIG_EXTERNAL.adminPassword;
+				}
+				console.log('外部密码配置加载成功');
+			}
+		}
+
 		const config = {
 			baseUrl: window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1),
 			downloadLinks: { player: 'https://m997.lanzoue.com/iziv137ai40d', tvbox: '' }
 		};
+		const PASSWORD_KEY = "site_access_token";
 
-		// 监控系统
+		// 自定义提示系统
+		const alertSystem = {
+			showError(title, message) {
+				const errorDiv = document.createElement('div');
+				errorDiv.className = 'error-toast';
+				errorDiv.innerHTML = `<h4>❌ ${title}</h4><p>${message}</p>`;
+				document.body.appendChild(errorDiv);
+				setTimeout(() => {
+					if (errorDiv.parentNode) errorDiv.parentNode.removeChild(errorDiv);
+				}, 2000);
+			},
+			showSuccess(title, message) {
+				const alertDiv = document.createElement('div');
+				alertDiv.className = 'custom-alert';
+				alertDiv.innerHTML = `<h4 style="color: #4ade80">✅ ${title}</h4><p>${message}</p><button class="alert-btn">确定</button>`;
+				document.body.appendChild(alertDiv);
+				const closeAlert = () => {
+					alertDiv.style.opacity = '0';
+					alertDiv.style.transform = 'translate(-50%, -50%) scale(0.9)';
+					setTimeout(() => {
+						if (alertDiv.parentNode) alertDiv.parentNode.removeChild(alertDiv);
+					}, 300);
+				};
+				alertDiv.querySelector('.alert-btn').addEventListener('click', closeAlert);
+			}
+		};
+
+		// 密码功能
+		function checkPassword() {
+			const passwordInput = document.getElementById('passwordInput');
+			const errorElement = document.getElementById('passwordError');
+			const inputPassword = passwordInput.value.trim();
+
+			// 先加载最新配置
+			loadPasswordConfig();
+
+			if (inputPassword === ADMIN_CONFIG.ADMIN_PASSWORD) {
+				ADMIN_SYSTEM.openAdminPanel();
+				passwordInput.value = '';
+				errorElement.style.display = 'none';
+				return false;
+			}
+			
+			if (inputPassword === PASSWORD_CONFIG.CURRENT_PASSWORD) {
+				const expiryDate = new Date();
+				expiryDate.setDate(expiryDate.getDate() + PASSWORD_CONFIG.TOKEN_EXPIRY_DAYS);
+				const authData = {
+					token: btoa(PASSWORD_CONFIG.CURRENT_PASSWORD + '_' + expiryDate.getTime()),
+					expiry: expiryDate.getTime(),
+					created: Date.now(),
+					expiryDays: PASSWORD_CONFIG.TOKEN_EXPIRY_DAYS
+				};
+				localStorage.setItem(PASSWORD_KEY, JSON.stringify(authData));
+				document.getElementById('passwordProtection').style.display = 'none';
+				document.getElementById('mainContent').style.display = 'block';
+				init();
+				return true;
+			} else {
+				errorElement.style.display = 'block';
+				passwordInput.value = '';
+				passwordInput.focus();
+				return false;
+			}
+		}
+
+		function checkExistingAuth() {
+			const savedAuth = localStorage.getItem(PASSWORD_KEY);
+			if (savedAuth) {
+				try {
+					const authData = JSON.parse(savedAuth);
+					if (authData.expiry && authData.expiry > Date.now()) {
+						try {
+							const tokenParts = atob(authData.token).split('_');
+							if (tokenParts.length === 2 && tokenParts[1] == authData.expiry) {
+								document.getElementById('passwordProtection').style.display = 'none';
+								document.getElementById('mainContent').style.display = 'block';
+								return true;
+							}
+						} catch (e) {
+							console.error('Token解析失败:', e);
+						}
+					}
+					localStorage.removeItem(PASSWORD_KEY);
+				} catch (e) {
+					console.error('解析登录信息失败:', e);
+					localStorage.removeItem(PASSWORD_KEY);
+				}
+			}
+			return false;
+		}
+
+		// 弹窗功能
+		function openTermsModal() { document.getElementById('termsModal').style.display = 'block'; }
+		function closeTermsModal() { document.getElementById('termsModal').style.display = 'none'; }
+		function openSponsorModal() { document.getElementById('sponsorModal').style.display = 'block'; }
+		function closeSponsorModal() { document.getElementById('sponsorModal').style.display = 'none'; }
+
+		// 初始化
+		function init() {
+			document.getElementById('serviceUrl').textContent = config.baseUrl;
+			bindEvents();
+			siteAnalytics.recordVisit();
+			
+			document.getElementById('complaintLink').addEventListener('click', function() {
+				complaintSystem.showComplaintForm();
+			});
+			
+			document.getElementById('closeComplaintBtn').addEventListener('click', function() {
+				complaintSystem.hideComplaintForm();
+			});
+			
+			document.getElementById('submitComplaintBtn').addEventListener('click', function() {
+				complaintSystem.submitComplaint();
+			});
+			
+			document.getElementById('complaintModal').addEventListener('click', e => {
+				if (e.target === e.currentTarget) complaintSystem.hideComplaintForm();
+			});
+		}
+
+		function bindEvents() {
+			document.querySelectorAll('.url').forEach(url => {
+				url.addEventListener('click', copyUrl);
+			});
+			
+			document.querySelectorAll('.download-item').forEach(item => {
+				item.addEventListener('click', handleDownload);
+			});
+			
+			document.querySelector('.sponsor-btn').addEventListener('click', openSponsorModal);
+			document.getElementById('closeSponsorBtn').addEventListener('click', closeSponsorModal);
+			document.getElementById('sponsorModal').addEventListener('click', e => {
+				if (e.target === e.currentTarget) closeSponsorModal();
+			});
+		}
+
+		async function copyUrl(e) {
+			const element = e.target;
+			const text = element.textContent;
+			try {
+				await navigator.clipboard.writeText(text);
+				element.classList.add('copied');
+				setTimeout(() => element.classList.remove('copied'), 2000);
+			} catch (err) {
+				console.error('复制失败:', err);
+			}
+		}
+
+		function handleDownload(e) {
+			const element = e.currentTarget;
+			const type = element.dataset.type;
+			
+			userBehavior.recordDownload(type);
+			
+			const url = config.downloadLinks[type];
+			if (url && url.trim() !== '') {
+				element.classList.add('downloading');
+				element.dataset.status = '下载中';
+				setTimeout(() => {
+					window.open(url, '_blank');
+					setTimeout(() => {
+						element.classList.remove('downloading');
+						delete element.dataset.status;
+					}, 2000);
+				}, 500);
+			} else {
+				element.classList.add('developing');
+				element.dataset.status = '开发中';
+				setTimeout(() => {
+					element.classList.remove('developing');
+					delete element.dataset.status;
+				}, 2000);
+			}
+		}
+
+		function initPasswordProtection() {
+			// 先加载密码配置
+			loadPasswordConfig();
+			
+			if (!checkExistingAuth()) {
+				const passwordInput = document.getElementById('passwordInput');
+				const submitButton = document.getElementById('passwordSubmit');
+				const termsLink = document.getElementById('showTermsLink');
+				const closeTermsBtn = document.getElementById('agreeTermsBtn');
+				const closeAdminBtn = document.getElementById('closeAdminPanel');
+				
+				passwordInput.addEventListener('keypress', function(e) {
+					if (e.key === 'Enter') checkPassword();
+				});
+				submitButton.addEventListener('click', checkPassword);
+				passwordInput.addEventListener('input', function(e) {
+					this.value = this.value.replace(/[^0-9]/g, '');
+				});
+				termsLink.addEventListener('click', openTermsModal);
+				closeTermsBtn.addEventListener('click', closeTermsModal);
+				closeAdminBtn.addEventListener('click', ADMIN_SYSTEM.closeAdminPanel);
+				
+				document.getElementById('termsModal').addEventListener('click', e => {
+					if (e.target === e.currentTarget) closeTermsModal();
+				});
+				
+				document.getElementById('adminPanel').addEventListener('click', e => {
+					if (e.target === e.currentTarget) ADMIN_SYSTEM.closeAdminPanel();
+				});
+				
+				passwordInput.focus();
+			} else {
+				init();
+			}
+		}
+
+		// 系统功能
 		const siteAnalytics = {
 			recordVisit() {
-				const visitData = { timestamp: Date.now(), date: new Date().toLocaleDateString('zh-CN'), userAgent: navigator.userAgent.substring(0, 100), referrer: document.referrer || 'direct' };
+				const visitData = {
+					timestamp: Date.now(),
+					date: new Date().toLocaleDateString('zh-CN'),
+					userAgent: navigator.userAgent.substring(0, 100),
+					referrer: document.referrer || 'direct'
+				};
 				let visits = JSON.parse(localStorage.getItem('site_visits') || '[]');
 				visits.push(visitData);
 				const thirtyDaysAgo = Date.now() - 30 * 24 * 60 * 60 * 1000;
@@ -395,51 +697,7 @@
 			}
 		};
 
-		const securityMonitor = {
-			checkSuspiciousActivity() {
-				const visits = JSON.parse(localStorage.getItem('site_visits') || '[]');
-				const recentVisits = visits.filter(v => v.timestamp > Date.now() - 1 * 60 * 60 * 1000);
-				if (recentVisits.length > 20) {
-					console.warn('检测到高频访问:', recentVisits.length);
-					this.recordWarning('high_frequency', recentVisits.length);
-					return true;
-				}
-				return false;
-			},
-			recordWarning(type, data) {
-				const warning = { type: type, data: data, timestamp: Date.now() };
-				let warnings = JSON.parse(localStorage.getItem('security_warnings') || '[]');
-				warnings.push(warning);
-				if (warnings.length > 50) warnings = warnings.slice(-50);
-				localStorage.setItem('security_warnings', JSON.stringify(warnings));
-			},
-			getWarnings() { return JSON.parse(localStorage.getItem('security_warnings') || '[]'); }
-		};
-
-		// 提示系统
-		const alertSystem = {
-			showError(title, message) {
-				const errorDiv = document.createElement('div');
-				errorDiv.className = 'error-toast';
-				errorDiv.innerHTML = `<h4>❌ ${title}</h4><p>${message}</p>`;
-				document.body.appendChild(errorDiv);
-				setTimeout(() => { if (errorDiv.parentNode) errorDiv.parentNode.removeChild(errorDiv); }, 2000);
-			},
-			showSuccess(title, message) {
-				const alertDiv = document.createElement('div');
-				alertDiv.className = 'custom-alert';
-				alertDiv.innerHTML = `<h4 style="color: #4ade80">✅ ${title}</h4><p>${message}</p><button class="alert-btn">确定</button>`;
-				document.body.appendChild(alertDiv);
-				const closeAlert = () => {
-					alertDiv.style.opacity = '0';
-					alertDiv.style.transform = 'translate(-50%, -50%) scale(0.9)';
-					setTimeout(() => { if (alertDiv.parentNode) alertDiv.parentNode.removeChild(alertDiv); }, 300);
-				};
-				alertDiv.querySelector('.alert-btn').addEventListener('click', closeAlert);
-			}
-		};
-
-		// 投诉系统
+		// 投诉系统 - 使用自定义提示
 		const complaintSystem = {
 			showComplaintForm() { document.getElementById('complaintModal').style.display = 'block'; },
 			hideComplaintForm() {
@@ -450,34 +708,41 @@
 			submitComplaint() {
 				const email = document.getElementById('complaintEmail').value.trim();
 				const content = document.getElementById('complaintContent').value.trim();
-				if (!email) { alertSystem.showError('输入错误', '请输入您的邮箱地址'); return; }
-				if (!email.includes('@') || !email.includes('.')) { alertSystem.showError('输入错误', '请输入有效的邮箱地址'); return; }
-				if (!content) { alertSystem.showError('输入错误', '请输入投诉内容'); return; }
-				if (content.length > 500) { alertSystem.showError('输入错误', '投诉内容不能超过500字'); return; }
+				if (!email) { 
+					alertSystem.showError('输入错误', '请输入您的邮箱地址'); 
+					return; 
+				}
+				if (!email.includes('@') || !email.includes('.')) { 
+					alertSystem.showError('输入错误', '请输入有效的邮箱地址'); 
+					return; 
+				}
+				if (!content) { 
+					alertSystem.showError('输入错误', '请输入投诉内容'); 
+					return; 
+				}
+				if (content.length > 500) { 
+					alertSystem.showError('输入错误', '投诉内容不能超过500字'); 
+					return; 
+				}
 				this.recordComplaint(email, content);
 				alertSystem.showSuccess('提交成功', '我们已收到您的投诉信息，将在24小时内通过邮箱联系您处理');
 				this.hideComplaintForm();
 			},
 			recordComplaint(email, content) {
-				const complaint = { id: Date.now(), email: email, content: content.substring(0, 500), status: '待处理', timestamp: new Date().toLocaleString('zh-CN'), resolvedAt: null };
+				const complaint = {
+					id: Date.now(), email: email, content: content.substring(0, 500), status: '待处理',
+					timestamp: new Date().toLocaleString('zh-CN'), resolvedAt: null
+				};
 				let complaints = JSON.parse(localStorage.getItem('copyright_complaints') || '[]');
 				complaints.unshift(complaint);
 				if (complaints.length > 50) complaints = complaints.slice(0, 50);
 				localStorage.setItem('copyright_complaints', JSON.stringify(complaints));
-				console.log('🚨 新的版权投诉收到！');
 				return complaint.id;
 			},
 			getPendingComplaints() { return JSON.parse(localStorage.getItem('copyright_complaints') || '[]').filter(c => c.status === '待处理'); },
-			getAllComplaints() { return JSON.parse(localStorage.getItem('copyright_complaints') || '[]'); },
-			markAsResolved(complaintId) {
-				const complaints = JSON.parse(localStorage.getItem('copyright_complaints') || '[]');
-				const complaint = complaints.find(c => c.id === complaintId);
-				if (complaint) { complaint.status = '已处理'; complaint.resolvedAt = new Date().toLocaleString('zh-CN'); localStorage.setItem('copyright_complaints', JSON.stringify(complaints)); return true; }
-				return false;
-			}
+			getAllComplaints() { return JSON.parse(localStorage.getItem('copyright_complaints') || '[]'); }
 		};
 
-		// 管理系统
 		const ADMIN_SYSTEM = {
 			openAdminPanel() { document.getElementById('adminPanel').style.display = 'block'; },
 			closeAdminPanel() { document.getElementById('adminPanel').style.display = 'none'; },
@@ -508,165 +773,24 @@
 				});
 				alert(text);
 			},
-			showSecurityWarnings() {
-				const warnings = securityMonitor.getWarnings();
-				if (warnings.length === 0) { alert('暂无安全警告'); return; }
-				let text = `安全警告记录 (共${warnings.length}条)：\n\n`;
-				warnings.forEach((warn, index) => {
-					text += `${index + 1}. 时间: ${new Date(warn.timestamp).toLocaleString('zh-CN')}\n   类型: ${warn.type}\n   数据: ${warn.data}\n\n`;
-				});
-				alert(text);
-			},
+			showSecurityWarnings() { alert('暂无安全警告'); },
 			clearAllData() {
 				if (confirm('确定要清空所有监控数据吗？此操作不可恢复！')) {
 					localStorage.removeItem('site_visits');
 					localStorage.removeItem('user_downloads');
 					localStorage.removeItem('download_records');
-					localStorage.removeItem('security_warnings');
 					localStorage.removeItem('copyright_complaints');
 					alert('所有数据已清空！');
 				}
 			}
 		};
 
-		// 密码系统
-		const PASSWORD_KEY = "site_access_token";
-
-		function checkPassword() {
-			const passwordInput = document.getElementById('passwordInput');
-			const errorElement = document.getElementById('passwordError');
-			const inputPassword = passwordInput.value.trim();
-
-			if (inputPassword === ADMIN_CONFIG.ADMIN_PASSWORD) {
-				ADMIN_SYSTEM.openAdminPanel();
-				passwordInput.value = '';
-				return false;
-			}
-			
-			if (inputPassword === PASSWORD_CONFIG.CURRENT_PASSWORD) {
-				const expiryDate = new Date();
-				expiryDate.setDate(expiryDate.getDate() + PASSWORD_CONFIG.TOKEN_EXPIRY_DAYS);
-				const authData = { token: btoa(PASSWORD_CONFIG.CURRENT_PASSWORD + '_' + expiryDate.getTime()), expiry: expiryDate.getTime(), created: Date.now(), expiryDays: PASSWORD_CONFIG.TOKEN_EXPIRY_DAYS };
-				localStorage.setItem(PASSWORD_KEY, JSON.stringify(authData));
-				document.getElementById('passwordProtection').style.display = 'none';
-				document.getElementById('mainContent').style.display = 'block';
-				init();
-				return true;
-			} else {
-				errorElement.style.display = 'block';
-				passwordInput.value = '';
-				passwordInput.focus();
-				return false;
-			}
-		}
-
-		function checkExistingAuth() {
-			const savedAuth = localStorage.getItem(PASSWORD_KEY);
-			if (savedAuth) {
-				try {
-					const authData = JSON.parse(savedAuth);
-					if (authData.expiry && authData.expiry > Date.now()) {
-						try {
-							const tokenParts = atob(authData.token).split('_');
-							if (tokenParts.length === 2 && tokenParts[1] == authData.expiry) {
-								document.getElementById('passwordProtection').style.display = 'none';
-								document.getElementById('mainContent').style.display = 'block';
-								return true;
-							}
-						} catch (e) { console.error('Token解析失败:', e); }
-					}
-					localStorage.removeItem(PASSWORD_KEY);
-				} catch (e) { console.error('解析登录信息失败:', e); localStorage.removeItem(PASSWORD_KEY); }
-			}
-			return false;
-		}
-
-		function openTermsModal() { document.getElementById('termsModal').style.display = 'block'; }
-		function closeTermsModal() { document.getElementById('termsModal').style.display = 'none'; }
-		function openSponsorModal() { document.getElementById('sponsorModal').style.display = 'block'; }
-		function closeSponsorModal() { document.getElementById('sponsorModal').style.display = 'none'; }
-
-		function init() {
-			document.getElementById('serviceUrl').textContent = config.baseUrl;
-			bindEvents();
-			siteAnalytics.recordVisit();
-			
-			document.getElementById('complaintLink').addEventListener('click', function() { complaintSystem.showComplaintForm(); });
-			document.getElementById('closeComplaintBtn').addEventListener('click', function() { complaintSystem.hideComplaintForm(); });
-			document.getElementById('submitComplaintBtn').addEventListener('click', function() { complaintSystem.submitComplaint(); });
-			document.getElementById('complaintModal').addEventListener('click', e => { if (e.target === e.currentTarget) complaintSystem.hideComplaintForm(); });
-			
-			setInterval(() => { securityMonitor.checkSuspiciousActivity(); }, 60 * 60 * 1000);
-		}
-
-		function bindEvents() {
-			document.querySelectorAll('.url').forEach(url => { url.addEventListener('click', copyUrl); });
-			document.querySelectorAll('.download-item').forEach(item => { item.addEventListener('click', handleDownload); });
-			document.querySelector('.sponsor-btn').addEventListener('click', openSponsorModal);
-			document.getElementById('closeSponsorBtn').addEventListener('click', closeSponsorModal);
-			document.getElementById('sponsorModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeSponsorModal(); });
-		}
-
-		async function copyUrl(e) {
-			const element = e.target;
-			const text = element.textContent;
-			try {
-				await navigator.clipboard.writeText(text);
-				element.classList.add('copied');
-				setTimeout(() => element.classList.remove('copied'), 2000);
-			} catch (err) { console.error('复制失败:', err); }
-		}
-
-		function handleDownload(e) {
-			const element = e.currentTarget;
-			const type = element.dataset.type;
-			userBehavior.recordDownload(type);
-			const url = config.downloadLinks[type];
-			if (url && url.trim() !== '') {
-				element.classList.add('downloading');
-				element.dataset.status = '下载中';
-				setTimeout(() => {
-					window.open(url, '_blank');
-					setTimeout(() => {
-						element.classList.remove('downloading');
-						delete element.dataset.status;
-					}, 2000);
-				}, 500);
-			} else {
-				element.classList.add('developing');
-				element.dataset.status = '开发中';
-				setTimeout(() => {
-					element.classList.remove('developing');
-					delete element.dataset.status;
-				}, 2000);
-			}
-		}
-
-		function initPasswordProtection() {
-			if (!checkExistingAuth()) {
-				const passwordInput = document.getElementById('passwordInput');
-				const submitButton = document.getElementById('passwordSubmit');
-				const termsLink = document.getElementById('showTermsLink');
-				const closeTermsBtn = document.getElementById('agreeTermsBtn');
-				const closeAdminBtn = document.getElementById('closeAdminPanel');
-				
-				passwordInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') checkPassword(); });
-				submitButton.addEventListener('click', checkPassword);
-				passwordInput.addEventListener('input', function(e) { this.value = this.value.replace(/[^0-9]/g, ''); });
-				termsLink.addEventListener('click', openTermsModal);
-				closeTermsBtn.addEventListener('click', closeTermsModal);
-				closeAdminBtn.addEventListener('click', ADMIN_SYSTEM.closeAdminPanel);
-				
-				document.getElementById('termsModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeTermsModal(); });
-				document.getElementById('adminPanel').addEventListener('click', e => { if (e.target === e.currentTarget) ADMIN_SYSTEM.closeAdminPanel(); });
-				
-				passwordInput.focus();
-			} else {
-				init();
-			}
-		}
-
-		document.addEventListener('DOMContentLoaded', function() { initPasswordProtection(); });
+		document.addEventListener('DOMContentLoaded', function() {
+			initPasswordProtection();
+		});
 	</script>
+
+	<!-- 引入外部密码配置文件 -->
+	<script src="./password-worker.js"></script>
 </body>
 </html>
