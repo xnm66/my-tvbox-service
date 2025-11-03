@@ -21,7 +21,7 @@ export function onRequest(context) {
     const jsonData = {
       "urls": [
         {
-          "name": "🍎小苹果",
+          "name": "🍎小苹果影视-让好片触手可及",
           "url": url.origin + "/data.json"
         }
       ]
