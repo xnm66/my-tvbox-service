@@ -12,7 +12,7 @@ const PASSWORD_CONFIG = {
     allowNumbersOnly: true, // 只允许数字密码
     
     // === 网站配置 ===
-    siteName: "小苹果影视 - 比你更懂你，片荒终结者",
+    siteName: "小苹果影视 - 让好片触手可及",
     version: "1.0.0",
     
     // === 维护模式 ===
