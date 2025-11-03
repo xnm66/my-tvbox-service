@@ -8,7 +8,7 @@ const PASSWORD_CONFIG = {
   
   // === 管理密码 ===
   // 管理面板访问密码
-  adminPassword: "admin888",
+  adminPassword: "888",
   
   // === 安全设置 ===
   tokenExpiry: 0,      // 令牌有效期（天）
