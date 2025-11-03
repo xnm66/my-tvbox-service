@@ -1,806 +1,1046 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>小苹果影视 - 比你更懂你，片荒终结者</title>
-	<style>
-		* { margin: 0; padding: 0; box-sizing: border-box; }
-		body {
-			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-			width: 100%; min-width: 320px; max-width: 800px; margin: 0 auto; padding: 20px;
-			background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: #e2e8f0; min-height: 100vh;
-		}
-		
-		/* 密码保护 */
-		.password-protection {
-			position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999;
-			background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-			display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 20px;
-		}
-		.password-container {
-			background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 14px;
-			padding: 30px; backdrop-filter: blur(15px); box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-			text-align: center; max-width: 500px; width: 90%;
-		}
-		.password-title { color: white; font-size: 1.5em; margin-bottom: 10px; font-weight: 600; }
-		.password-desc { color: rgba(255,255,255,0.8); font-size: 0.9em; margin-bottom: 20px; line-height: 1.4; }
-		.password-input {
-			width: 100%; padding: 12px 16px; border: 1px solid rgba(255,255,255,0.3); border-radius: 8px;
-			background: rgba(255,255,255,0.1); color: white; font-size: 16px; margin-bottom: 15px; text-align: center;
-			transition: all 0.3s ease;
-		}
-		.password-input:focus { outline: none; border-color: rgba(59, 130, 246, 0.8); background: rgba(255,255,255,0.15); }
-		.password-input::placeholder { color: rgba(255,255,255,0.5); }
-		.password-btn {
-			background: rgba(59, 130, 246, 0.8); color: white; border: none; border-radius: 8px;
-			padding: 12px 24px; font-size: 16px; cursor: pointer; transition: all 0.3s ease; width: 100%;
-		}
-		.password-btn:hover { background: rgba(59, 130, 246, 1); transform: translateY(-2px); }
-		.password-error { color: #f87171; font-size: 0.85em; margin-top: 10px; display: none; }
-		.password-hint { color: rgba(255,255,255,0.6); font-size: 0.8em; margin-top: 15px; line-height: 1.4; }
-		.agreement-text { font-size: 0.7em; line-height: 1.2; margin-top: 12px; color: rgba(255,255,255,0.7); text-align: center; }
-		.terms-link { color: rgba(59, 130, 246, 0.9); cursor: pointer; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小苹果影视 - 比你更懂你，片荒终结者</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            width: 100%; min-width: 320px; max-width: 800px; margin: 0 auto; padding: 20px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: #e2e8f0; min-height: 100vh;
+        }
+        
+        /* 密码保护 */
+        .password-protection {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 20px;
+        }
+        .password-container {
+            background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 14px;
+            padding: 30px; backdrop-filter: blur(15px); box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            text-align: center; max-width: 500px; width: 90%;
+        }
+        .password-title { color: white; font-size: 1.5em; margin-bottom: 10px; font-weight: 600; }
+        .password-desc { color: rgba(255,255,255,0.8); font-size: 0.9em; margin-bottom: 20px; line-height: 1.4; }
+        .password-input {
+            width: 100%; padding: 12px 16px; border: 1px solid rgba(255,255,255,0.3); border-radius: 8px;
+            background: rgba(255,255,255,0.1); color: white; font-size: 16px; margin-bottom: 15px; text-align: center;
+            transition: all 0.3s ease;
+        }
+        .password-input:focus { outline: none; border-color: rgba(59, 130, 246, 0.8); background: rgba(255,255,255,0.15); }
+        .password-input::placeholder { color: rgba(255,255,255,0.5); }
+        .password-btn {
+            background: rgba(59, 130, 246, 0.8); color: white; border: none; border-radius: 8px;
+            padding: 12px 24px; font-size: 16px; cursor: pointer; transition: all 0.3s ease; width: 100%;
+        }
+        .password-btn:hover { background: rgba(59, 130, 246, 1); transform: translateY(-2px); }
+        .password-error { color: #f87171; font-size: 0.85em; margin-top: 10px; display: none; }
+        .password-hint { color: rgba(255,255,255,0.6); font-size: 0.8em; margin-top: 15px; line-height: 1.4; }
+        .agreement-text { font-size: 0.7em; line-height: 1.2; margin-top: 12px; color: rgba(255,255,255,0.7); text-align: center; }
+        .terms-link { color: rgba(59, 130, 246, 0.9); cursor: pointer; }
 
-		/* 弹窗基础样式 - 全部没有背景 */
-		.terms-modal, .complaint-modal, .sponsor-modal { 
-			display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000; 
-		}
-		.modal-content {
-			position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-			background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 14px;
-			padding: 20px; width: 90%; max-width: 300px; text-align: center;
-			backdrop-filter: blur(15px); box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-		}
-		.modal-header { margin-bottom: 15px; }
-		.modal-header h3 { color: white; font-size: 1.2em; margin-bottom: 6px; font-weight: 600; }
-		.modal-header p { color: rgba(255,255,255,0.8); font-size: 0.85em; line-height: 1.4; }
+        /* 弹窗基础样式 - 全部没有背景 */
+        .terms-modal, .complaint-modal, .sponsor-modal { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000; 
+        }
+        .modal-content {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 14px;
+            padding: 20px; width: 90%; max-width: 300px; text-align: center;
+            backdrop-filter: blur(15px); box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        .modal-header { margin-bottom: 15px; }
+        .modal-header h3 { color: white; font-size: 1.2em; margin-bottom: 6px; font-weight: 600; text-align: center; }
+        .modal-header p { color: rgba(255,255,255,0.8); font-size: 0.85em; line-height: 1.4; text-align: center; }
 
-		/* 自定义提示框样式 - 黑色背景 */
-		.custom-alert {
-			position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-			background: rgba(0, 0, 0, 0.9); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px;
-			padding: 20px 25px; backdrop-filter: blur(10px); box-shadow: 0 8px 25px rgba(0,0,0,0.6);
-			color: white; text-align: center; z-index: 10002; max-width: 280px;
-			animation: fadeIn 0.3s ease;
-		}
-		.custom-alert h4 { margin-bottom: 10px; font-size: 1.1em; font-weight: 600; }
-		.custom-alert p { color: rgba(255,255,255,0.9); font-size: 0.9em; line-height: 1.4; margin-bottom: 15px; }
-		.custom-alert .alert-btn {
-			background: rgba(59, 130, 246, 0.8); color: white; border: none; border-radius: 6px;
-			padding: 8px 16px; font-size: 0.9em; cursor: pointer; transition: all 0.3s ease; width: 100%;
-		}
-		.custom-alert .alert-btn:hover { background: rgba(59, 130, 246, 1); }
+        /* 免责声明内容靠左对齐 */
+        .terms-content { 
+            text-align: left; 
+            max-height: 400px; 
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+        .terms-content::-webkit-scrollbar {
+            width: 4px;
+        }
+        .terms-content::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.3);
+            border-radius: 2px;
+        }
 
-		/* 错误提示样式 - 黑色背景，2秒消失 */
-		.error-toast {
-			position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-			background: rgba(0, 0, 0, 0.9); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px;
-			padding: 20px 25px; backdrop-filter: blur(10px); box-shadow: 0 8px 25px rgba(0,0,0,0.6);
-			color: white; text-align: center; z-index: 10002; max-width: 280px;
-			animation: fadeInOut 2s ease; font-weight: 600;
-		}
-		.error-toast h4 { margin-bottom: 10px; font-size: 1.1em; color: #f87171; }
-		.error-toast p { color: rgba(255,255,255,0.9); font-size: 0.9em; line-height: 1.4; }
+        /* 自定义提示框样式 - 黑色背景 */
+        .custom-alert {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px;
+            padding: 20px 25px; backdrop-filter: blur(10px); box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+            color: white; text-align: center; z-index: 10002; max-width: 280px;
+            animation: fadeIn 0.3s ease;
+        }
+        .custom-alert h4 { margin-bottom: 10px; font-size: 1.1em; font-weight: 600; }
+        .custom-alert p { color: rgba(255,255,255,0.9); font-size: 0.9em; line-height: 1.4; margin-bottom: 15px; }
+        .custom-alert .alert-btn {
+            background: rgba(59, 130, 246, 0.8); color: white; border: none; border-radius: 6px;
+            padding: 8px 16px; font-size: 0.9em; cursor: pointer; transition: all 0.3s ease; width: 100%;
+        }
+        .custom-alert .alert-btn:hover { background: rgba(59, 130, 246, 1); }
 
-		@keyframes fadeIn {
-			from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
-			to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-		}
-		@keyframes fadeInOut {
-			0% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
-			20% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-			80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-			100% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
-		}
+        /* 错误提示样式 - 黑色背景，2秒消失 */
+        .error-toast {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px;
+            padding: 20px 25px; backdrop-filter: blur(10px); box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+            color: white; text-align: center; z-index: 10002; max-width: 280px;
+            animation: fadeInOut 2s ease; font-weight: 600;
+        }
+        .error-toast h4 { margin-bottom: 10px; font-size: 1.1em; color: #f87171; }
+        .error-toast p { color: rgba(255,255,255,0.9); font-size: 0.9em; line-height: 1.4; }
 
-		/* 主内容 */
-		.main-content { display: none; }
-		.header { text-align: center; margin-bottom: 8px; padding: 12px; }
-		.main-title { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 15px; }
-		.main-title h1 { font-size: 1.8em; margin: 0; color: white; font-weight: 700; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
-		.title-icon { font-size: 1.6em; color: white; }
-		.slogan-container { text-align: center; margin-bottom: 6px; }
-		.slogan-main { font-size: 1.2em; font-weight: 800; color: #ffd700; margin-bottom: 6px; text-shadow: 0 2px 8px rgba(255,215,0,0.3); line-height: 1.3; }
-		.slogan-sub { font-size: 0.85em; color: rgba(255,255,255,0.95); margin-bottom: 12px; line-height: 1.4; }
-		.slogan-features { display: flex; justify-content: center; gap: 6px; flex-wrap: nowrap; margin-bottom: 4px; }
-		.feature-item {
-			background: linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(139, 92, 246, 0.25)); color: #93c5fd;
-			padding: 3px 6px; border-radius: 8px; font-size: 0.65em; font-weight: 600; border: 1px solid rgba(255,255,255,0.15);
-			backdrop-filter: blur(10px); transition: all 0.3s ease; white-space: nowrap;
-		}
-		.feature-item:hover { transform: translateY(-2px); background: linear-gradient(135deg, rgba(59, 130, 246, 0.35), rgba(139, 92, 246, 0.35)); }
-		
-		/* 内容区块 */
-		.container, .copyright, .qrcode-item {
-			background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 14px;
-			backdrop-filter: blur(15px); box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-		}
-		.container { padding: 18px; margin: 12px 0; }
-		.copyright { padding: 15px; margin: 12px 0; }
-		.copyright-title { color: white; font-size: 14px; font-weight: 600; text-align: center; margin-bottom: 12px; }
-		.copyright-title::before, .copyright-title::after { content: "⚠️"; margin: 0 8px; font-size: 12px; }
-		.copyright-content { font-size: 11px; color: rgba(255,255,255,0.85); line-height: 1.5; }
-		.copyright-section { margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-		.copyright-section:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
-		.copyright-section-title { font-weight: 600; margin-bottom: 5px; color: white; font-size: 12px; }
-		
-		/* URL和下载 */
-		.url-box {
-			background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 10px;
-			transition: all 0.3s ease; padding: 15px; margin: 12px 0; text-align: center;
-		}
-		.url-label { font-size: 12px; color: rgba(255,255,255,0.9); margin-bottom: 8px; display: block; }
-		.url {
-			font-family: 'Courier New', monospace; font-size: 13px; color: white; word-break: break-all;
-			margin: 8px 0; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px;
-			border: 1px solid rgba(255,255,255,0.2); cursor: pointer; position: relative; transition: all 0.3s ease;
-		}
-		.url:hover { background: rgba(255,255,255,0.15); transform: translateY(-1px); }
-		.url.copied::after {
-			content: "复制成功"; position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
-			font-size: 10px; color: white; background: rgba(34, 197, 94, 0.6); padding: 2px 6px; border-radius: 4px;
-		}
-		.action-hint { font-size: 10px; color: rgba(255,255,255,0.6); text-align: center; margin-top: 8px; }
-		
-		.download-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; }
-		.download-item {
-			background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 10px;
-			padding: 15px; text-align: center; cursor: pointer; position: relative; transition: all 0.3s ease;
-		}
-		.download-item:hover { transform: translateY(-2px); background: rgba(255, 255, 255, 0.15); }
-		.download-item.downloading::after, .download-item.developing::after {
-			content: attr(data-status); position: absolute; top: 8px; right: 8px; font-size: 10px; color: white;
-			padding: 2px 6px; border-radius: 4px;
-		}
-		.download-item.downloading::after { background: rgba(59, 130, 246, 0.6); }
-		.download-item.developing::after { background: rgba(156, 163, 175, 0.6); }
-		.download-icon { font-size: 1.8em; margin-bottom: 8px; display: block; }
-		.download-item h4 { margin: 4px 0 6px 0; font-size: 14px; font-weight: 600; color: white; }
-		.download-desc { font-size: 11px; color: rgba(255,255,255,0.8); line-height: 1.3; }
-		
-		/* 按钮 */
-		.simple-sponsor { text-align: center; margin: 15px 0; padding: 12px; }
-		.sponsor-btn, .close-btn {
-			background: transparent; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.2);
-			border-radius: 6px; cursor: pointer; transition: all 0.3s ease; font-size: 13px; padding: 8px 16px;
-		}
-		.sponsor-btn:hover, .close-btn:hover {
-			color: rgba(255,255,255,0.9); border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.05);
-		}
-		.sponsor-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
-		.close-btn { margin-top: 8px; width: 100%; }
-		
-		/* 二维码 */
-		.qrcode-container { margin: 15px 0; }
-		.qrcode-item { padding: 15px; }
-		.qrcode-title { display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 10px; color: white; font-weight: 500; font-size: 0.9em; }
-		.qrcode-img { width: 180px; height: 180px; margin: 0 auto; background: white; border-radius: 8px; overflow: hidden; }
-		.sponsor-image { width: 100%; height: 100%; object-fit: cover; border-radius: 6px; }
-		.qrcode-desc { margin-top: 10px; font-size: 11px; color: rgba(255,255,255,0.6); line-height: 1.4; }
-		
-		.footer { text-align: center; margin-top: 15px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.2); font-size: 11px; color: rgba(255,255,255,0.7); }
-		h3 { color: white; margin-bottom: 12px; font-size: 1em; font-weight: 600; text-align: center; }
-		
-		/* 表单 */
-		.complaint-form { margin-top: 15px; }
-		.form-group { margin-bottom: 15px; text-align: left; }
-		.form-label { display: block; margin-bottom: 5px; font-size: 0.85em; color: rgba(255,255,255,0.9); }
-		.form-input, .form-textarea {
-			width: 100%; padding: 10px 12px; border: 1px solid rgba(255,255,255,0.3); border-radius: 8px;
-			background: rgba(255,255,255,0.1); color: white; font-size: 14px; transition: all 0.3s ease;
-		}
-		.form-input:focus, .form-textarea:focus { outline: none; border-color: rgba(59, 130, 246, 0.8); background: rgba(255,255,255,0.15); }
-		.form-input::placeholder, .form-textarea::placeholder { color: rgba(255,255,255,0.5); }
-		.form-textarea { resize: vertical; min-height: 100px; }
-		.submit-btn {
-			background: rgba(59, 130, 246, 0.8); color: white; border: none; border-radius: 8px;
-			padding: 12px 24px; font-size: 14px; cursor: pointer; transition: all 0.3s ease; width: 100%;
-		}
-		.submit-btn:hover { background: rgba(59, 130, 246, 1); transform: translateY(-2px); }
-		
-		/* 管理面板 */
-		.admin-panel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10001; backdrop-filter: blur(10px); }
-		.admin-content {
-			position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-			background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border: 1px solid rgba(255,255,255,0.15);
-			border-radius: 14px; padding: 25px; width: 90%; max-width: 400px; max-height: 80vh; overflow-y: auto;
-			backdrop-filter: blur(15px);
-		}
-		.admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.2); }
-		.admin-title { color: white; font-size: 1.2em; font-weight: 600; }
-		.admin-close-btn { background: none; border: none; color: rgba(255,255,255,0.7); font-size: 1.5em; cursor: pointer; }
-		.admin-menu { display: grid; gap: 10px; margin-bottom: 20px; }
-		.admin-btn {
-			background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px;
-			padding: 12px; color: white; cursor: pointer; transition: all 0.3s ease; text-align: center;
-		}
-		.admin-btn:hover { background: rgba(255, 255, 255, 0.15); transform: translateY(-2px); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+            20% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+        }
 
-		/* 响应式 */
-		@media (max-width: 480px) {
-			body { padding: 15px; }
-			.main-title h1 { font-size: 1.6em; }
-			.title-icon { font-size: 1.4em; }
-			.slogan-main { font-size: 1em; }
-			.slogan-sub { font-size: 0.8em; }
-			.slogan-features { gap: 4px; }
-			.feature-item { padding: 2px 4px; font-size: 0.6em; }
-			.container, .copyright { padding: 15px; }
-			.download-grid { gap: 10px; }
-			.download-item { padding: 12px; }
-			.download-icon { font-size: 1.6em; }
-			.download-item h4 { font-size: 13px; }
-			.download-desc { font-size: 10px; }
-			.qrcode-img { width: 160px; height: 160px; }
-			.copyright-content { font-size: 10px; }
-			.password-container { padding: 20px; }
-			.agreement-text { font-size: 0.65em; white-space: normal; line-height: 1.3; }
-			.custom-alert, .error-toast { max-width: 250px; padding: 15px 20px; }
-		}
-	</style>
+        /* 主内容 */
+        .main-content { display: none; }
+        .header { text-align: center; margin-bottom: 8px; padding: 12px; }
+        .main-title { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 15px; }
+        .main-title h1 { font-size: 1.8em; margin: 0; color: white; font-weight: 700; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+        .title-icon { font-size: 1.6em; color: white; }
+        .slogan-container { text-align: center; margin-bottom: 6px; }
+        .slogan-main { font-size: 1.2em; font-weight: 800; color: #ffd700; margin-bottom: 6px; text-shadow: 0 2px 8px rgba(255,215,0,0.3); line-height: 1.3; }
+        .slogan-sub { font-size: 0.85em; color: rgba(255,255,255,0.95); margin-bottom: 12px; line-height: 1.4; }
+        .slogan-features { display: flex; justify-content: center; gap: 6px; flex-wrap: nowrap; margin-bottom: 4px; }
+        .feature-item {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(139, 92, 246, 0.25)); color: #93c5fd;
+            padding: 3px 6px; border-radius: 8px; font-size: 0.65em; font-weight: 600; border: 1px solid rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px); transition: all 0.3s ease; white-space: nowrap;
+        }
+        .feature-item:hover { transform: translateY(-2px); background: linear-gradient(135deg, rgba(59, 130, 246, 0.35), rgba(139, 92, 246, 0.35)); }
+        
+        /* 内容区块 */
+        .container, .copyright, .qrcode-item {
+            background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 14px;
+            backdrop-filter: blur(15px); box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        .container { padding: 18px; margin: 12px 0; }
+        .copyright { padding: 15px; margin: 12px 0; }
+        .copyright-title { color: white; font-size: 14px; font-weight: 600; text-align: center; margin-bottom: 12px; }
+        .copyright-title::before, .copyright-title::after { content: "⚠️"; margin: 0 8px; font-size: 12px; }
+        .copyright-content { font-size: 11px; color: rgba(255,255,255,0.85); line-height: 1.5; }
+        .copyright-section { margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .copyright-section:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+        .copyright-section-title { font-weight: 600; margin-bottom: 5px; color: white; font-size: 12px; }
+        
+        /* URL和下载 */
+        .url-box {
+            background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 10px;
+            transition: all 0.3s ease; padding: 15px; margin: 12px 0; text-align: center;
+        }
+        .url-label { font-size: 12px; color: rgba(255,255,255,0.9); margin-bottom: 8px; display: block; }
+        .url {
+            font-family: 'Courier New', monospace; font-size: 13px; color: white; word-break: break-all;
+            margin: 8px 0; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.2); cursor: pointer; position: relative; transition: all 0.3s ease;
+        }
+        .url:hover { background: rgba(255,255,255,0.15); transform: translateY(-1px); }
+        .url.copied::after {
+            content: "复制成功"; position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+            font-size: 10px; color: white; background: rgba(34, 197, 94, 0.6); padding: 2px 6px; border-radius: 4px;
+        }
+        .action-hint { font-size: 10px; color: rgba(255,255,255,0.6); text-align: center; margin-top: 8px; }
+        
+        .download-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; }
+        .download-item {
+            background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 10px;
+            padding: 15px; text-align: center; cursor: pointer; position: relative; transition: all 0.3s ease;
+        }
+        .download-item:hover { transform: translateY(-2px); background: rgba(255, 255, 255, 0.15); }
+        .download-item.downloading::after, .download-item.developing::after {
+            content: attr(data-status); position: absolute; top: 8px; right: 8px; font-size: 10px; color: white;
+            padding: 2px 6px; border-radius: 4px;
+        }
+        .download-item.downloading::after { background: rgba(59, 130, 246, 0.6); }
+        .download-item.developing::after { background: rgba(156, 163, 175, 0.6); }
+        .download-icon { font-size: 1.8em; margin-bottom: 8px; display: block; }
+        .download-item h4 { margin: 4px 0 6px 0; font-size: 14px; font-weight: 600; color: white; }
+        .download-desc { font-size: 11px; color: rgba(255,255,255,0.8); line-height: 1.3; }
+        
+        /* 按钮 */
+        .simple-sponsor { text-align: center; margin: 15px 0; padding: 12px; }
+        .sponsor-btn, .close-btn {
+            background: transparent; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 6px; cursor: pointer; transition: all 0.3s ease; font-size: 13px; padding: 8px 16px;
+        }
+        .sponsor-btn:hover, .close-btn:hover {
+            color: rgba(255,255,255,0.9); border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.05);
+        }
+        .sponsor-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+        .close-btn { margin-top: 8px; width: 100%; }
+        
+        /* 二维码 */
+        .qrcode-container { margin: 15px 0; }
+        .qrcode-item { padding: 15px; }
+        .qrcode-title { display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 10px; color: white; font-weight: 500; font-size: 0.9em; }
+        .qrcode-img { width: 180px; height: 180px; margin: 0 auto; background: white; border-radius: 8px; overflow: hidden; }
+        .sponsor-image { width: 100%; height: 100%; object-fit: cover; border-radius: 6px; }
+        .qrcode-desc { margin-top: 10px; font-size: 11px; color: rgba(255,255,255,0.6); line-height: 1.4; }
+        
+        .footer { text-align: center; margin-top: 15px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.2); font-size: 11px; color: rgba(255,255,255,0.7); }
+        h3 { color: white; margin-bottom: 12px; font-size: 1em; font-weight: 600; text-align: center; }
+        
+        /* 表单 */
+        .complaint-form { margin-top: 15px; }
+        .form-group { margin-bottom: 15px; text-align: left; }
+        .form-label { display: block; margin-bottom: 5px; font-size: 0.85em; color: rgba(255,255,255,0.9); }
+        .form-input, .form-textarea {
+            width: 100%; padding: 10px 12px; border: 1px solid rgba(255,255,255,0.3); border-radius: 8px;
+            background: rgba(255,255,255,0.1); color: white; font-size: 14px; transition: all 0.3s ease;
+        }
+        .form-input:focus, .form-textarea:focus { outline: none; border-color: rgba(59, 130, 246, 0.8); background: rgba(255,255,255,0.15); }
+        .form-input::placeholder, .form-textarea::placeholder { color: rgba(255,255,255,0.5); }
+        .form-textarea { resize: vertical; min-height: 100px; }
+        .submit-btn {
+            background: rgba(59, 130, 246, 0.8); color: white; border: none; border-radius: 8px;
+            padding: 12px 24px; font-size: 14px; cursor: pointer; transition: all 0.3s ease; width: 100%;
+        }
+        .submit-btn:hover { background: rgba(59, 130, 246, 1); transform: translateY(-2px); }
+        
+        /* 管理面板 */
+        .admin-panel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10001; backdrop-filter: blur(10px); }
+        .admin-content {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 14px; padding: 25px; width: 90%; max-width: 400px; max-height: 80vh; overflow-y: auto;
+            backdrop-filter: blur(15px);
+        }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.2); }
+        .admin-title { color: white; font-size: 1.2em; font-weight: 600; }
+        .admin-close-btn { background: none; border: none; color: rgba(255,255,255,0.7); font-size: 1.5em; cursor: pointer; }
+        .admin-menu { display: grid; gap: 10px; margin-bottom: 20px; }
+        .admin-btn {
+            background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px;
+            padding: 12px; color: white; cursor: pointer; transition: all 0.3s ease; text-align: center;
+        }
+        .admin-btn:hover { background: rgba(255, 255, 255, 0.15); transform: translateY(-2px); }
+
+        /* 投诉管理样式 */
+        .complaint-item {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        .complaint-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .complaint-email {
+            color: #93c5fd;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+        .complaint-time {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.8em;
+        }
+        .complaint-content {
+            color: rgba(255,255,255,0.9);
+            font-size: 0.85em;
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+        .complaint-status {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 600;
+        }
+        .status-pending {
+            background: rgba(248, 113, 113, 0.2);
+            color: #f87171;
+            border: 1px solid rgba(248, 113, 113, 0.3);
+        }
+        .status-resolved {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+        .complaint-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .action-btn {
+            padding: 4px 8px;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.75em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .resolve-btn {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+        .resolve-btn:hover {
+            background: rgba(34, 197, 94, 0.3);
+        }
+        .delete-btn {
+            background: rgba(248, 113, 113, 0.2);
+            color: #f87171;
+            border: 1px solid rgba(248, 113, 113, 0.3);
+        }
+        .delete-btn:hover {
+            background: rgba(248, 113, 113, 0.3);
+        }
+
+        /* 响应式 */
+        @media (max-width: 480px) {
+            body { padding: 15px; }
+            .main-title h1 { font-size: 1.6em; }
+            .title-icon { font-size: 1.4em; }
+            .slogan-main { font-size: 1em; }
+            .slogan-sub { font-size: 0.8em; }
+            .slogan-features { gap: 4px; }
+            .feature-item { padding: 2px 4px; font-size: 0.6em; }
+            .container, .copyright { padding: 15px; }
+            .download-grid { gap: 10px; }
+            .download-item { padding: 12px; }
+            .download-icon { font-size: 1.6em; }
+            .download-item h4 { font-size: 13px; }
+            .download-desc { font-size: 10px; }
+            .qrcode-img { width: 160px; height: 160px; }
+            .copyright-content { font-size: 10px; }
+            .password-container { padding: 20px; }
+            .agreement-text { font-size: 0.65em; white-space: normal; line-height: 1.3; }
+            .custom-alert, .error-toast { max-width: 250px; padding: 15px 20px; }
+        }
+    </style>
 </head>
 <body>
-	<!-- 密码保护层 -->
-	<div id="passwordProtection" class="password-protection">
-		<div class="password-container">
-			<div class="password-title">🔒 访问密码</div>
-			<div class="password-desc">请输入访问密码以继续浏览内容</div>
-			<input type="password" id="passwordInput" class="password-input" placeholder="请输入4位数字密码" maxlength="4" inputmode="numeric">
-			<button id="passwordSubmit" class="password-btn">进入网站</button>
-			<div id="passwordError" class="password-error">密码错误，请重新输入</div>
-			<div class="password-hint">密码会定期更换，请勿外传</div>
-			<div class="agreement-text">
-				登录即表示您已阅读、理解并同意👉<span class="terms-link" id="showTermsLink">《使用条款和免责声明》</span>
-			</div>
-		</div>
-	</div>
+    <!-- 密码保护层 -->
+    <div id="passwordProtection" class="password-protection">
+        <div class="password-container">
+            <div class="password-title">🔒 访问密码</div>
+            <div class="password-desc">请输入访问密码以继续浏览内容</div>
+            <input type="password" id="passwordInput" class="password-input" placeholder="请输入4位数字密码" maxlength="4" inputmode="numeric">
+            <button id="passwordSubmit" class="password-btn">进入网站</button>
+            <div id="passwordError" class="password-error">密码错误，请重新输入</div>
+            <div class="password-hint">密码会定期更换，请勿外传</div>
+            <div class="agreement-text">
+                登录即表示您已阅读、理解并同意👉<span class="terms-link" id="showTermsLink">《使用条款和免责声明》</span>
+            </div>
+        </div>
+    </div>
 
-	<!-- 管理面板 -->
-	<div id="adminPanel" class="admin-panel">
-		<div class="admin-content">
-			<div class="admin-header">
-				<div class="admin-title">🔧 管理面板</div>
-				<button class="admin-close-btn" id="closeAdminPanel">&times;</button>
-			</div>
-			<div class="admin-menu">
-				<button class="admin-btn" onclick="ADMIN_SYSTEM.showWebsiteStats()">📊 查看网站统计</button>
-				<button class="admin-btn" onclick="ADMIN_SYSTEM.showPendingComplaints()">📝 待处理投诉</button>
-				<button class="admin-btn" onclick="ADMIN_SYSTEM.showAllComplaints()">📋 所有投诉记录</button>
-				<button class="admin-btn" onclick="ADMIN_SYSTEM.showSecurityWarnings()">🛡️ 安全警告</button>
-				<button class="admin-btn" onclick="ADMIN_SYSTEM.clearAllData()">🗑️ 清空所有数据</button>
-			</div>
-			<button class="close-btn" onclick="ADMIN_SYSTEM.closeAdminPanel()">关闭管理面板</button>
-		</div>
-	</div>
+    <!-- 管理面板 -->
+    <div id="adminPanel" class="admin-panel">
+        <div class="admin-content">
+            <div class="admin-header">
+                <div class="admin-title">🔧 管理面板</div>
+                <button class="admin-close-btn" id="closeAdminPanel">&times;</button>
+            </div>
+            <div class="admin-menu">
+                <button class="admin-btn" onclick="ADMIN_SYSTEM.showWebsiteStats()">📊 查看网站统计</button>
+                <button class="admin-btn" onclick="ADMIN_SYSTEM.showPendingComplaints()">📝 待处理投诉</button>
+                <button class="admin-btn" onclick="ADMIN_SYSTEM.showAllComplaints()">📋 所有投诉记录</button>
+                <button class="admin-btn" onclick="ADMIN_SYSTEM.clearAllData()">🗑️ 清空所有数据</button>
+            </div>
+            <button class="close-btn" onclick="ADMIN_SYSTEM.closeAdminPanel()">关闭管理面板</button>
+        </div>
+    </div>
 
-	<!-- 条款弹窗 -->
-	<div id="termsModal" class="terms-modal">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h3>📄 使用条款和免责声明</h3>
-				<p>请仔细阅读以下条款，登录即表示您已同意</p>
-			</div>
-			<div class="copyright-content">
-				<div class="copyright-section">
-					<div class="copyright-section-title">📱 关于软件</div>
-					<p>本站提供的软件来源于GitHub开源项目，仅提供下载信息，软件本身不存储、不制作、不上传任何内容，仅供个人学习研究使用。</p>
-				</div>
-				<div class="copyright-section">
-					<div class="copyright-section-title">🎬 关于技术接口</div>
-					<p>本站展示的技术接口信息均来自第三方公开网络资源，仅用于技术交流演示。用户应自行确保使用行为的合法性，并支持正版资源。</p>
-				</div>
-				<div class="copyright-section">
-					<div class="copyright-section-title">⚖️ 使用条款</div>
-					<p>请用户严格遵守以下条款：</p>
-					<ul style="margin: 5px 0 5px 15px; font-size: 10px;">
-						<li>仅限个人学习、研究使用，禁止商业用途</li>
-						<li>请在下载后24小时内删除相关内容</li>
-						<li>不得用于非法用途，否则后果自负</li>
-						<li>若涉及版权问题，请联系：xiaopgys@163.com 及时处理</li>
-					</ul>
-				</div>
-				<div class="copyright-section">
-					<div class="copyright-section-title">🛡️ 免责声明</div>
-					<p>本站按"原样"提供技术服务，不提供任何明示或暗示的担保。使用者应对使用本站产生的任何后果自行承担全部责任。本站不承担任何直接、间接、偶然或特殊的法律责任。若您使用本站，即表示您已阅读、理解并同意以上所有条款。</p>
-				</div>
-			</div>
-			<button class="close-btn" id="agreeTermsBtn">我已阅读并同意</button>
-		</div>
-	</div>
+    <!-- 条款弹窗 -->
+    <div id="termsModal" class="terms-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📄 使用条款和免责声明</h3>
+                <p>请仔细阅读以下条款，登录即表示您已同意</p>
+            </div>
+            <div class="terms-content">
+                <div class="copyright-section">
+                    <div class="copyright-section-title">📱 关于软件</div>
+                    <p>本站提供的软件来源于GitHub开源项目，仅提供下载信息，软件本身不存储、不制作、不上传任何内容，仅供个人学习研究使用。</p>
+                </div>
+                <div class="copyright-section">
+                    <div class="copyright-section-title">🎬 关于技术接口</div>
+                    <p>本站展示的技术接口信息均来自第三方公开网络资源，仅用于技术交流演示。用户应自行确保使用行为的合法性，并支持正版资源。</p>
+                </div>
+                <div class="copyright-section">
+                    <div class="copyright-section-title">⚖️ 使用条款</div>
+                    <p>请用户严格遵守以下条款：</p>
+                    <ul style="margin: 5px 0 5px 15px; font-size: 10px;">
+                        <li>仅限个人学习、研究使用，禁止商业用途</li>
+                        <li>请在下载后24小时内删除相关内容</li>
+                        <li>不得用于非法用途，否则后果自负</li>
+                        <li>若涉及版权问题，请联系：xiaopgys@163.com 及时处理</li>
+                    </ul>
+                </div>
+                <div class="copyright-section">
+                    <div class="copyright-section-title">🛡️ 免责声明</div>
+                    <p>本站按"原样"提供技术服务，不提供任何明示或暗示的担保。使用者应对使用本站产生的任何后果自行承担全部责任。本站不承担任何直接、间接、偶然或特殊的法律责任。若您使用本站，即表示您已阅读、理解并同意以上所有条款。</p>
+                </div>
+            </div>
+            <button class="close-btn" id="agreeTermsBtn">我已阅读并同意</button>
+        </div>
+    </div>
 
-	<!-- 投诉弹窗 -->
-	<div id="complaintModal" class="complaint-modal">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h3>📝 版权投诉</h3>
-				<p>如果您发现本站内容侵犯了您的版权<br>请在此提交投诉，我们会及时处理</p>
-			</div>
-			<div class="complaint-form">
-				<div class="form-group">
-					<label class="form-label">您的邮箱</label>
-					<input type="email" id="complaintEmail" class="form-input" placeholder="请输入您的邮箱地址">
-				</div>
-				<div class="form-group">
-					<label class="form-label">投诉内容</label>
-					<textarea id="complaintContent" class="form-textarea" placeholder="请详细描述您遇到的版权问题（最多500字）"></textarea>
-				</div>
-				<button class="submit-btn" id="submitComplaintBtn">提交投诉</button>
-			</div>
-			<button class="close-btn" id="closeComplaintBtn">关闭</button>
-		</div>
-	</div>
+    <!-- 投诉弹窗 -->
+    <div id="complaintModal" class="complaint-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📝 版权投诉</h3>
+                <p>如果您发现本站内容侵犯了您的版权<br>请在此提交投诉，我们会及时处理</p>
+            </div>
+            <div class="complaint-form">
+                <div class="form-group">
+                    <label class="form-label">您的邮箱</label>
+                    <input type="email" id="complaintEmail" class="form-input" placeholder="请输入您的邮箱地址">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">投诉内容</label>
+                    <textarea id="complaintContent" class="form-textarea" placeholder="请详细描述您遇到的版权问题（最多500字）"></textarea>
+                </div>
+                <button class="submit-btn" id="submitComplaintBtn">提交投诉</button>
+            </div>
+            <button class="close-btn" id="closeComplaintBtn">关闭</button>
+        </div>
+    </div>
 
-	<!-- 赞助弹窗 -->
-	<div id="sponsorModal" class="sponsor-modal">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h3>☕ 请喝咖啡</h3>
-				<p>如果技术演示对您有帮助<br>可以请我喝杯咖啡，感谢您的支持！</p>
-			</div>
-			<div class="qrcode-container">
-				<div class="qrcode-item">
-					<div class="qrcode-title">支持作者</div>
-					<div class="qrcode-img">
-						<img src="./sponsor/wechat-sponsor.png" alt="微信赞赏码" class="sponsor-image">
-					</div>
-					<div class="qrcode-desc">使用微信扫描赞赏码支持作者</div>
-				</div>
-			</div>
-			<button class="close-btn" id="closeSponsorBtn">关闭</button>
-		</div>
-	</div>
+    <!-- 赞助弹窗 -->
+    <div id="sponsorModal" class="sponsor-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>☕ 请喝咖啡</h3>
+                <p>如果技术演示对您有帮助<br>可以请我喝杯咖啡，感谢您的支持！</p>
+            </div>
+            <div class="qrcode-container">
+                <div class="qrcode-item">
+                    <div class="qrcode-title">支持作者</div>
+                    <div class="qrcode-img">
+                        <img src="./sponsor/wechat-sponsor.png" alt="微信赞赏码" class="sponsor-image">
+                    </div>
+                    <div class="qrcode-desc">使用微信扫描赞赏码支持作者</div>
+                </div>
+            </div>
+            <button class="close-btn" id="closeSponsorBtn">关闭</button>
+        </div>
+    </div>
 
-	<!-- 主内容区域 -->
-	<div id="mainContent" class="main-content">
-		<div class="header">
-			<div class="main-title">
-				<span class="title-icon">🍎</span>
-				<h1>小苹果影视</h1>
-			</div>
-			<div class="slogan-container">
-				<div class="slogan-main">汇聚全网资源，畅享4K视界</div>
-				<div class="slogan-sub">尊享沉浸式观影，就在此刻开启</div>
-				<div class="slogan-features">
-					<span class="feature-item">🎬 海量资源</span>
-					<span class="feature-item">⚡ 极速播放</span>
-					<span class="feature-item">🎨 4K超清</span>
-					<span class="feature-item">🌟 热播抢先</span>
-				</div>
-			</div>
-		</div>
+    <!-- 主内容区域 -->
+    <div id="mainContent" class="main-content">
+        <div class="header">
+            <div class="main-title">
+                <span class="title-icon">🍎</span>
+                <h1>小苹果影视</h1>
+            </div>
+            <div class="slogan-container">
+                <div class="slogan-main">汇聚全网资源，畅享4K视界</div>
+                <div class="slogan-sub">尊享沉浸式观影，就在此刻开启</div>
+                <div class="slogan-features">
+                    <span class="feature-item">🎬 海量资源</span>
+                    <span class="feature-item">⚡ 极速播放</span>
+                    <span class="feature-item">🎨 4K超清</span>
+                    <span class="feature-item">🌟 热播抢先</span>
+                </div>
+            </div>
+        </div>
 
-		<div class="container">
-			<h3>🎯 配置地址</h3>
-			<div class="url-box">
-				<span class="url-label">点击复制下方地址到播放器中使用</span>
-				<div class="url" id="serviceUrl">http://127.0.0.1:8080/</div>
-				<div class="action-hint">点击上方链接即可复制</div>
-			</div>
+        <div class="container">
+            <h3>🎯 配置地址</h3>
+            <div class="url-box">
+                <span class="url-label">点击复制下方地址到播放器中使用</span>
+                <div class="url" id="serviceUrl">http://127.0.0.1:8080/</div>
+                <div class="action-hint">点击上方链接即可复制</div>
+            </div>
 
-			<h3>📥 软件下载</h3>
-			<div class="download-grid">
-				<div class="download-item" data-type="player">
-					<span class="download-icon">📱</span>
-					<h4>影视播放器</h4>
-					<div class="download-desc">基于开源项目修改，仅供技术测试</div>
-				</div>
-				<div class="download-item" data-type="tvbox">
-					<span class="download-icon">📺</span>
-					<h4>TVBox 播放器</h4>
-					<div class="download-desc">多版本适配，播放体验测试</div>
-				</div>
-			</div>
-			<div class="action-hint">点击上方卡片即可下载对应软件</div>
-		</div>
+            <h3>📥 软件下载</h3>
+            <div class="download-grid">
+                <div class="download-item" data-type="player">
+                    <span class="download-icon">📱</span>
+                    <h4>影视播放器</h4>
+                    <div class="download-desc">基于开源项目修改，仅供技术测试</div>
+                </div>
+                <div class="download-item" data-type="tvbox">
+                    <span class="download-icon">📺</span>
+                    <h4>TVBox 播放器</h4>
+                    <div class="download-desc">多版本适配，播放体验测试</div>
+                </div>
+            </div>
+            <div class="action-hint">点击上方卡片即可下载对应软件</div>
+        </div>
 
-		<div class="copyright">
-			<div class="copyright-title">重要声明</div>
-			<div class="copyright-content">
-				<p>⚠️ 本站内容仅供技术学习交流，使用者应确保行为合法性并支持正版资源。</p>
-				<p>⚠️ 详细使用条款请参考登录时的《使用条款和免责声明》。</p>
-				<p>📧 如遇版权问题，请<a href="javascript:void(0)" id="complaintLink" style="color: #93c5fd; text-decoration: underline;">点击此处提交投诉</a></p>
-			</div>
-		</div>
+        <div class="copyright">
+            <div class="copyright-title">重要声明</div>
+            <div class="copyright-content">
+                <p>⚠️ 本站内容仅供技术学习交流，使用者应确保行为合法性并支持正版资源。</p>
+                <p>⚠️ 详细使用条款请参考登录时的《使用条款和免责声明》。</p>
+                <p>📧 如遇版权问题，请<a href="javascript:void(0)" id="complaintLink" style="color: #93c5fd; text-decoration: underline;">点击此处提交投诉</a></p>
+            </div>
+        </div>
 
-		<div class="simple-sponsor">
-			<button class="sponsor-btn">
-				<span>☕</span>
-				请作者喝咖啡
-			</button>
-		</div>
+        <div class="simple-sponsor">
+            <button class="sponsor-btn">
+                <span>☕</span>
+                请作者喝咖啡
+            </button>
+        </div>
 
-		<div class="footer">
-			小苹果影视 - 比你更懂你，片荒终结者 © 2025
-		</div>
-	</div>
+        <div class="footer">
+            小苹果影视 - 比你更懂你，片荒终结者 © 2025
+        </div>
+    </div>
 
-	<script>
-		// 密码配置 - 从外部文件读取
-		let PASSWORD_CONFIG = { 
-			currentPassword: "2025",
-			adminPassword: "8888",
-			tokenExpiry: 0,
-			maxAttempts: 5,
-			allowNumbersOnly: true,
-			siteName: "小苹果影视 - 比你更懂你，片荒终结者",
-			version: "1.0.0",
-			maintenanceMode: false,
-			maintenanceMessage: "网站维护中，请稍后访问"
-		};
-		
-		// 动态加载外部密码配置
-		function loadPasswordConfig() {
-			// 如果外部配置已加载，则使用外部配置
-			if (typeof window.PASSWORD_CONFIG !== 'undefined') {
-				PASSWORD_CONFIG = window.PASSWORD_CONFIG;
-				console.log('外部密码配置加载成功');
-			}
-		}
+    <script>
+        // 密码配置 - 从外部文件读取
+        let PASSWORD_CONFIG = { 
+            currentPassword: "2025",
+            adminPassword: "8888",
+            tokenExpiry: 0,
+            maxAttempts: 5,
+            allowNumbersOnly: true,
+            siteName: "小苹果影视 - 比你更懂你，片荒终结者",
+            version: "1.0.0",
+            maintenanceMode: false,
+            maintenanceMessage: "网站维护中，请稍后访问"
+        };
+        
+        // 动态加载外部密码配置
+        function loadPasswordConfig() {
+            // 如果外部配置已加载，则使用外部配置
+            if (typeof window.PASSWORD_CONFIG !== 'undefined') {
+                PASSWORD_CONFIG = window.PASSWORD_CONFIG;
+                console.log('外部密码配置加载成功');
+            }
+        }
 
-		const config = {
-			baseUrl: window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1),
-			downloadLinks: { player: 'https://m997.lanzoue.com/iziv137ai40d', tvbox: '' }
-		};
-		const PASSWORD_KEY = "site_access_token";
+        const config = {
+            baseUrl: window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1),
+            downloadLinks: { player: 'https://m997.lanzoue.com/iziv137ai40d', tvbox: '' }
+        };
+        const PASSWORD_KEY = "site_access_token";
 
-		// 自定义提示系统
-		const alertSystem = {
-			showError(title, message) {
-				const errorDiv = document.createElement('div');
-				errorDiv.className = 'error-toast';
-				errorDiv.innerHTML = `<h4>❌ ${title}</h4><p>${message}</p>`;
-				document.body.appendChild(errorDiv);
-				setTimeout(() => {
-					if (errorDiv.parentNode) errorDiv.parentNode.removeChild(errorDiv);
-				}, 2000);
-			},
-			showSuccess(title, message) {
-				const alertDiv = document.createElement('div');
-				alertDiv.className = 'custom-alert';
-				alertDiv.innerHTML = `<h4 style="color: #4ade80">✅ ${title}</h4><p>${message}</p><button class="alert-btn">确定</button>`;
-				document.body.appendChild(alertDiv);
-				const closeAlert = () => {
-					alertDiv.style.opacity = '0';
-					alertDiv.style.transform = 'translate(-50%, -50%) scale(0.9)';
-					setTimeout(() => {
-						if (alertDiv.parentNode) alertDiv.parentNode.removeChild(alertDiv);
-					}, 300);
-				};
-				alertDiv.querySelector('.alert-btn').addEventListener('click', closeAlert);
-			}
-		};
+        // 自定义提示系统
+        const alertSystem = {
+            showError(title, message) {
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-toast';
+                errorDiv.innerHTML = `<h4>❌ ${title}</h4><p>${message}</p>`;
+                document.body.appendChild(errorDiv);
+                setTimeout(() => {
+                    if (errorDiv.parentNode) errorDiv.parentNode.removeChild(errorDiv);
+                }, 2000);
+            },
+            showSuccess(title, message) {
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'custom-alert';
+                alertDiv.innerHTML = `<h4 style="color: #4ade80">✅ ${title}</h4><p>${message}</p><button class="alert-btn">确定</button>`;
+                document.body.appendChild(alertDiv);
+                const closeAlert = () => {
+                    alertDiv.style.opacity = '0';
+                    alertDiv.style.transform = 'translate(-50%, -50%) scale(0.9)';
+                    setTimeout(() => {
+                        if (alertDiv.parentNode) alertDiv.parentNode.removeChild(alertDiv);
+                    }, 300);
+                };
+                alertDiv.querySelector('.alert-btn').addEventListener('click', closeAlert);
+            }
+        };
 
-		// 密码功能
-		function checkPassword() {
-			const passwordInput = document.getElementById('passwordInput');
-			const errorElement = document.getElementById('passwordError');
-			const inputPassword = passwordInput.value.trim();
+        // 密码功能
+        function checkPassword() {
+            const passwordInput = document.getElementById('passwordInput');
+            const errorElement = document.getElementById('passwordError');
+            const inputPassword = passwordInput.value.trim();
 
-			// 先加载最新配置
-			loadPasswordConfig();
+            // 先加载最新配置
+            loadPasswordConfig();
 
-			// 检查管理密码
-			if (inputPassword === PASSWORD_CONFIG.adminPassword) {
-				ADMIN_SYSTEM.openAdminPanel();
-				passwordInput.value = '';
-				errorElement.style.display = 'none';
-				return false;
-			}
-			
-			// 检查用户密码
-			if (inputPassword === PASSWORD_CONFIG.currentPassword) {
-				const expiryDate = new Date();
-				expiryDate.setDate(expiryDate.getDate() + PASSWORD_CONFIG.tokenExpiry);
-				const authData = {
-					token: btoa(PASSWORD_CONFIG.currentPassword + '_' + expiryDate.getTime()),
-					expiry: expiryDate.getTime(),
-					created: Date.now(),
-					expiryDays: PASSWORD_CONFIG.tokenExpiry
-				};
-				localStorage.setItem(PASSWORD_KEY, JSON.stringify(authData));
-				document.getElementById('passwordProtection').style.display = 'none';
-				document.getElementById('mainContent').style.display = 'block';
-				init();
-				return true;
-			} else {
-				errorElement.style.display = 'block';
-				passwordInput.value = '';
-				passwordInput.focus();
-				return false;
-			}
-		}
+            // 检查管理密码
+            if (inputPassword === PASSWORD_CONFIG.adminPassword) {
+                ADMIN_SYSTEM.openAdminPanel();
+                passwordInput.value = '';
+                errorElement.style.display = 'none';
+                return false;
+            }
+            
+            // 检查用户密码
+            if (inputPassword === PASSWORD_CONFIG.currentPassword) {
+                const expiryDate = new Date();
+                expiryDate.setDate(expiryDate.getDate() + PASSWORD_CONFIG.tokenExpiry);
+                const authData = {
+                    token: btoa(PASSWORD_CONFIG.currentPassword + '_' + expiryDate.getTime()),
+                    expiry: expiryDate.getTime(),
+                    created: Date.now(),
+                    expiryDays: PASSWORD_CONFIG.tokenExpiry
+                };
+                localStorage.setItem(PASSWORD_KEY, JSON.stringify(authData));
+                document.getElementById('passwordProtection').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+                init();
+                return true;
+            } else {
+                errorElement.style.display = 'block';
+                passwordInput.value = '';
+                passwordInput.focus();
+                return false;
+            }
+        }
 
-		function checkExistingAuth() {
-			const savedAuth = localStorage.getItem(PASSWORD_KEY);
-			if (savedAuth) {
-				try {
-					const authData = JSON.parse(savedAuth);
-					if (authData.expiry && authData.expiry > Date.now()) {
-						try {
-							const tokenParts = atob(authData.token).split('_');
-							if (tokenParts.length === 2 && tokenParts[1] == authData.expiry) {
-								document.getElementById('passwordProtection').style.display = 'none';
-								document.getElementById('mainContent').style.display = 'block';
-								return true;
-							}
-						} catch (e) {
-							console.error('Token解析失败:', e);
-						}
-					}
-					localStorage.removeItem(PASSWORD_KEY);
-				} catch (e) {
-					console.error('解析登录信息失败:', e);
-					localStorage.removeItem(PASSWORD_KEY);
-				}
-			}
-			return false;
-		}
+        function checkExistingAuth() {
+            const savedAuth = localStorage.getItem(PASSWORD_KEY);
+            if (savedAuth) {
+                try {
+                    const authData = JSON.parse(savedAuth);
+                    if (authData.expiry && authData.expiry > Date.now()) {
+                        try {
+                            const tokenParts = atob(authData.token).split('_');
+                            if (tokenParts.length === 2 && tokenParts[1] == authData.expiry) {
+                                document.getElementById('passwordProtection').style.display = 'none';
+                                document.getElementById('mainContent').style.display = 'block';
+                                return true;
+                            }
+                        } catch (e) {
+                            console.error('Token解析失败:', e);
+                        }
+                    }
+                    localStorage.removeItem(PASSWORD_KEY);
+                } catch (e) {
+                    console.error('解析登录信息失败:', e);
+                    localStorage.removeItem(PASSWORD_KEY);
+                }
+            }
+            return false;
+        }
 
-		// 弹窗功能
-		function openTermsModal() { 
-			document.getElementById('termsModal').style.display = 'block'; 
-		}
-		function closeTermsModal() { 
-			document.getElementById('termsModal').style.display = 'none'; 
-		}
-		function openSponsorModal() { 
-			document.getElementById('sponsorModal').style.display = 'block'; 
-		}
-		function closeSponsorModal() { 
-			document.getElementById('sponsorModal').style.display = 'none'; 
-		}
+        // 弹窗功能
+        function openTermsModal() { 
+            document.getElementById('termsModal').style.display = 'block'; 
+        }
+        function closeTermsModal() { 
+            document.getElementById('termsModal').style.display = 'none'; 
+        }
+        function openSponsorModal() { 
+            document.getElementById('sponsorModal').style.display = 'block'; 
+        }
+        function closeSponsorModal() { 
+            document.getElementById('sponsorModal').style.display = 'none'; 
+        }
 
-		// 初始化
-		function init() {
-			document.getElementById('serviceUrl').textContent = config.baseUrl;
-			bindEvents();
-			siteAnalytics.recordVisit();
-			
-			document.getElementById('complaintLink').addEventListener('click', function() {
-				complaintSystem.showComplaintForm();
-			});
-			
-			document.getElementById('closeComplaintBtn').addEventListener('click', function() {
-				complaintSystem.hideComplaintForm();
-			});
-			
-			document.getElementById('submitComplaintBtn').addEventListener('click', function() {
-				complaintSystem.submitComplaint();
-			});
-			
-			document.getElementById('complaintModal').addEventListener('click', e => {
-				if (e.target === e.currentTarget) complaintSystem.hideComplaintForm();
-			});
-		}
+        // 初始化
+        function init() {
+            document.getElementById('serviceUrl').textContent = config.baseUrl;
+            bindEvents();
+            siteAnalytics.recordVisit();
+            
+            document.getElementById('complaintLink').addEventListener('click', function() {
+                complaintSystem.showComplaintForm();
+            });
+            
+            document.getElementById('closeComplaintBtn').addEventListener('click', function() {
+                complaintSystem.hideComplaintForm();
+            });
+            
+            document.getElementById('submitComplaintBtn').addEventListener('click', function() {
+                complaintSystem.submitComplaint();
+            });
+            
+            document.getElementById('complaintModal').addEventListener('click', e => {
+                if (e.target === e.currentTarget) complaintSystem.hideComplaintForm();
+            });
+        }
 
-		function bindEvents() {
-			document.querySelectorAll('.url').forEach(url => {
-				url.addEventListener('click', copyUrl);
-			});
-			
-			document.querySelectorAll('.download-item').forEach(item => {
-				item.addEventListener('click', handleDownload);
-			});
-			
-			document.querySelector('.sponsor-btn').addEventListener('click', openSponsorModal);
-			document.getElementById('closeSponsorBtn').addEventListener('click', closeSponsorModal);
-			document.getElementById('sponsorModal').addEventListener('click', e => {
-				if (e.target === e.currentTarget) closeSponsorModal();
-			});
-		}
+        function bindEvents() {
+            document.querySelectorAll('.url').forEach(url => {
+                url.addEventListener('click', copyUrl);
+            });
+            
+            document.querySelectorAll('.download-item').forEach(item => {
+                item.addEventListener('click', handleDownload);
+            });
+            
+            document.querySelector('.sponsor-btn').addEventListener('click', openSponsorModal);
+            document.getElementById('closeSponsorBtn').addEventListener('click', closeSponsorModal);
+            document.getElementById('sponsorModal').addEventListener('click', e => {
+                if (e.target === e.currentTarget) closeSponsorModal();
+            });
+        }
 
-		async function copyUrl(e) {
-			const element = e.target;
-			const text = element.textContent;
-			try {
-				await navigator.clipboard.writeText(text);
-				element.classList.add('copied');
-				setTimeout(() => element.classList.remove('copied'), 2000);
-			} catch (err) {
-				console.error('复制失败:', err);
-			}
-		}
+        async function copyUrl(e) {
+            const element = e.target;
+            const text = element.textContent;
+            try {
+                await navigator.clipboard.writeText(text);
+                element.classList.add('copied');
+                setTimeout(() => element.classList.remove('copied'), 2000);
+            } catch (err) {
+                console.error('复制失败:', err);
+            }
+        }
 
-		function handleDownload(e) {
-			const element = e.currentTarget;
-			const type = element.dataset.type;
-			
-			userBehavior.recordDownload(type);
-			
-			const url = config.downloadLinks[type];
-			if (url && url.trim() !== '') {
-				element.classList.add('downloading');
-				element.dataset.status = '下载中';
-				setTimeout(() => {
-					window.open(url, '_blank');
-					setTimeout(() => {
-						element.classList.remove('downloading');
-						delete element.dataset.status;
-					}, 2000);
-				}, 500);
-			} else {
-				element.classList.add('developing');
-				element.dataset.status = '开发中';
-				setTimeout(() => {
-					element.classList.remove('developing');
-					delete element.dataset.status;
-				}, 2000);
-			}
-		}
+        function handleDownload(e) {
+            const element = e.currentTarget;
+            const type = element.dataset.type;
+            
+            userBehavior.recordDownload(type);
+            
+            const url = config.downloadLinks[type];
+            if (url && url.trim() !== '') {
+                element.classList.add('downloading');
+                element.dataset.status = '下载中';
+                setTimeout(() => {
+                    window.open(url, '_blank');
+                    setTimeout(() => {
+                        element.classList.remove('downloading');
+                        delete element.dataset.status;
+                    }, 2000);
+                }, 500);
+            } else {
+                element.classList.add('developing');
+                element.dataset.status = '开发中';
+                setTimeout(() => {
+                    element.classList.remove('developing');
+                    delete element.dataset.status;
+                }, 2000);
+            }
+        }
 
-		function initPasswordProtection() {
-			// 先加载密码配置
-			loadPasswordConfig();
-			
-			if (!checkExistingAuth()) {
-				const passwordInput = document.getElementById('passwordInput');
-				const submitButton = document.getElementById('passwordSubmit');
-				const termsLink = document.getElementById('showTermsLink');
-				const closeTermsBtn = document.getElementById('agreeTermsBtn');
-				const closeAdminBtn = document.getElementById('closeAdminPanel');
-				
-				passwordInput.addEventListener('keypress', function(e) {
-					if (e.key === 'Enter') checkPassword();
-				});
-				submitButton.addEventListener('click', checkPassword);
-				passwordInput.addEventListener('input', function(e) {
-					this.value = this.value.replace(/[^0-9]/g, '');
-				});
-				termsLink.addEventListener('click', openTermsModal);
-				closeTermsBtn.addEventListener('click', closeTermsModal);
-				closeAdminBtn.addEventListener('click', ADMIN_SYSTEM.closeAdminPanel);
-				
-				document.getElementById('termsModal').addEventListener('click', e => {
-					if (e.target === e.currentTarget) closeTermsModal();
-				});
-				
-				document.getElementById('adminPanel').addEventListener('click', e => {
-					if (e.target === e.currentTarget) ADMIN_SYSTEM.closeAdminPanel();
-				});
-				
-				passwordInput.focus();
-			} else {
-				init();
-			}
-		}
+        function initPasswordProtection() {
+            // 先加载密码配置
+            loadPasswordConfig();
+            
+            if (!checkExistingAuth()) {
+                const passwordInput = document.getElementById('passwordInput');
+                const submitButton = document.getElementById('passwordSubmit');
+                const termsLink = document.getElementById('showTermsLink');
+                const closeTermsBtn = document.getElementById('agreeTermsBtn');
+                const closeAdminBtn = document.getElementById('closeAdminPanel');
+                
+                passwordInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') checkPassword();
+                });
+                submitButton.addEventListener('click', checkPassword);
+                passwordInput.addEventListener('input', function(e) {
+                    this.value = this.value.replace(/[^0-9]/g, '');
+                });
+                termsLink.addEventListener('click', openTermsModal);
+                closeTermsBtn.addEventListener('click', closeTermsModal);
+                closeAdminBtn.addEventListener('click', ADMIN_SYSTEM.closeAdminPanel);
+                
+                document.getElementById('termsModal').addEventListener('click', e => {
+                    if (e.target === e.currentTarget) closeTermsModal();
+                });
+                
+                document.getElementById('adminPanel').addEventListener('click', e => {
+                    if (e.target === e.currentTarget) ADMIN_SYSTEM.closeAdminPanel();
+                });
+                
+                passwordInput.focus();
+            } else {
+                init();
+            }
+        }
 
-		// 系统功能
-		const siteAnalytics = {
-			recordVisit() {
-				const visitData = {
-					timestamp: Date.now(),
-					date: new Date().toLocaleDateString('zh-CN'),
-					userAgent: navigator.userAgent.substring(0, 100),
-					referrer: document.referrer || 'direct'
-				};
-				let visits = JSON.parse(localStorage.getItem('site_visits') || '[]');
-				visits.push(visitData);
-				const thirtyDaysAgo = Date.now() - 30 * 24 * 60 * 60 * 1000;
-				visits = visits.filter(v => v.timestamp > thirtyDaysAgo);
-				localStorage.setItem('site_visits', JSON.stringify(visits));
-			},
-			getStats() {
-				const visits = JSON.parse(localStorage.getItem('site_visits') || '[]');
-				return {
-					totalVisits: visits.length,
-					todayVisits: visits.filter(v => new Date(v.timestamp).toLocaleDateString('zh-CN') === new Date().toLocaleDateString('zh-CN')).length,
-					uniqueDays: new Set(visits.map(v => v.date)).size
-				};
-			}
-		};
+        // 系统功能
+        const siteAnalytics = {
+            recordVisit() {
+                const visitData = {
+                    timestamp: Date.now(),
+                    date: new Date().toLocaleDateString('zh-CN'),
+                    userAgent: navigator.userAgent.substring(0, 100),
+                    referrer: document.referrer || 'direct'
+                };
+                let visits = JSON.parse(localStorage.getItem('site_visits') || '[]');
+                visits.push(visitData);
+                const thirtyDaysAgo = Date.now() - 30 * 24 * 60 * 60 * 1000;
+                visits = visits.filter(v => v.timestamp > thirtyDaysAgo);
+                localStorage.setItem('site_visits', JSON.stringify(visits));
+            },
+            getStats() {
+                const visits = JSON.parse(localStorage.getItem('site_visits') || '[]');
+                return {
+                    totalVisits: visits.length,
+                    todayVisits: visits.filter(v => new Date(v.timestamp).toLocaleDateString('zh-CN') === new Date().toLocaleDateString('zh-CN')).length,
+                    uniqueDays: new Set(visits.map(v => v.date)).size
+                };
+            }
+        };
 
-		const userBehavior = {
-			downloads: JSON.parse(localStorage.getItem('user_downloads') || '{}'),
-			recordDownload(type) {
-				if (!this.downloads[type]) this.downloads[type] = 0;
-				this.downloads[type]++;
-				const downloadRecord = { type: type, timestamp: Date.now(), date: new Date().toLocaleDateString('zh-CN') };
-				let allDownloads = JSON.parse(localStorage.getItem('download_records') || '[]');
-				allDownloads.push(downloadRecord);
-				if (allDownloads.length > 100) allDownloads = allDownloads.slice(-100);
-				localStorage.setItem('user_downloads', JSON.stringify(this.downloads));
-				localStorage.setItem('download_records', JSON.stringify(allDownloads));
-			},
-			getDownloadStats() {
-				return { total: Object.values(this.downloads).reduce((a, b) => a + b, 0), byType: this.downloads };
-			}
-		};
+        const userBehavior = {
+            downloads: JSON.parse(localStorage.getItem('user_downloads') || '{}'),
+            recordDownload(type) {
+                if (!this.downloads[type]) this.downloads[type] = 0;
+                this.downloads[type]++;
+                const downloadRecord = { type: type, timestamp: Date.now(), date: new Date().toLocaleDateString('zh-CN') };
+                let allDownloads = JSON.parse(localStorage.getItem('download_records') || '[]');
+                allDownloads.push(downloadRecord);
+                if (allDownloads.length > 100) allDownloads = allDownloads.slice(-100);
+                localStorage.setItem('user_downloads', JSON.stringify(this.downloads));
+                localStorage.setItem('download_records', JSON.stringify(allDownloads));
+            },
+            getDownloadStats() {
+                return { total: Object.values(this.downloads).reduce((a, b) => a + b, 0), byType: this.downloads };
+            }
+        };
 
-		// 投诉系统 - 使用自定义提示
-		const complaintSystem = {
-			showComplaintForm() { document.getElementById('complaintModal').style.display = 'block'; },
-			hideComplaintForm() {
-				document.getElementById('complaintModal').style.display = 'none';
-				document.getElementById('complaintEmail').value = '';
-				document.getElementById('complaintContent').value = '';
-			},
-			submitComplaint() {
-				const email = document.getElementById('complaintEmail').value.trim();
-				const content = document.getElementById('complaintContent').value.trim();
-				if (!email) { 
-					alertSystem.showError('输入错误', '请输入您的邮箱地址'); 
-					return; 
-				}
-				if (!email.includes('@') || !email.includes('.')) { 
-					alertSystem.showError('输入错误', '请输入有效的邮箱地址'); 
-					return; 
-				}
-				if (!content) { 
-					alertSystem.showError('输入错误', '请输入投诉内容'); 
-					return; 
-				}
-				if (content.length > 500) { 
-					alertSystem.showError('输入错误', '投诉内容不能超过500字'); 
-					return; 
-				}
-				this.recordComplaint(email, content);
-				alertSystem.showSuccess('提交成功', '我们已收到您的投诉信息，将在24小时内通过邮箱联系您处理');
-				this.hideComplaintForm();
-			},
-			recordComplaint(email, content) {
-				const complaint = {
-					id: Date.now(), email: email, content: content.substring(0, 500), status: '待处理',
-					timestamp: new Date().toLocaleString('zh-CN'), resolvedAt: null
-				};
-				let complaints = JSON.parse(localStorage.getItem('copyright_complaints') || '[]');
-				complaints.unshift(complaint);
-				if (complaints.length > 50) complaints = complaints.slice(0, 50);
-				localStorage.setItem('copyright_complaints', JSON.stringify(complaints));
-				return complaint.id;
-			},
-			getPendingComplaints() { return JSON.parse(localStorage.getItem('copyright_complaints') || '[]').filter(c => c.status === '待处理'); },
-			getAllComplaints() { return JSON.parse(localStorage.getItem('copyright_complaints') || '[]'); }
-		};
+        // 投诉系统 - 使用自定义提示
+        const complaintSystem = {
+            showComplaintForm() { document.getElementById('complaintModal').style.display = 'block'; },
+            hideComplaintForm() {
+                document.getElementById('complaintModal').style.display = 'none';
+                document.getElementById('complaintEmail').value = '';
+                document.getElementById('complaintContent').value = '';
+            },
+            submitComplaint() {
+                const email = document.getElementById('complaintEmail').value.trim();
+                const content = document.getElementById('complaintContent').value.trim();
+                if (!email) { 
+                    alertSystem.showError('输入错误', '请输入您的邮箱地址'); 
+                    return; 
+                }
+                if (!email.includes('@') || !email.includes('.')) { 
+                    alertSystem.showError('输入错误', '请输入有效的邮箱地址'); 
+                    return; 
+                }
+                if (!content) { 
+                    alertSystem.showError('输入错误', '请输入投诉内容'); 
+                    return; 
+                }
+                if (content.length > 500) { 
+                    alertSystem.showError('输入错误', '投诉内容不能超过500字'); 
+                    return; 
+                }
+                this.recordComplaint(email, content);
+                alertSystem.showSuccess('提交成功', '我们已收到您的投诉信息，将在24小时内通过邮箱联系您处理');
+                this.hideComplaintForm();
+            },
+            recordComplaint(email, content) {
+                const complaint = {
+                    id: Date.now(), 
+                    email: email, 
+                    content: content.substring(0, 500), 
+                    status: '待处理',
+                    timestamp: new Date().toLocaleString('zh-CN'), 
+                    resolvedAt: null
+                };
+                let complaints = JSON.parse(localStorage.getItem('copyright_complaints') || '[]');
+                complaints.unshift(complaint);
+                if (complaints.length > 50) complaints = complaints.slice(0, 50);
+                localStorage.setItem('copyright_complaints', JSON.stringify(complaints));
+                return complaint.id;
+            },
+            getPendingComplaints() { 
+                return JSON.parse(localStorage.getItem('copyright_complaints') || '[]').filter(c => c.status === '待处理'); 
+            },
+            getAllComplaints() { 
+                return JSON.parse(localStorage.getItem('copyright_complaints') || '[]'); 
+            },
+            markAsResolved(complaintId) {
+                let complaints = this.getAllComplaints();
+                const complaintIndex = complaints.findIndex(c => c.id === complaintId);
+                if (complaintIndex !== -1) {
+                    complaints[complaintIndex].status = '已处理';
+                    complaints[complaintIndex].resolvedAt = new Date().toLocaleString('zh-CN');
+                    localStorage.setItem('copyright_complaints', JSON.stringify(complaints));
+                    return true;
+                }
+                return false;
+            },
+            deleteComplaint(complaintId) {
+                let complaints = this.getAllComplaints();
+                complaints = complaints.filter(c => c.id !== complaintId);
+                localStorage.setItem('copyright_complaints', JSON.stringify(complaints));
+                return true;
+            }
+        };
 
-		const ADMIN_SYSTEM = {
-			openAdminPanel() { document.getElementById('adminPanel').style.display = 'block'; },
-			closeAdminPanel() { document.getElementById('adminPanel').style.display = 'none'; },
-			showWebsiteStats() {
-				const stats = siteAnalytics.getStats();
-				const downloadStats = userBehavior.getDownloadStats();
-				const info = `📊 网站统计信息：\n\n访问数据：\n- 总访问量: ${stats.totalVisits} 次\n- 今日访问: ${stats.todayVisits} 次\n- 活跃天数: ${stats.uniqueDays} 天\n\n下载数据：\n- 总下载量: ${downloadStats.total} 次\n- 播放器下载: ${downloadStats.byType.player || 0} 次\n- TVBox下载: ${downloadStats.byType.tvbox || 0} 次`;
-				alert(info);
-			},
-			showPendingComplaints() {
-				const complaints = complaintSystem.getPendingComplaints();
-				if (complaints.length === 0) { alert('暂无待处理的版权投诉'); return; }
-				let text = `有 ${complaints.length} 条待处理投诉：\n\n`;
-				complaints.forEach((comp, index) => {
-					text += `${index + 1}. 时间: ${comp.timestamp}\n   邮箱: ${comp.email}\n   内容: ${comp.content}\n\n`;
-				});
-				text += '请及时通过邮箱 xiaopgys@163.com 联系处理！';
-				alert(text);
-			},
-			showAllComplaints() {
-				const complaints = complaintSystem.getAllComplaints();
-				if (complaints.length === 0) { alert('暂无任何投诉记录'); return; }
-				let text = `所有投诉记录 (共${complaints.length}条)：\n\n`;
-				complaints.forEach((comp, index) => {
-					text += `${index + 1}. 时间: ${comp.timestamp}\n   邮箱: ${comp.email}\n   状态: ${comp.status}\n   内容: ${comp.content}\n`;
-					if (comp.resolvedAt) text += `   处理时间: ${comp.resolvedAt}\n`;
-					text += '\n';
-				});
-				alert(text);
-			},
-			showSecurityWarnings() { alert('暂无安全警告'); },
-			clearAllData() {
-				if (confirm('确定要清空所有监控数据吗？此操作不可恢复！')) {
-					localStorage.removeItem('site_visits');
-					localStorage.removeItem('user_downloads');
-					localStorage.removeItem('download_records');
-					localStorage.removeItem('copyright_complaints');
-					alert('所有数据已清空！');
-				}
-			}
-		};
+        const ADMIN_SYSTEM = {
+            openAdminPanel() { document.getElementById('adminPanel').style.display = 'block'; },
+            closeAdminPanel() { document.getElementById('adminPanel').style.display = 'none'; },
+            showWebsiteStats() {
+                const stats = siteAnalytics.getStats();
+                const downloadStats = userBehavior.getDownloadStats();
+                const info = `📊 网站统计信息：\n\n访问数据：\n- 总访问量: ${stats.totalVisits} 次\n- 今日访问: ${stats.todayVisits} 次\n- 活跃天数: ${stats.uniqueDays} 天\n\n下载数据：\n- 总下载量: ${downloadStats.total} 次\n- 播放器下载: ${downloadStats.byType.player || 0} 次\n- TVBox下载: ${downloadStats.byType.tvbox || 0} 次`;
+                alert(info);
+            },
+            showPendingComplaints() {
+                const complaints = complaintSystem.getPendingComplaints();
+                if (complaints.length === 0) { 
+                    alert('暂无待处理的版权投诉'); 
+                    return; 
+                }
+                
+                let complaintsHTML = `
+                    <div style="text-align: center; margin-bottom: 15px; color: white; font-weight: 600;">
+                        待处理投诉 (${complaints.length}条)
+                    </div>
+                `;
+                
+                complaints.forEach(complaint => {
+                    complaintsHTML += `
+                        <div class="complaint-item">
+                            <div class="complaint-header">
+                                <div class="complaint-email">${complaint.email}</div>
+                                <div class="complaint-time">${complaint.timestamp}</div>
+                            </div>
+                            <div class="complaint-content">${complaint.content}</div>
+                            <div>
+                                <span class="complaint-status status-pending">${complaint.status}</span>
+                            </div>
+                            <div class="complaint-actions">
+                                <button class="action-btn resolve-btn" onclick="ADMIN_SYSTEM.resolveComplaint(${complaint.id})">标记为已处理</button>
+                                <button class="action-btn delete-btn" onclick="ADMIN_SYSTEM.deleteComplaint(${complaint.id})">删除</button>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                const modal = document.createElement('div');
+                modal.className = 'custom-alert';
+                modal.style.maxWidth = '90%';
+                modal.style.width = '400px';
+                modal.style.maxHeight = '80vh';
+                modal.style.overflowY = 'auto';
+                modal.innerHTML = `
+                    <h4>📝 待处理投诉</h4>
+                    <div style="max-height: 400px; overflow-y: auto; margin-bottom: 15px;">
+                        ${complaintsHTML}
+                    </div>
+                    <button class="alert-btn">关闭</button>
+                `;
+                
+                document.body.appendChild(modal);
+                
+                modal.querySelector('.alert-btn').addEventListener('click', () => {
+                    modal.style.opacity = '0';
+                    modal.style.transform = 'translate(-50%, -50%) scale(0.9)';
+                    setTimeout(() => {
+                        if (modal.parentNode) modal.parentNode.removeChild(modal);
+                    }, 300);
+                });
+            },
+            showAllComplaints() {
+                const complaints = complaintSystem.getAllComplaints();
+                if (complaints.length === 0) { 
+                    alert('暂无任何投诉记录'); 
+                    return; 
+                }
+                
+                let complaintsHTML = `
+                    <div style="text-align: center; margin-bottom: 15px; color: white; font-weight: 600;">
+                        所有投诉记录 (${complaints.length}条)
+                    </div>
+                `;
+                
+                complaints.forEach(complaint => {
+                    const statusClass = complaint.status === '已处理' ? 'status-resolved' : 'status-pending';
+                    complaintsHTML += `
+                        <div class="complaint-item">
+                            <div class="complaint-header">
+                                <div class="complaint-email">${complaint.email}</div>
+                                <div class="complaint-time">${complaint.timestamp}</div>
+                            </div>
+                            <div class="complaint-content">${complaint.content}</div>
+                            <div>
+                                <span class="complaint-status ${statusClass}">${complaint.status}</span>
+                                ${complaint.resolvedAt ? `<div style="color: rgba(255,255,255,0.6); font-size: 0.7em; margin-top: 4px;">处理时间: ${complaint.resolvedAt}</div>` : ''}
+                            </div>
+                            ${complaint.status === '待处理' ? `
+                            <div class="complaint-actions">
+                                <button class="action-btn resolve-btn" onclick="ADMIN_SYSTEM.resolveComplaint(${complaint.id})">标记为已处理</button>
+                                <button class="action-btn delete-btn" onclick="ADMIN_SYSTEM.deleteComplaint(${complaint.id})">删除</button>
+                            </div>
+                            ` : `
+                            <div class="complaint-actions">
+                                <button class="action-btn delete-btn" onclick="ADMIN_SYSTEM.deleteComplaint(${complaint.id})">删除</button>
+                            </div>
+                            `}
+                        </div>
+                    `;
+                });
+                
+                const modal = document.createElement('div');
+                modal.className = 'custom-alert';
+                modal.style.maxWidth = '90%';
+                modal.style.width = '400px';
+                modal.style.maxHeight = '80vh';
+                modal.style.overflowY = 'auto';
+                modal.innerHTML = `
+                    <h4>📋 所有投诉记录</h4>
+                    <div style="max-height: 400px; overflow-y: auto; margin-bottom: 15px;">
+                        ${complaintsHTML}
+                    </div>
+                    <button class="alert-btn">关闭</button>
+                `;
+                
+                document.body.appendChild(modal);
+                
+                modal.querySelector('.alert-btn').addEventListener('click', () => {
+                    modal.style.opacity = '0';
+                    modal.style.transform = 'translate(-50%, -50%) scale(0.9)';
+                    setTimeout(() => {
+                        if (modal.parentNode) modal.parentNode.removeChild(modal);
+                    }, 300);
+                });
+            },
+            resolveComplaint(complaintId) {
+                if (complaintSystem.markAsResolved(complaintId)) {
+                    alertSystem.showSuccess('处理成功', '投诉已标记为已处理');
+                    // 刷新显示
+                    setTimeout(() => {
+                        document.querySelectorAll('.custom-alert').forEach(alert => {
+                            if (alert.parentNode) alert.parentNode.removeChild(alert);
+                        });
+                        this.showPendingComplaints();
+                    }, 1000);
+                }
+            },
+            deleteComplaint(complaintId) {
+                if (confirm('确定要删除这条投诉记录吗？此操作不可恢复！')) {
+                    if (complaintSystem.deleteComplaint(complaintId)) {
+                        alertSystem.showSuccess('删除成功', '投诉记录已删除');
+                        // 刷新显示
+                        setTimeout(() => {
+                            document.querySelectorAll('.custom-alert').forEach(alert => {
+                                if (alert.parentNode) alert.parentNode.removeChild(alert);
+                            });
+                            this.showAllComplaints();
+                        }, 1000);
+                    }
+                }
+            },
+            clearAllData() {
+                if (confirm('确定要清空所有监控数据吗？此操作不可恢复！')) {
+                    localStorage.removeItem('site_visits');
+                    localStorage.removeItem('user_downloads');
+                    localStorage.removeItem('download_records');
+                    localStorage.removeItem('copyright_complaints');
+                    alert('所有数据已清空！');
+                }
+            }
+        };
 
-		document.addEventListener('DOMContentLoaded', function() {
-			initPasswordProtection();
-		});
-	</script>
+        document.addEventListener('DOMContentLoaded', function() {
+            initPasswordProtection();
+        });
+    </script>
 
-	<!-- 引入外部密码配置文件 -->
-	<script src="./password-worker.js"></script>
+    <!-- 引入外部密码配置文件 -->
+    <script src="./password-worker.js"></script>
 </body>
 </html>
