@@ -44,7 +44,7 @@
 
 		/* 弹窗基础样式 - 全部没有背景 */
 		.terms-modal, .complaint-modal, .sponsor-modal { 
-			display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000; 
+			display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000; 
 		}
 		.modal-content {
 			position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
@@ -418,22 +418,22 @@
 	<script>
 		// 密码配置 - 从外部文件读取
 		let PASSWORD_CONFIG = { 
-			CURRENT_PASSWORD: "2025",  // 默认值，会被外部配置覆盖
-			TOKEN_EXPIRY_DAYS: 7 
+			currentPassword: "2025",
+			adminPassword: "8888",
+			tokenExpiry: 0,
+			maxAttempts: 5,
+			allowNumbersOnly: true,
+			siteName: "小苹果影视 - 比你更懂你，片荒终结者",
+			version: "1.0.0",
+			maintenanceMode: false,
+			maintenanceMessage: "网站维护中，请稍后访问"
 		};
 		
-		let ADMIN_CONFIG = { 
-			ADMIN_PASSWORD: "admin888"  // 默认值，会被外部配置覆盖
-		};
-
 		// 动态加载外部密码配置
 		function loadPasswordConfig() {
-			// 尝试从 password-worker.js 加载配置
-			if (typeof PASSWORD_CONFIG_EXTERNAL !== 'undefined') {
-				PASSWORD_CONFIG.CURRENT_PASSWORD = PASSWORD_CONFIG_EXTERNAL.currentPassword || "2025";
-				if (PASSWORD_CONFIG_EXTERNAL.adminPassword) {
-					ADMIN_CONFIG.ADMIN_PASSWORD = PASSWORD_CONFIG_EXTERNAL.adminPassword;
-				}
+			// 如果外部配置已加载，则使用外部配置
+			if (typeof window.PASSWORD_CONFIG !== 'undefined') {
+				PASSWORD_CONFIG = window.PASSWORD_CONFIG;
 				console.log('外部密码配置加载成功');
 			}
 		}
@@ -480,21 +480,23 @@
 			// 先加载最新配置
 			loadPasswordConfig();
 
-			if (inputPassword === ADMIN_CONFIG.ADMIN_PASSWORD) {
+			// 检查管理密码
+			if (inputPassword === PASSWORD_CONFIG.adminPassword) {
 				ADMIN_SYSTEM.openAdminPanel();
 				passwordInput.value = '';
 				errorElement.style.display = 'none';
 				return false;
 			}
 			
-			if (inputPassword === PASSWORD_CONFIG.CURRENT_PASSWORD) {
+			// 检查用户密码
+			if (inputPassword === PASSWORD_CONFIG.currentPassword) {
 				const expiryDate = new Date();
-				expiryDate.setDate(expiryDate.getDate() + PASSWORD_CONFIG.TOKEN_EXPIRY_DAYS);
+				expiryDate.setDate(expiryDate.getDate() + PASSWORD_CONFIG.tokenExpiry);
 				const authData = {
-					token: btoa(PASSWORD_CONFIG.CURRENT_PASSWORD + '_' + expiryDate.getTime()),
+					token: btoa(PASSWORD_CONFIG.currentPassword + '_' + expiryDate.getTime()),
 					expiry: expiryDate.getTime(),
 					created: Date.now(),
-					expiryDays: PASSWORD_CONFIG.TOKEN_EXPIRY_DAYS
+					expiryDays: PASSWORD_CONFIG.tokenExpiry
 				};
 				localStorage.setItem(PASSWORD_KEY, JSON.stringify(authData));
 				document.getElementById('passwordProtection').style.display = 'none';
@@ -536,10 +538,18 @@
 		}
 
 		// 弹窗功能
-		function openTermsModal() { document.getElementById('termsModal').style.display = 'block'; }
-		function closeTermsModal() { document.getElementById('termsModal').style.display = 'none'; }
-		function openSponsorModal() { document.getElementById('sponsorModal').style.display = 'block'; }
-		function closeSponsorModal() { document.getElementById('sponsorModal').style.display = 'none'; }
+		function openTermsModal() { 
+			document.getElementById('termsModal').style.display = 'block'; 
+		}
+		function closeTermsModal() { 
+			document.getElementById('termsModal').style.display = 'none'; 
+		}
+		function openSponsorModal() { 
+			document.getElementById('sponsorModal').style.display = 'block'; 
+		}
+		function closeSponsorModal() { 
+			document.getElementById('sponsorModal').style.display = 'none'; 
+		}
 
 		// 初始化
 		function init() {
