@@ -41,4 +41,4 @@ const PASSWORD_CONFIG = {
 */
 
 // 控制台提示
-console.log('密码配置文件已加载 - 小苹果影视');
+console.log('密码配置文件已加载 - 小苹果影视系统');
