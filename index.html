@@ -469,6 +469,18 @@
 			}
 		};
 
+		// 时间格式化函数 - 修复时间显示问题
+		function formatLocalTime(date) {
+			const now = new Date(date);
+			const year = now.getFullYear();
+			const month = String(now.getMonth() + 1).padStart(2, '0');
+			const day = String(now.getDate()).padStart(2, '0');
+			const hours = String(now.getHours()).padStart(2, '0');
+			const minutes = String(now.getMinutes()).padStart(2, '0');
+			const seconds = String(now.getSeconds()).padStart(2, '0');
+			return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
+		}
+
 		// 密码功能
 		function checkPassword() {
 			const passwordInput = document.getElementById('passwordInput');
@@ -485,6 +497,9 @@
 			}
 			
 			if (inputPassword === PASSWORD_CONFIG.currentPassword) {
+				// 记录访问到服务器
+				ADMIN_SYSTEM.recordVisit();
+				
 				const expiryDate = new Date();
 				expiryDate.setDate(expiryDate.getDate() + PASSWORD_CONFIG.tokenExpiry);
 				const authData = {
@@ -600,6 +615,9 @@
 			const element = e.currentTarget;
 			const type = element.dataset.type;
 			
+			// 记录下载到服务器
+			ADMIN_SYSTEM.recordDownload();
+			
 			const url = config.downloadLinks[type];
 			if (url && url.trim() !== '') {
 				element.classList.add('downloading');
@@ -679,7 +697,11 @@
 						headers: {
 							'Content-Type': 'application/json',
 						},
-						body: JSON.stringify({ email, content })
+						body: JSON.stringify({ 
+							email, 
+							content,
+							timestamp: formatLocalTime(new Date()) // 修复时间问题
+						})
 					});
 					
 					const result = await response.json();
@@ -722,6 +744,36 @@
 			openAdminPanel() { document.getElementById('adminPanel').style.display = 'block'; },
 			closeAdminPanel() { document.getElementById('adminPanel').style.display = 'none'; },
 			
+			// 记录访问
+			async recordVisit() {
+				try {
+					await fetch('/api/admin/visit', {
+						method: 'POST',
+						headers: {
+							'Authorization': `Bearer ${PASSWORD_CONFIG.adminPassword}`,
+							'Content-Type': 'application/json'
+						}
+					});
+				} catch (error) {
+					console.error('记录访问失败:', error);
+				}
+			},
+			
+			// 记录下载
+			async recordDownload() {
+				try {
+					await fetch('/api/admin/download', {
+						method: 'POST',
+						headers: {
+							'Authorization': `Bearer ${PASSWORD_CONFIG.adminPassword}`,
+							'Content-Type': 'application/json'
+						}
+					});
+				} catch (error) {
+					console.error('记录下载失败:', error);
+				}
+			},
+			
 			async showWebsiteStats() {
 				try {
 					const response = await fetch('/api/admin/stats', {
@@ -738,7 +790,7 @@
 					
 					if (result.success) {
 						const stats = result.data;
-						const info = `📊 网站统计信息\n\n📈 访问数据：\n• 总访问量: ${stats.visits || 0} 次\n• 总下载量: ${stats.downloads || 0} 次\n\n📝 投诉数据：\n• 总投诉: ${stats.totalComplaints || 0} 条\n• 待处理: ${stats.pendingComplaints || 0} 条`;
+						const info = `📊 网站统计信息\n\n📈 访问数据：\n• 总访问量: ${stats.visits || 0} 次\n• 总下载量: ${stats.downloads || 0} 次\n\n📝 投诉数据：\n• 总投诉: ${stats.totalComplaints || 0} 条\n• 待处理: ${stats.pendingComplaints || 0} 条\n• 已处理: ${stats.resolvedComplaints || 0} 条\n• 已删除: ${stats.deletedComplaints || 0} 条`;
 						alert(info);
 					} else {
 						alert('获取统计信息失败: ' + (result.error || '未知错误'));
@@ -770,11 +822,11 @@
 							return;
 						}
 						
-						// 修复问题1：时间显示问题 - 使用本地时间
 						let text = `有 ${pendingComplaints.length} 条待处理投诉：\n\n`;
 						pendingComplaints.forEach((comp, index) => {
-							// 修复问题3：添加处理按钮
-							text += `${index + 1}. 时间: ${comp.timestamp}\n   邮箱: ${comp.email}\n   内容: ${comp.content}\n   [<a href="javascript:void(0)" onclick="ADMIN_SYSTEM.resolveComplaint('${comp.id}')">标记为已处理</a>]\n\n`;
+							// 修复时间显示问题
+							const displayTime = comp.timestamp ? comp.timestamp : formatLocalTime(new Date());
+							text += `${index + 1}. 时间: ${displayTime}\n   邮箱: ${comp.email}\n   内容: ${comp.content}\n   [<a href="javascript:void(0)" onclick="ADMIN_SYSTEM.resolveComplaint('${comp.id}')">✅ 标记为已处理</a>] [<a href="javascript:void(0)" onclick="ADMIN_SYSTEM.deleteComplaint('${comp.id}')">🗑️ 删除投诉</a>]\n\n`;
 						});
 						alert(text);
 					} else {
@@ -807,15 +859,19 @@
 							return;
 						}
 						
-						// 修复问题1：时间显示问题 - 使用本地时间
 						let text = `所有投诉记录 (共${complaints.length}条)：\n\n`;
 						complaints.forEach((comp, index) => {
-							text += `${index + 1}. 时间: ${comp.timestamp}\n   邮箱: ${comp.email}\n   状态: ${comp.status}\n   内容: ${comp.content}\n`;
-							if (comp.resolvedAt) text += `   处理时间: ${comp.resolvedAt}\n`;
+							// 修复时间显示问题
+							const displayTime = comp.timestamp ? comp.timestamp : formatLocalTime(new Date());
+							const statusText = comp.status === 'pending' ? '待处理' : 
+											comp.status === 'resolved' ? '✅ 已处理' : 
+											'🗑️ 已删除';
 							
-							// 修复问题3：添加处理按钮（仅对未处理的投诉）
+							text += `${index + 1}. 时间: ${displayTime}\n   邮箱: ${comp.email}\n   状态: ${statusText}\n   内容: ${comp.content}\n`;
+							
+							if (comp.resolvedAt) text += `   处理时间: ${comp.resolvedAt}\n`;
 							if (comp.status === 'pending') {
-								text += `   [<a href="javascript:void(0)" onclick="ADMIN_SYSTEM.resolveComplaint('${comp.id}')">标记为已处理</a>]\n`;
+								text += `   [<a href="javascript:void(0)" onclick="ADMIN_SYSTEM.resolveComplaint('${comp.id}')">✅ 标记为已处理</a>] [<a href="javascript:void(0)" onclick="ADMIN_SYSTEM.deleteComplaint('${comp.id}')">🗑️ 删除投诉</a>]\n`;
 							}
 							text += '\n';
 						});
@@ -829,7 +885,7 @@
 				}
 			},
 			
-			// 修复问题3：添加处理投诉的方法
+			// 处理投诉
 			async resolveComplaint(id) {
 				try {
 					const response = await fetch(`/api/admin/resolve-complaint`, {
@@ -838,7 +894,10 @@
 							'Authorization': `Bearer ${PASSWORD_CONFIG.adminPassword}`,
 							'Content-Type': 'application/json'
 						},
-						body: JSON.stringify({ id })
+						body: JSON.stringify({ 
+							id,
+							resolvedAt: formatLocalTime(new Date()) // 修复时间问题
+						})
 					});
 					
 					if (!response.ok) {
@@ -857,6 +916,41 @@
 				} catch (error) {
 					console.error('处理投诉失败:', error);
 					alert('处理投诉失败，请检查网络连接或稍后重试');
+				}
+			},
+			
+			// 删除投诉
+			async deleteComplaint(id) {
+				if (!confirm('确定要删除这条投诉记录吗？此操作不可恢复！')) {
+					return;
+				}
+				
+				try {
+					const response = await fetch(`/api/admin/delete-complaint`, {
+						method: 'POST',
+						headers: {
+							'Authorization': `Bearer ${PASSWORD_CONFIG.adminPassword}`,
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify({ id })
+					});
+					
+					if (!response.ok) {
+						throw new Error('API请求失败');
+					}
+					
+					const result = await response.json();
+					
+					if (result.success) {
+						alert('投诉记录已删除！');
+						// 刷新页面以更新数据
+						location.reload();
+					} else {
+						alert('删除投诉失败: ' + (result.error || '未知错误'));
+					}
+				} catch (error) {
+					console.error('删除投诉失败:', error);
+					alert('删除投诉失败，请检查网络连接或稍后重试');
 				}
 			},
 			
