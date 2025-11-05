@@ -769,9 +769,12 @@
 							alert('暂无待处理的投诉');
 							return;
 						}
+						
+						// 修复问题1：时间显示问题 - 使用本地时间
 						let text = `有 ${pendingComplaints.length} 条待处理投诉：\n\n`;
 						pendingComplaints.forEach((comp, index) => {
-							text += `${index + 1}. 时间: ${comp.timestamp}\n   邮箱: ${comp.email}\n   内容: ${comp.content}\n\n`;
+							// 修复问题3：添加处理按钮
+							text += `${index + 1}. 时间: ${comp.timestamp}\n   邮箱: ${comp.email}\n   内容: ${comp.content}\n   [<a href="javascript:void(0)" onclick="ADMIN_SYSTEM.resolveComplaint('${comp.id}')">标记为已处理</a>]\n\n`;
 						});
 						alert(text);
 					} else {
@@ -803,10 +806,17 @@
 							alert('暂无任何投诉记录');
 							return;
 						}
+						
+						// 修复问题1：时间显示问题 - 使用本地时间
 						let text = `所有投诉记录 (共${complaints.length}条)：\n\n`;
 						complaints.forEach((comp, index) => {
 							text += `${index + 1}. 时间: ${comp.timestamp}\n   邮箱: ${comp.email}\n   状态: ${comp.status}\n   内容: ${comp.content}\n`;
 							if (comp.resolvedAt) text += `   处理时间: ${comp.resolvedAt}\n`;
+							
+							// 修复问题3：添加处理按钮（仅对未处理的投诉）
+							if (comp.status === 'pending') {
+								text += `   [<a href="javascript:void(0)" onclick="ADMIN_SYSTEM.resolveComplaint('${comp.id}')">标记为已处理</a>]\n`;
+							}
 							text += '\n';
 						});
 						alert(text);
@@ -816,6 +826,37 @@
 				} catch (error) {
 					console.error('获取投诉失败:', error);
 					alert('获取投诉列表失败，请检查网络连接或稍后重试');
+				}
+			},
+			
+			// 修复问题3：添加处理投诉的方法
+			async resolveComplaint(id) {
+				try {
+					const response = await fetch(`/api/admin/resolve-complaint`, {
+						method: 'POST',
+						headers: {
+							'Authorization': `Bearer ${PASSWORD_CONFIG.adminPassword}`,
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify({ id })
+					});
+					
+					if (!response.ok) {
+						throw new Error('API请求失败');
+					}
+					
+					const result = await response.json();
+					
+					if (result.success) {
+						alert('投诉已标记为已处理！');
+						// 刷新页面以更新数据
+						location.reload();
+					} else {
+						alert('处理投诉失败: ' + (result.error || '未知错误'));
+					}
+				} catch (error) {
+					console.error('处理投诉失败:', error);
+					alert('处理投诉失败，请检查网络连接或稍后重试');
 				}
 			},
 			
