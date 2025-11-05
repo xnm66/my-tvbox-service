@@ -6,7 +6,7 @@ export async function verifyAdmin(request, env) {
     }
     
     const token = authHeader.slice(7)
-    const adminToken = env.ADMIN_TOKEN || '8888' // 默认管理员密码
+    const adminToken = env.ADMIN_TOKEN || '8888'
     
     return token === adminToken
 }
@@ -18,19 +18,8 @@ export const corsHeaders = {
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 }
 
-// 处理 OPTIONS 请求
-export function handleOptions(request) {
-    if (request.headers.get('Origin') !== null &&
-        request.headers.get('Access-Control-Request-Method') !== null &&
-        request.headers.get('Access-Control-Request-Headers') !== null) {
-        return new Response(null, {
-            headers: corsHeaders
-        })
-    } else {
-        return new Response(null, {
-            headers: {
-                'Allow': 'GET, POST, PUT, DELETE, OPTIONS',
-            }
-        })
-    }
+export function handleOptions() {
+    return new Response(null, {
+        headers: corsHeaders
+    })
 }
