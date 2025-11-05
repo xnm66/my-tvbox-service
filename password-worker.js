@@ -5,9 +5,6 @@ window.PASSWORD_CONFIG = {
     // === 密码设置 ===
     // 在这里修改访问密码，建议4位数字
     currentPassword: "2026",
-    // === 管理密码 ===
-    // 管理面板访问密码
-    adminPassword: "6666",
     // === 安全设置 ===
     tokenExpiry: 0,    // 令牌有效期（天）
     maxAttempts: 5,    // 最大尝试次数
