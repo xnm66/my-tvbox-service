@@ -1,7 +1,7 @@
 // password-worker.js - 网站密码配置文件
 // 放置于网站根目录，用于存储密码配置信息
 
-const PASSWORD_CONFIG = {
+window.PASSWORD_CONFIG = {
     // === 密码设置 ===
     // 在这里修改访问密码，建议4位数字
     currentPassword: "2026",
