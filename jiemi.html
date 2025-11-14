@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>TVBox接口工具</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+			font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+		}
+		
+		body {
+			background-color: #f5f7fa;
+			color: #333;
+			line-height: 1.5;
+			padding: 15px;
+			min-height: 100vh;
+		}
+		
+		.container {
+			max-width: 600px;
+			margin: 0 auto;
+		}
+		
+		header {
+			text-align: center;
+			margin-bottom: 20px;
+			padding: 15px;
+		}
+		
+		header h1 {
+			color: #2c3e50;
+			margin-bottom: 5px;
+			font-size: 22px;
+		}
+		
+		header p {
+			color: #7f8c8d;
+			font-size: 14px;
+		}
+		
+		.input-group {
+			margin-bottom: 15px;
+		}
+		
+		.input-group label {
+			display: block;
+			margin-bottom: 6px;
+			font-weight: 500;
+			color: #2c3e50;
+			font-size: 14px;
+		}
+		
+		.input-group input, .input-group textarea {
+			width: 100%;
+			padding: 10px 12px;
+			border: 1px dashed #ccc;
+			border-radius: 6px;
+			font-size: 14px;
+			background: white;
+		}
+		
+		.input-group input:focus, .input-group textarea:focus {
+			border-color: #3498db;
+			outline: none;
+		}
+		
+		.input-group textarea {
+			min-height: 100px;
+			resize: vertical;
+			font-family: 'Courier New', monospace;
+		}
+		
+		.btn {
+			background: #3498db;
+			color: white;
+			border: none;
+			padding: 8px 16px;
+			border-radius: 6px;
+			font-size: 13px;
+			cursor: pointer;
+			margin-right: 8px;
+		}
+		
+		.btn:hover {
+			background: #2980b9;
+		}
+		
+		.btn-secondary {
+			background: #95a5a6;
+		}
+		
+		.btn-copy {
+			background: #27ae60;
+			padding: 4px 8px;
+			font-size: 12px;
+			position: absolute;
+			top: 8px;
+			right: 8px;
+			display: none;
+		}
+		
+		.result-container {
+			position: relative;
+			margin-top: 15px;
+			border: 1px dashed #ccc;
+			border-radius: 6px;
+			background: white;
+		}
+		
+		.result-area {
+			padding: 12px;
+			min-height: 150px;
+			max-height: 300px;
+			overflow-y: auto;
+			white-space: pre-wrap;
+			font-family: 'Courier New', monospace;
+			font-size: 12px;
+			line-height: 1.4;
+			color: #7f8c8d;
+		}
+		
+		.result-area.has-content {
+			color: #333;
+		}
+		
+		.tabs {
+			display: flex;
+			margin-bottom: 15px;
+			border-radius: 6px;
+			overflow: hidden;
+			border: 1px dashed #ddd;
+			background: white;
+		}
+		
+		.tab {
+			flex: 1;
+			text-align: center;
+			padding: 10px;
+			cursor: pointer;
+			transition: all 0.3s;
+			color: #7f8c8d;
+			font-weight: 500;
+			font-size: 14px;
+		}
+		
+		.tab.active {
+			color: #3498db;
+			background: #f8f9fa;
+			border-bottom: 2px solid #3498db;
+		}
+		
+		.tab-content {
+			display: none;
+		}
+		
+		.tab-content.active {
+			display: block;
+		}
+		
+		.radio-group {
+			display: flex;
+			gap: 18px;
+			font-size: 14px;
+		}
+		
+		.radio-option {
+			display: flex;
+			align-items: center;
+			gap: 5px;
+			cursor: pointer;
+		}
+		
+		.radio-option input {
+			margin: 0;
+		}
+		
+		.success {
+			color: #27ae60;
+		}
+		
+		.error {
+			color: #e74c3c;
+		}
+		
+		.action-buttons {
+			display: flex;
+			gap: 8px;
+			margin-top: 8px;
+		}
+		
+		.info {
+			color: #7f8c8d;
+			font-size: 12px;
+			margin-top: 3px;
+		}
+		
+		/* 密码和偏移值在同一行 */
+		.crypto-inputs-row {
+			display: flex;
+			gap: 12px;
+			margin-bottom: 15px;
+		}
+		
+		.crypto-input-group {
+			flex: 1;
+		}
+		
+		.crypto-input-group label {
+			display: block;
+			margin-bottom: 6px;
+			font-weight: 500;
+			color: #2c3e50;
+			font-size: 14px;
+		}
+		
+		.crypto-input-group input {
+			width: 100%;
+			padding: 6px 10px;
+			border: 1px dashed #ccc;
+			border-radius: 6px;
+			font-size: 13px;
+			background: white;
+			height: 34px;
+		}
+		
+		.crypto-input-group input:focus {
+			border-color: #3498db;
+			outline: none;
+		}
+		
+		/* 选项和按钮在同一行 */
+		.crypto-controls-row {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: 15px;
+			gap: 15px;
+		}
+		
+		.crypto-buttons {
+			display: flex;
+			gap: 8px;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<header>
+			<h1>TVBox接口工具</h1>
+			<p>获取和加密/解密TVBox接口数据</p>
+		</header>
+		
+		<div class="tabs">
+			<div class="tab active" data-tab="fetch">接口获取</div>
+			<div class="tab" data-tab="crypto">加密/解密</div>
+		</div>
+		
+		<div class="tab-content active" id="fetch-tab">
+			<div class="input-group">
+				<label for="api-url">TVBox配置接口地址：</label>
+				<input type="text" id="api-url" placeholder="请输入TVBox接口地址">
+				<div class="info">示例：https://example.com/tvbox/data.json</div>
+			</div>
+			
+			<div class="action-buttons">
+				<button class="btn" id="fetch-btn">获取内容</button>
+				<button class="btn btn-secondary" id="clear-fetch-btn">清空</button>
+			</div>
+			
+			<div class="result-container">
+				<button class="btn btn-copy" id="copy-fetch-btn">复制</button>
+				<div class="result-area" id="fetch-result">获取的内容将显示在这里...</div>
+			</div>
+		</div>
+		
+		<div class="tab-content" id="crypto-tab">
+			<div class="input-group">
+				<label for="crypto-content">内容：</label>
+				<textarea id="crypto-content" placeholder="请输入需要加密或解密的内容"></textarea>
+			</div>
+			
+			<div class="crypto-inputs-row">
+				<div class="crypto-input-group">
+					<label for="crypto-password">密码：</label>
+					<input type="text" id="crypto-password" placeholder="请输入密码（支持中文）" value="123456">
+				</div>
+				
+				<div class="crypto-input-group">
+					<label for="crypto-iv">偏移值：</label>
+					<input type="text" id="crypto-iv" placeholder="请输入偏移值（支持中文）" value="1234567890123456">
+				</div>
+			</div>
+			
+			<div class="crypto-controls-row">
+				<div class="radio-group">
+					<label class="radio-option">
+						<input type="radio" name="crypto-type" value="encrypt" checked> 加密
+					</label>
+					<label class="radio-option">
+						<input type="radio" name="crypto-type" value="decrypt"> 解密
+					</label>
+				</div>
+				
+				<div class="crypto-buttons">
+					<button class="btn" id="crypto-btn">运行</button>
+					<button class="btn btn-secondary" id="clear-crypto-btn">清空</button>
+				</div>
+			</div>
+			
+			<div class="result-container">
+				<button class="btn btn-copy" id="copy-crypto-btn">复制</button>
+				<div class="result-area" id="crypto-result">加密/解密结果将显示在这里...</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		// 通用函数
+		function toggleCopyButton(button, resultArea) {
+			const hasContent = resultArea.textContent && 
+							  !resultArea.textContent.includes('将显示在这里...') &&
+							  !resultArea.textContent.includes('正在') &&
+							  !resultArea.textContent.includes('失败');
+			
+			button.style.display = hasContent ? 'block' : 'none';
+			resultArea.classList.toggle('has-content', hasContent);
+		}
+
+		function getActualContent(resultArea) {
+			const content = resultArea.textContent;
+			return content.replace(/(加密结果:|解密结果:)\n/, '');
+		}
+
+		function copyToClipboard(text) {
+			navigator.clipboard.writeText(text)
+				.then(() => alert('内容已复制到剪贴板！'))
+				.catch(() => alert('复制失败，请手动选择文本复制'));
+		}
+
+		function clearArea(inputId, resultId, copyBtnId, placeholder) {
+			if (inputId) document.getElementById(inputId).value = '';
+			const resultArea = document.getElementById(resultId);
+			const copyBtn = document.getElementById(copyBtnId);
+			resultArea.textContent = placeholder;
+			resultArea.className = 'result-area';
+			toggleCopyButton(copyBtn, resultArea);
+		}
+
+		// 生成固定长度的密钥
+		function generateKey(password, keyLength = 16) {
+			// 使用SHA256哈希密码，然后截取所需长度
+			const hash = CryptoJS.SHA256(password);
+			const key = CryptoJS.enc.Hex.parse(hash.toString().substring(0, keyLength * 2));
+			return key;
+		}
+
+		// AES加密函数（支持中文密码）
+		function aesEncrypt(text, password, iv) {
+			const key = generateKey(password);
+			const ivParam = generateKey(iv, 16); // IV固定16字节
+			
+			const encrypted = CryptoJS.AES.encrypt(text, key, {
+				iv: ivParam,
+				mode: CryptoJS.mode.CBC,
+				padding: CryptoJS.pad.Pkcs7
+			});
+			
+			return encrypted.toString();
+		}
+
+		// AES解密函数（支持中文密码）
+		function aesDecrypt(encryptedText, password, iv) {
+			try {
+				const key = generateKey(password);
+				const ivParam = generateKey(iv, 16); // IV固定16字节
+				
+				const decrypted = CryptoJS.AES.decrypt(encryptedText, key, {
+					iv: ivParam,
+					mode: CryptoJS.mode.CBC,
+					padding: CryptoJS.pad.Pkcs7
+				});
+				
+				const result = decrypted.toString(CryptoJS.enc.Utf8);
+				if (!result) {
+					throw new Error('解密失败：密码或偏移值不正确');
+				}
+				return result;
+			} catch (error) {
+				throw new Error('解密失败：密码或偏移值不正确');
+			}
+		}
+
+		// 标签切换
+		document.querySelectorAll('.tab').forEach(tab => {
+			tab.addEventListener('click', () => {
+				document.querySelectorAll('.tab, .tab-content').forEach(el => 
+					el.classList.remove('active')
+				);
+				tab.classList.add('active');
+				document.getElementById(`${tab.dataset.tab}-tab`).classList.add('active');
+			});
+		});
+
+		// 获取接口内容
+		document.getElementById('fetch-btn').addEventListener('click', async () => {
+			const url = document.getElementById('api-url').value.trim();
+			const resultArea = document.getElementById('fetch-result');
+			const copyBtn = document.getElementById('copy-fetch-btn');
+			
+			if (!url) {
+				resultArea.textContent = '请输入接口地址';
+				resultArea.className = 'result-area error';
+				toggleCopyButton(copyBtn, resultArea);
+				return;
+			}
+			
+			try {
+				resultArea.textContent = '正在获取数据...';
+				resultArea.className = 'result-area';
+				toggleCopyButton(copyBtn, resultArea);
+				
+				const response = await fetch(url);
+				if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+				
+				const data = await response.json();
+				resultArea.textContent = JSON.stringify(data, null, 2);
+				resultArea.className = 'result-area success';
+				toggleCopyButton(copyBtn, resultArea);
+			} catch (error) {
+				resultArea.textContent = `获取失败:\n${error.message}`;
+				resultArea.className = 'result-area error';
+				toggleCopyButton(copyBtn, resultArea);
+			}
+		});
+
+		// 加密/解密功能
+		document.getElementById('crypto-btn').addEventListener('click', () => {
+			const content = document.getElementById('crypto-content').value;
+			const password = document.getElementById('crypto-password').value;
+			const iv = document.getElementById('crypto-iv').value;
+			const cryptoType = document.querySelector('input[name="crypto-type"]:checked').value;
+			const resultArea = document.getElementById('crypto-result');
+			const copyBtn = document.getElementById('copy-crypto-btn');
+			
+			if (!content || !password || !iv) {
+				resultArea.textContent = '请填写所有必填字段';
+				resultArea.className = 'result-area error';
+				toggleCopyButton(copyBtn, resultArea);
+				return;
+			}
+			
+			resultArea.textContent = '正在处理...';
+			resultArea.className = 'result-area';
+			toggleCopyButton(copyBtn, resultArea);
+			
+			setTimeout(() => {
+				try {
+					let result;
+					if (cryptoType === 'encrypt') {
+						result = aesEncrypt(content, password, iv);
+						resultArea.textContent = `加密结果:\n${result}`;
+					} else {
+						result = aesDecrypt(content, password, iv);
+						resultArea.textContent = `解密结果:\n${result}`;
+					}
+					resultArea.className = 'result-area success';
+				} catch (error) {
+					resultArea.textContent = `处理失败: ${error.message}`;
+					resultArea.className = 'result-area error';
+				}
+				toggleCopyButton(copyBtn, resultArea);
+			}, 500);
+		});
+
+		// 清空按钮事件
+		document.getElementById('clear-fetch-btn').addEventListener('click', () => 
+			clearArea('api-url', 'fetch-result', 'copy-fetch-btn', '获取的内容将显示在这里...')
+		);
+
+		document.getElementById('clear-crypto-btn').addEventListener('click', () => 
+			clearArea('crypto-content', 'crypto-result', 'copy-crypto-btn', '加密/解密结果将显示在这里...')
+		);
+
+		// 复制按钮事件
+		document.getElementById('copy-fetch-btn').addEventListener('click', () => 
+			copyToClipboard(getActualContent(document.getElementById('fetch-result')))
+		);
+
+		document.getElementById('copy-crypto-btn').addEventListener('click', () => 
+			copyToClipboard(getActualContent(document.getElementById('crypto-result')))
+		);
+
+		// 初始化
+		document.querySelectorAll('.btn-copy').forEach(btn => btn.style.display = 'none');
+	</script>
+	
+	<!-- 引入CryptoJS库用于AES加密 -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+</body>
+</html>
